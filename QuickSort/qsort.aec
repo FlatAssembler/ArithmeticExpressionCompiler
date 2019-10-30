@@ -1,0 +1,161 @@
+;Implementacija QuickSort-a.
+AsmStart ;Umetnuti Assembler pocinje ovako, a zavrsava sa "AsmEnd".
+	ispisPoruka=1 ;Ovako se rade pretprocesorski definesovi u FlatAssembleru.
+	macro staviIntNaSistemskiStog x ;Da, ima on mocan pretprocesor.
+	{
+		sub esp,4
+		fld dword [x]
+		fistp dword [esp]
+	}
+	macro staviPokazivacNaSistemskiStog x
+	{
+		sub esp,4
+		lea ebx,[x]
+		mov [esp],ebx
+	}
+	macro staviStringNaSistemskiStog x
+	{
+		sub esp,4
+		mov dword [esp],x
+	}
+	format PE console ; 'PE' je 32-bitna '.EXE' datoteka za Windows. 'PE64' je 64-bitna '.EXE' za Windows. 'MZ' je '.EXE' za DOS.
+	entry start
+
+	include 'win32a.inc' ; Naredbe za komunikaciju s DLL-ovima.
+
+	section '.text' code executable
+	start:
+if ispisPoruka=1 ; 'if' je ovdje assemblerska pretprocesorska naredba. 'If', s velikim 'i', je naredba grananja u AEC-u.
+	jmp velicinaUnosa$
+		velicinaUnosa db "Unesite koliko cete brojeva unijeti.",10,0
+	velicinaUnosa$:
+	staviStringNaSistemskiStog velicinaUnosa
+	call [printf]
+end if
+	staviPokazivacNaSistemskiStog n
+	jmp znakZaFloat$
+		znakZaFloat db "%f",0
+	znakZaFloat$:
+	staviStringNaSistemskiStog znakZaFloat
+	call [scanf]
+	if ispisPoruka=1
+		jmp pitajZaUnos$
+			pitajZaUnos db "Unesite te brojeve:",10,0
+		pitajZaUnos$:
+		staviStringNaSistemskiStog pitajZaUnos
+		call [printf]
+	end if
+AsmEnd
+i:=0
+vrhStoga:=0
+While i<n
+	pokazivac:=4*i
+	AsmStart
+		fld dword [pokazivac]
+		fistp dword [pokazivac]
+		lea ebx,[original]
+		add ebx,[pokazivac]
+		staviPokazivacNaSistemskiStog ebx
+		staviStringNaSistemskiStog znakZaFloat
+		call [scanf]
+	AsmEnd
+	i:=i+1
+EndWhile
+	vrhStoga:=vrhStoga+1
+	stogSDonjimGranicama(vrhStoga):=0
+	stogSGornjimGranicama(vrhStoga):=n
+	While vrhStoga>0
+		gornjaGranica:=stogSGornjimGranicama(vrhStoga)
+		donjaGranica:=stogSDonjimGranicama(vrhStoga)
+		vrhStoga:=vrhStoga-1
+		gdjeJePivot:=donjaGranica
+		i:=donjaGranica+1
+		While i<gornjaGranica
+			If original(i)<original(donjaGranica)
+				gdjeJePivot:=gdjeJePivot+1
+			EndIf
+			i:=i++
+		EndWhile
+		staviManje:=donjaGranica
+		staviVece:=gdjeJePivot+1
+		pomocni(gdjeJePivot):=original(donjaGranica)
+		i:=donjaGranica+1
+		While i<gornjaGranica
+			If original(i)<original(donjaGranica)
+				pomocni(staviManje):=original(i)
+				staviManje:=staviManje+1
+			Else
+				pomocni(staviVece):=original(i)
+				staviVece:=staviVece+1
+			EndIf
+			i:=i+1
+		EndWhile
+		i:=donjaGranica
+		While i<gornjaGranica
+			original(i):=pomocni(i)
+			i:=i+1
+		EndWhile
+		If gdjeJePivot<gornjaGranica-1
+			vrhStoga:=vrhStoga+1
+			stogSDonjimGranicama(vrhStoga):=gdjeJePivot+1
+			stogSGornjimGranicama(vrhStoga):=gornjaGranica
+		EndIf
+		If gdjeJePivot>donjaGranica+1
+			vrhStoga:=vrhStoga+1
+			stogSDonjimGranicama(vrhStoga):=donjaGranica
+			stogSGornjimGranicama(vrhStoga):=gdjeJePivot
+		EndIf
+	EndWhile
+AsmStart
+if ispisPoruka=1
+	jmp sortiraniNizJe$
+		sortiraniNizJe db "Sortirani niz je:",10,0
+	sortiraniNizJe$:
+	staviStringNaSistemskiStog sortiraniNizJe
+	call [printf]
+end if
+AsmEnd
+i:=0
+While i<n
+	pokazivac:=4*i
+	AsmStart
+		lea ebx,[original]
+		fld dword [pokazivac]
+		fistp dword [pokazivac]
+		add ebx,[pokazivac]
+		fld dword [ebx]
+		fstp qword [esp]
+		staviStringNaSistemskiStog znakZaFloatPlusNoviRedPlusNulZnak
+		call [printf]
+	AsmEnd
+	i:=i+1
+EndWhile
+AsmStart
+invoke system,_pause
+invoke exit,0
+
+_pause db "PAUSE",0
+znakZaCijeliBroj db "%d",0
+znakZaNoviRedPlusNulZnak db 10,0
+znakZaFloatPlusNoviRedPlusNulZnak db "%f",10,0
+
+section '.rdata' readable writable
+original dd 32768*4 DUP(?)
+n dd ?
+result dd ?
+pokazivac dd ?
+i dd ?
+stogSDonjimGranicama dd 32768*4 DUP(?)
+stogSGornjimGranicama dd 32768*4 DUP(?)
+pomocni dd 32768*4 DUP(?)
+vrhStoga dd ?
+donjaGranica dd ?
+gornjaGranica dd ?
+staviVece dd ?
+staviManje dd ?
+gdjeJePivot dd ?
+
+section '.idata' data readable import
+library msvcrt,'msvcrt.dll'
+import msvcrt,printf,'printf',system,'system',exit,'exit',scanf,'scanf'
+AsmEnd
