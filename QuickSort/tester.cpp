@@ -9,7 +9,7 @@ int polje[32768];
 int main() {
     using namespace std;
     srand(time(NULL));
-    int n=rand()%30000+1;
+    int n=rand()%15000+1;
     for (int i=0; i<n; i++)
         polje[i]=rand()%30000-15000;
     ofstream izlaz("testin.txt");
@@ -18,7 +18,7 @@ int main() {
         izlaz <<polje[i] <<'\n';
     izlaz.close();
     clock_t pocetak=clock();
-    system("./qsort > testout.txt < testin.txt");
+    system("qsort > testout.txt < testin.txt");
     clock_t kraj=clock();
     cout <<"Program se izvrsavao " <<kraj-pocetak <<" milisekundi." <<endl;
     sort(polje,polje+n);
@@ -26,11 +26,12 @@ int main() {
     ifstream ulaz("testout.txt");
     for (int i=0; i<n; i++)
     {
-        int tmp;
+        float tmp;
         ulaz >>tmp;
         if (tmp!=polje[i])
         {
             cout <<"Nisu dali isti rezultat za " <<n <<" brojeva." <<endl;
+            cout <<"Ocekivano je da " <<i+1 <<"-ti broj bude " <<polje[i] <<", a program je tamo ispisao " <<tmp <<"." <<endl;
             return 1;
         }
     }
