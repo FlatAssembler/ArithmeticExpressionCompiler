@@ -131,15 +131,18 @@ While i<n
 	i:=i+1
 EndWhile
 AsmStart
-invoke system,_pause
+if ispisPoruka=1
+	invoke system,_pause ;"Press any key to continue..."
+end if
 invoke exit,0
 
+;Deklaracije konstanti.
 _pause db "PAUSE",0
 znakZaCijeliBroj db "%d",0
 znakZaNoviRedPlusNulZnak db 10,0
 znakZaFloatPlusNoviRedPlusNulZnak db "%f",10,0
 
-section '.rdata' readable writable
+section '.rdata' readable writable ; Deklaracije varijabli.
 original dd 32768*4 DUP(?)
 n dd ?
 result dd ?
@@ -155,7 +158,7 @@ staviVece dd ?
 staviManje dd ?
 gdjeJePivot dd ?
 
-section '.idata' data readable import
-library msvcrt,'msvcrt.dll'
+section '.idata' data readable import ;Uvoz funkcija iz DLL-ova.
+library msvcrt,'msvcrt.dll' ; "msvcrt.dll" je stara verzija Microsoft Visual C Runtime Libraryja dostupna u C:\Windows\System32\msvcrt.dll na Windows 95 i novijim.
 import msvcrt,printf,'printf',system,'system',exit,'exit',scanf,'scanf'
 AsmEnd
