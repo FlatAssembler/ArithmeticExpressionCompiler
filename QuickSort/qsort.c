@@ -1,10 +1,12 @@
 int printf(const char*,...);
 int scanf(const char*,...);
 int system(const char*);
+double log(double);
 
 int original[32768],pomocni[32768];
 int stog_s_donjim_granicama[32768],stog_s_gornjim_granicama[32768];
 int vrh_stoga=0;
+int brojac=0;
 
 int main() {
 	int n;
@@ -47,6 +49,7 @@ int main() {
 				pomocni[stavi_vece]=original[i];
 				stavi_vece++;
 			}
+			brojac++;
 			i++;
 		}
 		i=donja_granica;
@@ -80,6 +83,8 @@ int main() {
 #endif
 	for (int i=0; i<n; i++) printf("%d\n",original[i]);
 #ifdef IspisujPoruke
+	printf("Unutrasnja petlja izvrsila se %d puta.\n",brojac);
+	printf("Ocekivani broj ponavljanja te petlje, po formuli n*log2(n), bio bi %.1f.\n",n*log(n)/log(2));
 	printf("Pritisnite CTRL+C za izlaz.\n");
 	while (1);
 #endif
