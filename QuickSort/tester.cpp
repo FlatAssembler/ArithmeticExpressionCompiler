@@ -6,9 +6,17 @@
 
 int polje[32768];
 
-int main() {
+int main(int argc, char **argv) {
     using namespace std;
-    srand(time(NULL));
+    if (argc==1)
+        srand(time(NULL));
+    else
+    {
+        int tmp;
+        sscanf(argv[1],"%d",&tmp);
+        fprintf(stderr,"Postavljam srand na %d.\n",tmp);
+	srand(tmp);
+    }
     int n=rand()%15000+1;
     for (int i=0; i<n; i++)
         polje[i]=rand()%30000-15000;
