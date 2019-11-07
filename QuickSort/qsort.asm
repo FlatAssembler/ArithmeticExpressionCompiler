@@ -70,21 +70,21 @@ push dword [result]
 pop dword [vrhStoga]
 ;While i<n
 finit
-l70560:
+l720192:
 fld dword [i]
 fld dword [n]
 fcomip st1
 fstp dword [result]
-jna l284628
+jna l644110
 fld1
-jmp l147283
-l284628:
+jmp l742952
+l644110:
 fldz
-l147283:
+l742952:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l147507
+je l600967
 ;pokazivac:=4*i
 finit
 mov dword [result],0x40800000 ;4
@@ -114,8 +114,12 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l70560
-l147507:
+jmp l720192
+l600967:
+;Inline assembly begins.
+call [clock]
+mov [procesorskoVrijeme],eax
+;Inline assembly ended.
 ;vrhStoga:=vrhStoga+1
 finit
 fld dword [vrhStoga]
@@ -146,22 +150,22 @@ mov ebx,[result]
 pop dword [stogSGornjimGranicama+4*ebx]
 ;While vrhStoga>0
 finit
-l658020:
+l173136:
 fld dword [vrhStoga]
 mov dword [result],0x0 ;0
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jnb l823980
+jnb l405714
 fld1
-jmp l409186
-l823980:
+jmp l791634
+l405714:
 fldz
-l409186:
+l791634:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l65942
+je l730236
 ;gornjaGranica:=stogSGornjimGranicama(vrhStoga)
 finit
 fld dword [vrhStoga]
@@ -206,21 +210,21 @@ push dword [result]
 pop dword [i]
 ;While i<gornjaGranica
 finit
-l734956:
+l460328:
 fld dword [i]
 fld dword [gornjaGranica]
 fcomip st1
 fstp dword [result]
-jna l811309
+jna l129376
 fld1
-jmp l548702
-l811309:
+jmp l309356
+l129376:
 fldz
-l548702:
+l309356:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l260238
+je l88074
 ;If original(i)<original(donjaGranica)
 finit
 fld dword [i]
@@ -233,16 +237,16 @@ mov ebx,[result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
 fcomip st1
 fstp dword [result]
-jna l793625
+jna l120664
 fld1
-jmp l449577
-l793625:
+jmp l335227
+l120664:
 fldz
-l449577:
+l335227:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l198574
+jz l1658
 ;gdjeJePivot:=gdjeJePivot+1
 finit
 fld dword [gdjeJePivot]
@@ -254,8 +258,8 @@ push dword [result]
 pop dword [gdjeJePivot]
 ;EndIf
 finit
-l198574:
-l436608:
+l1658:
+l200242:
 ;i:=i++
 finit
 fld dword [i]
@@ -267,8 +271,8 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l734956
-l260238:
+jmp l460328
+l88074:
 ;staviManje:=donjaGranica
 finit
 fld dword [donjaGranica]
@@ -307,21 +311,21 @@ push dword [result]
 pop dword [i]
 ;While i<gornjaGranica
 finit
-l455086:
+l37416:
 fld dword [i]
 fld dword [gornjaGranica]
 fcomip st1
 fstp dword [result]
-jna l907073
+jna l337871
 fld1
-jmp l34632
-l907073:
+jmp l178015
+l337871:
 fldz
-l34632:
+l178015:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l816632
+je l830294
 ;If original(i)<original(donjaGranica)
 finit
 fld dword [i]
@@ -334,16 +338,16 @@ mov ebx,[result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
 fcomip st1
 fstp dword [result]
-jna l335649
+jna l119357
 fld1
-jmp l246117
-l335649:
+jmp l610568
+l119357:
 fldz
-l246117:
+l610568:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l417049
+jz l453048
 ;pomocni(staviManje):=original(i)
 finit
 fld dword [i]
@@ -367,8 +371,8 @@ push dword [result]
 pop dword [staviManje]
 ;Else
 finit
-jmp l4441
-l417049:
+jmp l482737
+l453048:
 ;pomocni(staviVece):=original(i)
 finit
 fld dword [i]
@@ -392,7 +396,7 @@ push dword [result]
 pop dword [staviVece]
 ;EndIf
 finit
-l4441:
+l482737:
 ;brojac:=brojac++
 finit
 fld dword [brojac]
@@ -413,8 +417,8 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l455086
-l816632:
+jmp l37416
+l830294:
 ;i:=donjaGranica
 finit
 fld dword [donjaGranica]
@@ -423,21 +427,21 @@ push dword [result]
 pop dword [i]
 ;While i<gornjaGranica
 finit
-l713605:
+l145636:
 fld dword [i]
 fld dword [gornjaGranica]
 fcomip st1
 fstp dword [result]
-jna l269986
+jna l300064
 fld1
-jmp l19795
-l269986:
+jmp l586617
+l300064:
 fldz
-l19795:
+l586617:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l166119
+je l662577
 ;original(i):=pomocni(i)
 finit
 fld dword [i]
@@ -461,8 +465,8 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l713605
-l166119:
+jmp l145636
+l662577:
 ;If gdjeJePivot<gornjaGranica-1
 finit
 fld dword [gornjaGranica]
@@ -473,16 +477,16 @@ fld dword [gdjeJePivot]
 fxch
 fcomip st1
 fstp dword [result]
-jna l815836
+jna l609007
 fld1
-jmp l332821
-l815836:
+jmp l99194
+l609007:
 fldz
-l332821:
+l99194:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l193261
+jz l948542
 ;vrhStoga:=vrhStoga+1
 finit
 fld dword [vrhStoga]
@@ -515,8 +519,8 @@ mov ebx,[result]
 pop dword [stogSGornjimGranicama+4*ebx]
 ;EndIf
 finit
-l193261:
-l944238:
+l948542:
+l134902:
 ;If gdjeJePivot>donjaGranica+1
 finit
 fld dword [donjaGranica]
@@ -527,16 +531,16 @@ fld dword [gdjeJePivot]
 fxch
 fcomip st1
 fstp dword [result]
-jnb l62100
+jnb l95506
 fld1
-jmp l641627
-l62100:
+jmp l443733
+l95506:
 fldz
-l641627:
+l443733:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l163044
+jz l915236
 ;vrhStoga:=vrhStoga+1
 finit
 fld dword [vrhStoga]
@@ -566,13 +570,16 @@ mov ebx,[result]
 pop dword [stogSGornjimGranicama+4*ebx]
 ;EndIf
 finit
-l163044:
-l875827:
+l915236:
+l457538:
 ;EndWhile
 finit
-jmp l658020
-l65942:
+jmp l173136
+l730236:
 ;Inline assembly begins.
+call [clock]
+sub eax,[procesorskoVrijeme]
+mov [procesorskoVrijeme],eax
 if ispisPoruka=1
 jmp sortiraniNizJe$
 sortiraniNizJe db "Sortirani niz je:",10,0
@@ -590,21 +597,21 @@ push dword [result]
 pop dword [i]
 ;While i<n
 finit
-l298324:
+l973535:
 fld dword [i]
 fld dword [n]
 fcomip st1
 fstp dword [result]
-jna l379379
+jna l210898
 fld1
-jmp l564614
-l379379:
+jmp l705399
+l210898:
 fldz
-l564614:
+l705399:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l111136
+je l175921
 ;pokazivac:=4*i
 finit
 mov dword [result],0x40800000 ;4
@@ -635,8 +642,8 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l298324
-l111136:
+jmp l973535
+l175921:
 ;Inline assembly begins.
 if ispisPoruka=1
 staviIntNaSistemskiStog brojac
@@ -670,6 +677,8 @@ fld dword [brojac]
 fstp qword [esp]
 staviStringNaSistemskiStog slozenostString
 call [printf]
+push dword [procesorskoVrijeme]
+invoke printf,sortiranjeJeTrajalo
 invoke system,_pause ;"Press any key to continue..."
 end if
 invoke exit,0
@@ -681,6 +690,7 @@ znakZaNoviRedPlusNulZnak db 10,0
 znakZaFloatPlusNoviRedPlusNulZnak db "%f",10,0
 unutrasnjaPetljaString db "Unutrasnja petlja izvrsila se %d puta.",10,0
 slozenostString db "Ocekivani broj ponavljanja te petlje, po formuli n*log2(n), bio bi %.1f.",10,0
+sortiranjeJeTrajalo db "Sortiranje je trajalo %d milisekundi.",10,0
 
 section '.rdata' readable writable ; Deklaracije varijabli.
 original dd 32768*4 DUP(?)
@@ -698,8 +708,9 @@ gornjaGranica dd ?
 staviVece dd ?
 staviManje dd ?
 gdjeJePivot dd ?
+procesorskoVrijeme dd ?
 
 section '.idata' data readable import ;Uvoz funkcija iz DLL-ova.
 library msvcrt,'msvcrt.dll' ; "msvcrt.dll" je stara verzija Microsoft Visual C Runtime Libraryja dostupna u C:\Windows\System32\msvcrt.dll na Windows 95 i novijim.
-import msvcrt,printf,'printf',system,'system',exit,'exit',scanf,'scanf'
+import msvcrt,printf,'printf',system,'system',exit,'exit',scanf,'scanf',clock,'clock'
 ;Inline assembly ended.

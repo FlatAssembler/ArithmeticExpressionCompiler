@@ -1,6 +1,7 @@
 int printf(const char*,...);
 int scanf(const char*,...);
 int system(const char*);
+long long clock();
 double log(double);
 
 int original[32768],pomocni[32768];
@@ -19,6 +20,7 @@ int main() {
 #endif
 	for (int i=0; i<n; i++)
 		scanf("%d",&original[i]);
+	long long procesorskoVrijeme=clock();
 	vrh_stoga++;
 	stog_s_donjim_granicama[vrh_stoga]=0;
 	stog_s_gornjim_granicama[vrh_stoga]=n;
@@ -78,6 +80,7 @@ int main() {
 		system("sleep 1");
 #endif
 	}
+	procesorskoVrijeme=clock()-procesorskoVrijeme;
 #ifdef IspisujPoruke
 	printf("Sortirani niz je:\n");
 #endif
@@ -85,6 +88,7 @@ int main() {
 #ifdef IspisujPoruke
 	printf("Unutrasnja petlja izvrsila se %d puta.\n",brojac);
 	printf("Ocekivani broj ponavljanja te petlje, po formuli n*log2(n), bio bi %.1f.\n",n*log(n)/log(2));
+	printf("Sortiranje je trajalo %d milisekundi.\n",(int)procesorskoVrijeme);
 	printf("Pritisnite CTRL+C za izlaz.\n");
 	while (1);
 #endif

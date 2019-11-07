@@ -62,53 +62,60 @@ While i<n
 	AsmEnd
 	i:=i+1
 EndWhile
-	vrhStoga:=vrhStoga+1
-	stogSDonjimGranicama(vrhStoga):=0
-	stogSGornjimGranicama(vrhStoga):=n
-	While vrhStoga>0
-		gornjaGranica:=stogSGornjimGranicama(vrhStoga)
-		donjaGranica:=stogSDonjimGranicama(vrhStoga)
-		vrhStoga:=vrhStoga-1
-		gdjeJePivot:=donjaGranica
-		i:=donjaGranica+1
-		While i<gornjaGranica
-			If original(i)<original(donjaGranica)
-				gdjeJePivot:=gdjeJePivot+1
-			EndIf
-			i:=i++
-		EndWhile
-		staviManje:=donjaGranica
-		staviVece:=gdjeJePivot+1
-		pomocni(gdjeJePivot):=original(donjaGranica)
-		i:=donjaGranica+1
-		While i<gornjaGranica
-			If original(i)<original(donjaGranica)
-				pomocni(staviManje):=original(i)
-				staviManje:=staviManje+1
-			Else
-				pomocni(staviVece):=original(i)
-				staviVece:=staviVece+1
-			EndIf
-			brojac:=brojac++
-			i:=i+1
-		EndWhile
-		i:=donjaGranica
-		While i<gornjaGranica
-			original(i):=pomocni(i)
-			i:=i+1
-		EndWhile
-		If gdjeJePivot<gornjaGranica-1
-			vrhStoga:=vrhStoga+1
-			stogSDonjimGranicama(vrhStoga):=gdjeJePivot+1
-			stogSGornjimGranicama(vrhStoga):=gornjaGranica
-		EndIf
-		If gdjeJePivot>donjaGranica+1
-			vrhStoga:=vrhStoga+1
-			stogSDonjimGranicama(vrhStoga):=donjaGranica
-			stogSGornjimGranicama(vrhStoga):=gdjeJePivot
-		EndIf
-	EndWhile
 AsmStart
+	call [clock]
+	mov [procesorskoVrijeme],eax
+AsmEnd
+vrhStoga:=vrhStoga+1
+stogSDonjimGranicama(vrhStoga):=0
+stogSGornjimGranicama(vrhStoga):=n
+While vrhStoga>0
+	gornjaGranica:=stogSGornjimGranicama(vrhStoga)
+	donjaGranica:=stogSDonjimGranicama(vrhStoga)
+	vrhStoga:=vrhStoga-1
+	gdjeJePivot:=donjaGranica
+	i:=donjaGranica+1
+	While i<gornjaGranica
+		If original(i)<original(donjaGranica)
+			gdjeJePivot:=gdjeJePivot+1
+		EndIf
+		i:=i++
+	EndWhile
+	staviManje:=donjaGranica
+	staviVece:=gdjeJePivot+1
+	pomocni(gdjeJePivot):=original(donjaGranica)
+	i:=donjaGranica+1
+	While i<gornjaGranica
+		If original(i)<original(donjaGranica)
+			pomocni(staviManje):=original(i)
+			staviManje:=staviManje+1
+		Else
+			pomocni(staviVece):=original(i)
+			staviVece:=staviVece+1
+		EndIf
+		brojac:=brojac++
+		i:=i+1
+	EndWhile
+	i:=donjaGranica
+	While i<gornjaGranica
+		original(i):=pomocni(i)
+		i:=i+1
+	EndWhile
+	If gdjeJePivot<gornjaGranica-1
+		vrhStoga:=vrhStoga+1
+		stogSDonjimGranicama(vrhStoga):=gdjeJePivot+1
+		stogSGornjimGranicama(vrhStoga):=gornjaGranica
+	EndIf
+	If gdjeJePivot>donjaGranica+1
+		vrhStoga:=vrhStoga+1
+		stogSDonjimGranicama(vrhStoga):=donjaGranica
+		stogSGornjimGranicama(vrhStoga):=gdjeJePivot
+	EndIf
+EndWhile
+AsmStart
+	call [clock]
+	sub eax,[procesorskoVrijeme]
+	mov [procesorskoVrijeme],eax
 if ispisPoruka=1
 	jmp sortiraniNizJe$
 		sortiraniNizJe db "Sortirani niz je:",10,0
@@ -144,6 +151,8 @@ AsmStart
 	fstp qword [esp]
 	staviStringNaSistemskiStog slozenostString
 	call [printf]
+	push dword [procesorskoVrijeme]
+	invoke printf,sortiranjeJeTrajalo
 	invoke system,_pause ;"Press any key to continue..."
 end if
 invoke exit,0
@@ -155,6 +164,7 @@ znakZaNoviRedPlusNulZnak db 10,0
 znakZaFloatPlusNoviRedPlusNulZnak db "%f",10,0
 unutrasnjaPetljaString db "Unutrasnja petlja izvrsila se %d puta.",10,0
 slozenostString db "Ocekivani broj ponavljanja te petlje, po formuli n*log2(n), bio bi %.1f.",10,0
+sortiranjeJeTrajalo db "Sortiranje je trajalo %d milisekundi.",10,0
 
 section '.rdata' readable writable ; Deklaracije varijabli.
 original dd 32768*4 DUP(?)
@@ -172,8 +182,9 @@ gornjaGranica dd ?
 staviVece dd ?
 staviManje dd ?
 gdjeJePivot dd ?
+procesorskoVrijeme dd ?
 
 section '.idata' data readable import ;Uvoz funkcija iz DLL-ova.
 library msvcrt,'msvcrt.dll' ; "msvcrt.dll" je stara verzija Microsoft Visual C Runtime Libraryja dostupna u C:\Windows\System32\msvcrt.dll na Windows 95 i novijim.
-import msvcrt,printf,'printf',system,'system',exit,'exit',scanf,'scanf'
+import msvcrt,printf,'printf',system,'system',exit,'exit',scanf,'scanf',clock,'clock'
 AsmEnd
