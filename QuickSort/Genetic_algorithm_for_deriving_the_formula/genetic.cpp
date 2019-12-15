@@ -81,8 +81,8 @@ double pogreska(vector<double> polje, bool debug=false) {
     for (int i=0; i<x.size(); i++) {
         ret+=abs(evaluatePolynomFor(polje,x[i])-y[i])*
             ((abs(x[i])<1./10 || abs(x[i]+1)<1./10 || abs(x[i]-1)<1./10)?((sqrt(5)+1)/2):(1))
-            +((x[i]<0)?(abs(evaluatePolynomFor(polje,x[i])+evaluatePolynomFor(polje,-x[i]))/2.):(0))
-            +abs(polje[polje.size()-1])/4;
+            +((x[i]<0)?(abs(evaluatePolynomFor(polje,x[i])+evaluatePolynomFor(polje,-x[i]))/2.):(0)) //Because it's important for the curve to be symmetric.
+            +abs(polje[polje.size()-1])/4; //And it's important for it to have a root at x=0.
         if (debug) {
             cout <<"f(" <<x[i] <<")=" <<evaluatePolynomFor(polje,x[i]) <<endl;
             cout <<"Ocekivani odgovor: " <<y[i] <<endl;
