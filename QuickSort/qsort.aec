@@ -1,6 +1,7 @@
 ;Implementacija QuickSort-a.
 AsmStart ;Umetnuti Assembler pocinje ovako, a zavrsava sa "AsmEnd".
 	ispisPoruka=1 ;Ovako se rade pretprocesorski definesovi u FlatAssembleru.
+	debug=0
 	macro staviIntNaSistemskiStog x ;Da, ima on mocan pretprocesor.
 	{
 		sub esp,4
@@ -18,7 +19,7 @@ AsmStart ;Umetnuti Assembler pocinje ovako, a zavrsava sa "AsmEnd".
 		sub esp,4
 		mov dword [esp],x
 	}
-	format PE console ; 'PE' je 32-bitna '.EXE' datoteka za Windows. 'PE64' je 64-bitna '.EXE' za Windows. 'MZ' je '.EXE' za DOS.
+	format PE console ; 'PE' je 32-bitna '.EXE' datoteka za Windows. 'PE64' je 64-bitna '.EXE' za Windows. 'MZ' je '.EXE' za DOS. 'ELF' je izvrsna datoteka za 32-bitni Linux, a 'ELF64' za 64-bitni.
 	entry start
 
 	include 'win32a.inc' ; Naredbe za komunikaciju s DLL-ovima.
@@ -66,6 +67,28 @@ AsmStart
 	call [clock]
 	mov [procesorskoVrijeme],eax
 AsmEnd
+razvrstanost:=0
+i:=0
+While i<n-1
+	razvrstanost:=razvrstanost+(original(i)<original(i+1))
+	i:=i+1
+EndWhile
+razvrstanost:=razvrstanost/((n-1)/2)-1
+i:=2
+While i<7 | i=7 ;Kada nisam stavio operator "<=" u svoj jezik.
+	razvrstanostNa(i):=pow(abs(razvrstanost),i) ;Zato sto je "pow(x,y)" u tom mom jeziku samo sintakticki secer za "exp(ln(x)*y)", i to vraca "NaN" za x<=0. Nema ocitog nacina da se "pow" prevede na Assembler.
+	If razvrstanost=0
+		razvrstanostNa(i):=0
+	EndIf
+	If mod(i,2)=1 & razvrstanost<0
+		razvrstanostNa(i):=-razvrstanostNa(i)
+	EndIf
+	i:=i+1
+EndWhile
+;f(n,s)=exp((ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(2.38854*pow(s,7)-0.284258*pow(s,6)-1.87104*pow(s,5)+0.372637*pow(s,4)+0.167242*pow(s,3)-0.0884977*pow(s,2)+0.315119*s))
+polinomPodApsolutnom:=2.38854*razvrstanostNa(7)-0.284258*razvrstanostNa(6)-1.87104*razvrstanostNa(5)+0.372637*razvrstanostNa(4)+0.167242*razvrstanostNa(3)-0.0884977*razvrstanostNa(2)+0.315119*razvrstanost
+eNaKoju:=(ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(polinomPodApsolutnom)
+ocekivaniBrojUsporedbi:=exp(eNaKoju)
 vrhStoga:=vrhStoga+1
 stogSDonjimGranicama(vrhStoga):=0
 stogSGornjimGranicama(vrhStoga):=n
@@ -153,6 +176,17 @@ AsmStart
 	call [printf]
 	push dword [procesorskoVrijeme]
 	invoke printf,sortiranjeJeTrajalo
+	fld dword [razvrstanost]
+	fstp qword [esp]
+	invoke printf,stringORazvrstanosti
+	fld dword [ocekivaniBrojUsporedbi]
+	fstp qword [esp+8] ;Zato sto "printf" iz MSVCRT-a za "%f" ocekuje 8-bajtni "double", i izgleda da ju nije moguce namjestiti da ocekuje 4-bajtni float.
+	fld dword [eNaKoju]
+	fstp qword [esp]
+	invoke printf,izvjestajOFormuli
+	fld dword [polinomPodApsolutnom]
+	fstp qword [esp]
+	invoke printf,izvjestajOPolinomu
 	invoke system,_pause ;"Press any key to continue..."
 end if
 invoke exit,0
@@ -165,6 +199,15 @@ znakZaFloatPlusNoviRedPlusNulZnak db "%f",10,0
 unutrasnjaPetljaString db "Unutrasnja petlja izvrsila se %d puta.",10,0
 slozenostString db "Ocekivani broj ponavljanja te petlje, po formuli n*log2(n), bio bi %.1f.",10,0
 sortiranjeJeTrajalo db "Sortiranje je trajalo %d milisekundi.",10,0
+stringORazvrstanosti db "Razvrstanost pocetnog niza (s) iznosila je: %f",10,0
+izvjestajOFormuli db "Ocekivani broj usporedbi, po formuli: ",10
+db "exp((ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(2.38854*pow(s,7)-0.284258*pow(s,6)-1.87104*pow(s,5)+0.372637*pow(s,4)+0.167242*pow(s,3)-0.0884977*pow(s,2)+0.315119*s))",10
+db "bio bi: exp(%f)=%f",10,0
+izvjestajOPolinomu:
+if debug=1
+	db "Polinom pod apsolutnom vrijednosti iznosi: %f",10
+end if
+	db 0
 
 section '.rdata' readable writable ; Deklaracije varijabli.
 original dd 32768*4 DUP(?)
@@ -183,6 +226,11 @@ staviVece dd ?
 staviManje dd ?
 gdjeJePivot dd ?
 procesorskoVrijeme dd ?
+razvrstanost dd ?
+razvrstanostNa dd 8 DUP(?)
+polinomPodApsolutnom dd ?
+eNaKoju dd ?
+ocekivaniBrojUsporedbi dd ?
 
 section '.idata' data readable import ;Uvoz funkcija iz DLL-ova.
 library msvcrt,'msvcrt.dll' ; "msvcrt.dll" je stara verzija Microsoft Visual C Runtime Libraryja dostupna u C:\Windows\System32\msvcrt.dll na Windows 95 i novijim.
