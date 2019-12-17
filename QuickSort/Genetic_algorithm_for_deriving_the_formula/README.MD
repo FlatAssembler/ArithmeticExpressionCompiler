@@ -2,7 +2,7 @@ So, here is the program I made to help me analyze the diagrams produced by measu
 
 The "genetic.cpp" file is a C++ source code. Many compilers apparently have trouble linking it, for some reason.
 
-On Oracle Linux, I've compiled it with GCC 8.3, with this command: "g++ -o genetic.elf64 -O3 -static genetic.cpp". If you don't include "static", the linker shipped with Oracle Linux will go crazy.
+On Oracle Linux, I've compiled it with GCC 8.3 (built from source), with this command: "g++ -o genetic.elf64 -O3 -static genetic.cpp". If you don't include "static", the linker shipped with Oracle Linux will go crazy.
 
 Apparently, you can get a 32-bit executable with "clang++ -m32 -o genetic.elf -O3 genetic.cpp". I've downloaded the CLANG 9.0 binary for Ubuntu, and it also works (apparently perfectly) on Oracle Linux.
 
