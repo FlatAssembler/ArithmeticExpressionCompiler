@@ -4,7 +4,7 @@ The "genetic.cpp" file is a C++ source code. Many compilers apparently have trou
 
 On Oracle Linux, I've compiled it with GCC 8.3 (built from source), with this command: "g++ -o genetic.elf64 -O3 -static genetic.cpp". If you don't include "static", the linker shipped with Oracle Linux will go crazy.
 
-Apparently, you can get a 32-bit executable with "clang++ -m32 -o genetic.elf -O3 genetic.cpp". I've downloaded the CLANG 9.0 binary for Ubuntu, and it also works (apparently perfectly) on Oracle Linux.
+Apparently, you can get a 32-bit executable with "clang++ -m32 -o genetic.elf -O3 genetic.cpp". I've downloaded the CLANG 9.0 binary for Ubuntu, and it also works on Oracle Linux.
 
 It apparently compiles without problems in MinGW GCC 8.2.
 
