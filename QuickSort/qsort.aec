@@ -89,6 +89,8 @@ EndWhile
 polinomPodApsolutnom:=2.38854*razvrstanostNa(7)-0.284258*razvrstanostNa(6)-1.87104*razvrstanostNa(5)+0.372637*razvrstanostNa(4)+0.167242*razvrstanostNa(3)-0.0884977*razvrstanostNa(2)+0.315119*razvrstanost
 eNaKoju:=(ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(polinomPodApsolutnom)
 ocekivaniBrojUsporedbi:=exp(eNaKoju)
+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=1
+pomocniBrojac:=0
 vrhStoga:=vrhStoga+1
 stogSDonjimGranicama(vrhStoga):=0
 stogSGornjimGranicama(vrhStoga):=n
@@ -116,7 +118,11 @@ While vrhStoga>0
 			pomocni(staviVece):=original(i)
 			staviVece:=staviVece+1
 		EndIf
-		brojac:=brojac++
+		pomocniBrojac:=pomocniBrojac+1
+		If pomocniBrojac=najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac
+			brojac:=brojac+pomocniBrojac
+			pomocniBrojac:=0
+		EndIf
 		i:=i+1
 	EndWhile
 	i:=donjaGranica
@@ -133,6 +139,23 @@ While vrhStoga>0
 		vrhStoga:=vrhStoga+1
 		stogSDonjimGranicama(vrhStoga):=donjaGranica
 		stogSGornjimGranicama(vrhStoga):=gdjeJePivot
+	EndIf
+	testZaPrelijev:=brojac+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim.
+	If not(testZaPrelijev>brojac)
+		najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac*2
+		AsmStart
+			if ispisPoruka=1
+				jmp izvjesceOPrelijevu$
+					izvjesceOPrelijevu db "Upozorenje: Brojac mozda nece sadrzavati tocan rezultat, dogodio se prelijev na %d. iteraciji."
+					db " Najveca ocekivana pogreska za ovaj prelijev je %d krivo prebrojanih izvrsavanja unutarnje petlje.",10,0
+				izvjesceOPrelijevu$:
+				fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
+				fistp dword [esp+4]
+				fld dword [brojac]
+				fistp dword [esp]
+				invoke printf,izvjesceOPrelijevu
+			end if		
+		AsmEnd
 	EndIf
 EndWhile
 AsmStart
@@ -193,7 +216,7 @@ invoke exit,0
 
 ;Deklaracije konstanti.
 _pause db "PAUSE",0
-znakZaCijeliBroj db "%d",0
+znakZaCijeliBrojBroj db "%d",0
 znakZaNoviRedPlusNulZnak db 10,0
 znakZaFloatPlusNoviRedPlusNulZnak db "%f",10,0
 unutrasnjaPetljaString db "Unutrasnja petlja izvrsila se %d puta.",10,0
@@ -231,6 +254,9 @@ razvrstanostNa dd 8 DUP(?)
 polinomPodApsolutnom dd ?
 eNaKoju dd ?
 ocekivaniBrojUsporedbi dd ?
+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac dd ?
+pomocniBrojac dd ?
+testZaPrelijev dd ?
 
 section '.idata' data readable import ;Uvoz funkcija iz DLL-ova.
 library msvcrt,'msvcrt.dll' ; "msvcrt.dll" je stara verzija Microsoft Visual C Runtime Libraryja dostupna u C:\Windows\System32\msvcrt.dll na Windows 95 i novijim.
