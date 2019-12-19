@@ -1,0 +1,271 @@
+{\rtf1\ansi\ansicpg1252\uc1\deff0\deflang1033\deflangfe1033{\fonttbl{\f0 Courier New;}}
+{\colortbl;\red128\green128\blue128;\red255\green255\blue255;\red255\green0\blue0;\red0\green0\blue0;\red128\green128\blue0;\red0\green128\blue0;\red0\green0\blue128;\red255\green0\blue255;\red128\green0\blue128;\red255\green128\blue0;\red128\green64\blue64;}
+{\*\generator Wine Riched20 2.0;}
+\pard{\pntext\f0 1.\tab}{\*\pn\pnlvlbody\pnf0\pnindent360\pnstart1\pndec{\pntxta.}}\sl-240\slmult1\li360\fi360 \highlight2\cf1\lang1033\fs20\f0 ;Implementacija QuickSort-a.\par
+{\pntext\f0 2.\tab}\cf3 AsmStart\cf4  \cf1 ;Umetnuti Assembler pocinje ovako, a zavrsava sa "AsmEnd".\par
+{\pntext\f0 3.\tab}\tab \cf0 ispisPoruka\cf5 =\cf6 1\cf4  \cf1 ;Ovako se rade pretprocesorski definesovi u FlatAssembleru.\par
+{\pntext\f0 4.\tab}\tab \cf0 debug\cf5 =\cf6 0\cf4 \par
+{\pntext\f0 5.\tab}\tab \cf7 macro\cf4  \cf0 staviIntNaSistemskiStog\cf4  \cf0 x\cf4  \cf1 ;Da, ima on mocan pretprocesor.\par
+{\pntext\f0 6.\tab}\tab \cf0 \{\cf4 \par
+{\pntext\f0 7.\tab}\tab \tab \cf7 sub\cf4  \cf8 esp\cf5 ,\cf6 4\cf4 \par
+{\pntext\f0 8.\tab}\tab \tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 x\cf5 ]\cf4 \par
+{\pntext\f0 9.\tab}\tab \tab \cf7 fistp\cf4  \cf9 dword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 10.\tab}\tab \cf0 \}\cf4 \par
+{\pntext\f0 11.\tab}\tab \cf7 macro\cf4  \cf0 staviPokazivacNaSistemskiStog\cf4  \cf0 x\cf4 \par
+{\pntext\f0 12.\tab}\tab \cf0 \{\cf4 \par
+{\pntext\f0 13.\tab}\tab \tab \cf7 sub\cf4  \cf8 esp\cf5 ,\cf6 4\cf4 \par
+{\pntext\f0 14.\tab}\tab \tab \cf7 lea\cf4  \cf8 ebx\cf5 ,[\cf0 x\cf5 ]\cf4 \par
+{\pntext\f0 15.\tab}\tab \tab \cf7 mov\cf4  \cf5 [\cf8 esp\cf5 ],\cf8 ebx\cf4 \par
+{\pntext\f0 16.\tab}\tab \cf0 \}\cf4 \par
+{\pntext\f0 17.\tab}\tab \cf7 macro\cf4  \cf0 staviStringNaSistemskiStog\cf4  \cf0 x\cf4 \par
+{\pntext\f0 18.\tab}\tab \cf0 \{\cf4 \par
+{\pntext\f0 19.\tab}\tab \tab \cf7 sub\cf4  \cf8 esp\cf5 ,\cf6 4\cf4 \par
+{\pntext\f0 20.\tab}\tab \tab \cf7 mov\cf4  \cf9 dword\cf4  \cf5 [\cf8 esp\cf5 ],\cf0 x\cf4 \par
+{\pntext\f0 21.\tab}\tab \cf0 \}\cf4 \par
+{\pntext\f0 22.\tab}\tab \cf7 format\cf4  \cf0 PE\cf4  \cf0 console\cf4  \cf1 ; 'PE' je 32-bitna '.EXE' datoteka za Windows. 'PE64' je 64-bitna '.EXE' za Windows. 'MZ' je '.EXE' za DOS. 'ELF' je izvrsna datoteka za 32-bitni Linux, a 'ELF64' za 64-bitni.\par
+{\pntext\f0 23.\tab}\tab \cf7 entry\cf4  \cf0 start\cf4 \par
+{\pntext\f0 24.\tab}\par
+{\pntext\f0 25.\tab}\tab \cf7 include\cf4  \cf3 'win32a.inc'\cf4  \cf1 ; Naredbe za komunikaciju s DLL-ovima.\par
+{\pntext\f0 26.\tab}\cf4 \par
+{\pntext\f0 27.\tab}\tab \cf7 section\cf4  \cf3 '.text'\cf4  \cf0 code\cf4  \cf0 executable\cf4 \par
+{\pntext\f0 28.\tab}\tab \cf0 start:\cf4 \par
+{\pntext\f0 29.\tab}\cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4  \cf1 ; 'if' je ovdje assemblerska pretprocesorska naredba. 'If', s velikim 'i', je naredba grananja u AEC-u.\par
+{\pntext\f0 30.\tab}\tab \cf7 jmp\cf4  \cf0 velicinaUnosa$\cf4 \par
+{\pntext\f0 31.\tab}\tab \tab \cf0 velicinaUnosa\cf4  \cf10 db\cf4  \cf3 "Unesite koliko cete brojeva unijeti."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 32.\tab}\tab \cf0 velicinaUnosa$:\cf4 \par
+{\pntext\f0 33.\tab}\tab \cf0 staviStringNaSistemskiStog\cf4  \cf0 velicinaUnosa\cf4 \par
+{\pntext\f0 34.\tab}\tab \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 35.\tab}\cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 36.\tab}\tab \cf0 staviPokazivacNaSistemskiStog\cf4  \cf0 n\cf4 \par
+{\pntext\f0 37.\tab}\tab \cf7 jmp\cf4  \cf0 znakZaFloat$\cf4 \par
+{\pntext\f0 38.\tab}\tab \tab \cf0 znakZaFloat\cf4  \cf10 db\cf4  \cf3 "%f"\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 39.\tab}\tab \cf0 znakZaFloat$:\cf4 \par
+{\pntext\f0 40.\tab}\tab \cf0 staviStringNaSistemskiStog\cf4  \cf0 znakZaFloat\cf4 \par
+{\pntext\f0 41.\tab}\tab \cf7 call\cf4  \cf5 [\cf0 scanf\cf5 ]\cf4 \par
+{\pntext\f0 42.\tab}\tab \cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 43.\tab}\tab \tab \cf7 jmp\cf4  \cf0 pitajZaUnos$\cf4 \par
+{\pntext\f0 44.\tab}\tab \tab \tab \cf0 pitajZaUnos\cf4  \cf10 db\cf4  \cf3 "Unesite te brojeve:"\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 45.\tab}\tab \tab \cf0 pitajZaUnos$:\cf4 \par
+{\pntext\f0 46.\tab}\tab \tab \cf0 staviStringNaSistemskiStog\cf4  \cf0 pitajZaUnos\cf4 \par
+{\pntext\f0 47.\tab}\tab \tab \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 48.\tab}\tab \cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 49.\tab}\cf3 AsmEnd\cf4 \par
+{\pntext\f0 50.\tab}\cf0 i\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 51.\tab}\cf0 brojac\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 52.\tab}\cf0 vrhStoga\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 53.\tab}\cf11 While\cf4  \cf0 i\cf5 <\cf0 n\cf4 \par
+{\pntext\f0 54.\tab}\tab \cf0 pokazivac\cf5 :=\cf6 4\cf5 *\cf0 i\cf4 \par
+{\pntext\f0 55.\tab}\tab \cf3 AsmStart\cf4 \par
+{\pntext\f0 56.\tab}\tab \tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 57.\tab}\tab \tab \cf7 fistp\cf4  \cf9 dword\cf4  \cf5 [\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 58.\tab}\tab \tab \cf7 lea\cf4  \cf8 ebx\cf5 ,[\cf0 original\cf5 ]\cf4 \par
+{\pntext\f0 59.\tab}\tab \tab \cf7 add\cf4  \cf8 ebx\cf5 ,[\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 60.\tab}\tab \tab \cf0 staviPokazivacNaSistemskiStog\cf4  \cf8 ebx\cf4 \par
+{\pntext\f0 61.\tab}\tab \tab \cf0 staviStringNaSistemskiStog\cf4  \cf0 znakZaFloat\cf4 \par
+{\pntext\f0 62.\tab}\tab \tab \cf7 call\cf4  \cf5 [\cf0 scanf\cf5 ]\cf4 \par
+{\pntext\f0 63.\tab}\tab \cf3 AsmEnd\cf4 \par
+{\pntext\f0 64.\tab}\tab \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 65.\tab}\cf11 EndWhile\cf4 \par
+{\pntext\f0 66.\tab}\cf3 AsmStart\cf4 \par
+{\pntext\f0 67.\tab}\tab \cf7 call\cf4  \cf5 [\cf0 clock\cf5 ]\cf4 \par
+{\pntext\f0 68.\tab}\tab \cf7 mov\cf4  \cf5 [\cf0 procesorskoVrijeme\cf5 ],\cf8 eax\cf4 \par
+{\pntext\f0 69.\tab}\cf3 AsmEnd\cf4 \par
+{\pntext\f0 70.\tab}\cf0 razvrstanost\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 71.\tab}\cf0 i\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 72.\tab}\cf11 While\cf4  \cf0 i\cf5 <\cf0 n\cf5 -\cf6 1\cf4 \par
+{\pntext\f0 73.\tab}\tab \cf0 razvrstanost\cf5 :=\cf0 razvrstanost\cf5 +(\cf0 original\cf5 (\cf0 i\cf5 )<\cf0 original\cf5 (\cf0 i\cf5 +\cf6 1\cf5 ))\cf4 \par
+{\pntext\f0 74.\tab}\tab \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 75.\tab}\cf11 EndWhile\cf4 \par
+{\pntext\f0 76.\tab}\cf0 razvrstanost\cf5 :=\cf0 razvrstanost\cf5 /((\cf0 n\cf5 -\cf6 1\cf5 )/\cf6 2\cf5 )\cf6 -1\cf4 \par
+{\pntext\f0 77.\tab}\cf0 i\cf5 :=\cf6 2\cf4 \par
+{\pntext\f0 78.\tab}\cf11 While\cf4  \cf0 i\cf5 <\cf6 7\cf4  \cf5 |\cf4  \cf0 i\cf5 =\cf6 7\cf4  \cf1 ;Kada nisam stavio operator "<=" u svoj jezik.\par
+{\pntext\f0 79.\tab}\tab \cf0 razvrstanostNa\cf5 (\cf0 i\cf5 ):=\cf6 pow\cf5 (\cf6 abs\cf5 (\cf0 razvrstanost\cf5 ),\cf0 i\cf5 )\cf4  \cf1 ;Zato sto je "pow(x,y)" u tom mom jeziku samo sintakticki secer za "exp(ln(x)*y)", i to vraca "NaN" za x<=0. Nema ocitog nacina da se "pow" prevede na Assembler.\par
+{\pntext\f0 80.\tab}\tab \cf11 If\cf4  \cf0 razvrstanost\cf5 =\cf6 0\cf4 \par
+{\pntext\f0 81.\tab}\tab \tab \cf0 razvrstanostNa\cf5 (\cf0 i\cf5 ):=\cf6 0\cf4 \par
+{\pntext\f0 82.\tab}\tab \cf11 EndIf\cf4 \par
+{\pntext\f0 83.\tab}\tab \cf11 If\cf4  \cf6 mod\cf5 (\cf0 i\cf5 ,\cf6 2\cf5 )=\cf6 1\cf4  \cf5 &\cf4  \cf0 razvrstanost\cf5 <\cf6 0\cf4 \par
+{\pntext\f0 84.\tab}\tab \tab \cf0 razvrstanostNa\cf5 (\cf0 i\cf5 ):=-\cf0 razvrstanostNa\cf5 (\cf0 i\cf5 )\cf4 \par
+{\pntext\f0 85.\tab}\tab \cf11 EndIf\cf4 \par
+{\pntext\f0 86.\tab}\tab \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 87.\tab}\cf11 EndWhile\cf4 \par
+{\pntext\f0 88.\tab}\cf1 ;f(n,s)=exp((ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(2.38854*pow(s,7)-0.284258*pow(s,6)-1.87104*pow(s,5)+0.372637*pow(s,4)+0.167242*pow(s,3)-0.0884977*pow(s,2)+0.315119*s))\par
+{\pntext\f0 89.\tab}\cf0 polinomPodApsolutnom\cf5 :=\cf6 2.38854\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 7\cf5 )\cf6 -0.284258\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 6\cf5 )\cf6 -1.87104\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 5\cf5 )\cf6 +0.372637\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 4\cf5 )\cf6 +0.167242\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 3\cf5 )\cf6 -0.0884977\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 2\cf5 )\cf6 +0.315119\cf5 *\cf0 razvrstanost\cf4 \par
+{\pntext\f0 90.\tab}\cf0 eNaKoju\cf5 :=(\cf6 ln\cf5 (\cf0 n\cf5 )+\cf6 ln\cf5 (\cf6 ln\cf5 (\cf0 n\cf5 )))*\cf6 1.05\cf5 +(\cf6 ln\cf5 (\cf0 n\cf5 )-\cf6 ln\cf5 (\cf6 ln\cf5 (\cf0 n\cf5 )))*\cf6 0.83\cf5 *\cf6 abs\cf5 (\cf0 polinomPodApsolutnom\cf5 )\cf4 \par
+{\pntext\f0 91.\tab}\cf0 ocekivaniBrojUsporedbi\cf5 :=\cf6 exp\cf5 (\cf0 eNaKoju\cf5 )\cf4 \par
+{\pntext\f0 92.\tab}\cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf5 :=\cf6 1\cf4 \par
+{\pntext\f0 93.\tab}\cf0 pomocniBrojac\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 94.\tab}\cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 95.\tab}\cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf6 0\cf4 \par
+{\pntext\f0 96.\tab}\cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 n\cf4 \par
+{\pntext\f0 97.\tab}\cf11 While\cf4  \cf0 vrhStoga\cf5 >\cf6 0\cf4 \par
+{\pntext\f0 98.\tab}\tab \cf0 gornjaGranica\cf5 :=\cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 )\cf4 \par
+{\pntext\f0 99.\tab}\tab \cf0 donjaGranica\cf5 :=\cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 )\cf4 \par
+{\pntext\f0 100.\tab}\tab \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 -\cf6 1\cf4 \par
+{\pntext\f0 101.\tab}\tab \cf0 gdjeJePivot\cf5 :=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 102.\tab}\tab \cf0 i\cf5 :=\cf0 donjaGranica\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 103.\tab}\tab \cf11 While\cf4  \cf0 i\cf5 <\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 104.\tab}\tab \tab \cf11 If\cf4  \cf0 original\cf5 (\cf0 i\cf5 )<\cf0 original\cf5 (\cf0 donjaGranica\cf5 )\cf4 \par
+{\pntext\f0 105.\tab}\tab \tab \tab \cf0 gdjeJePivot\cf5 :=\cf0 gdjeJePivot\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 106.\tab}\tab \tab \cf11 EndIf\cf4 \par
+{\pntext\f0 107.\tab}\tab \tab \cf0 i\cf5 :=\cf0 i\cf5 ++\cf4 \par
+{\pntext\f0 108.\tab}\tab \cf11 EndWhile\cf4 \par
+{\pntext\f0 109.\tab}\tab \cf0 staviManje\cf5 :=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 110.\tab}\tab \cf0 staviVece\cf5 :=\cf0 gdjeJePivot\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 111.\tab}\tab \cf0 pomocni\cf5 (\cf0 gdjeJePivot\cf5 ):=\cf0 original\cf5 (\cf0 donjaGranica\cf5 )\cf4 \par
+{\pntext\f0 112.\tab}\tab \cf0 i\cf5 :=\cf0 donjaGranica\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 113.\tab}\tab \cf11 While\cf4  \cf0 i\cf5 <\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 114.\tab}\tab \tab \cf11 If\cf4  \cf0 original\cf5 (\cf0 i\cf5 )<\cf0 original\cf5 (\cf0 donjaGranica\cf5 )\cf4 \par
+{\pntext\f0 115.\tab}\tab \tab \tab \cf0 pomocni\cf5 (\cf0 staviManje\cf5 ):=\cf0 original\cf5 (\cf0 i\cf5 )\cf4 \par
+{\pntext\f0 116.\tab}\tab \tab \tab \cf0 staviManje\cf5 :=\cf0 staviManje\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 117.\tab}\tab \tab \cf11 Else\cf4 \par
+{\pntext\f0 118.\tab}\tab \tab \tab \cf0 pomocni\cf5 (\cf0 staviVece\cf5 ):=\cf0 original\cf5 (\cf0 i\cf5 )\cf4 \par
+{\pntext\f0 119.\tab}\tab \tab \tab \cf0 staviVece\cf5 :=\cf0 staviVece\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 120.\tab}\tab \tab \cf11 EndIf\cf4 \par
+{\pntext\f0 121.\tab}\tab \tab \cf0 pomocniBrojac\cf5 :=\cf0 pomocniBrojac\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 122.\tab}\tab \tab \cf11 If\cf4  \cf0 pomocniBrojac\cf5 =\cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf4 \par
+{\pntext\f0 123.\tab}\tab \tab \tab \cf0 brojac\cf5 :=\cf0 brojac\cf5 +\cf0 pomocniBrojac\cf4 \par
+{\pntext\f0 124.\tab}\tab \tab \tab \cf0 pomocniBrojac\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 125.\tab}\tab \tab \cf11 EndIf\cf4 \par
+{\pntext\f0 126.\tab}\tab \tab \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 127.\tab}\tab \cf11 EndWhile\cf4 \par
+{\pntext\f0 128.\tab}\tab \cf0 i\cf5 :=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 129.\tab}\tab \cf11 While\cf4  \cf0 i\cf5 <\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 130.\tab}\tab \tab \cf0 original\cf5 (\cf0 i\cf5 ):=\cf0 pomocni\cf5 (\cf0 i\cf5 )\cf4 \par
+{\pntext\f0 131.\tab}\tab \tab \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 132.\tab}\tab \cf11 EndWhile\cf4 \par
+{\pntext\f0 133.\tab}\tab \cf11 If\cf4  \cf0 gdjeJePivot\cf5 <\cf0 gornjaGranica\cf5 -\cf6 1\cf4 \par
+{\pntext\f0 134.\tab}\tab \tab \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 135.\tab}\tab \tab \cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 gdjeJePivot\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 136.\tab}\tab \tab \cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 137.\tab}\tab \cf11 EndIf\cf4 \par
+{\pntext\f0 138.\tab}\tab \cf11 If\cf4  \cf0 gdjeJePivot\cf5 >\cf0 donjaGranica\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 139.\tab}\tab \tab \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 140.\tab}\tab \tab \cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 141.\tab}\tab \tab \cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 gdjeJePivot\cf4 \par
+{\pntext\f0 142.\tab}\tab \cf11 EndIf\cf4 \par
+{\pntext\f0 143.\tab}\tab \cf0 testZaPreljev\cf5 :=\cf0 brojac\cf5 +\cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf4  \cf1 ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim.\par
+{\pntext\f0 144.\tab}\tab \cf11 If\cf4  \cf6 not\cf5 (\cf0 testZaPreljev\cf5 >\cf0 brojac\cf5 )\cf4 \par
+{\pntext\f0 145.\tab}\tab \tab \cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf5 :=\cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf5 *\cf6 2\cf4 \par
+{\pntext\f0 146.\tab}\tab \tab \cf3 AsmStart\cf4 \par
+{\pntext\f0 147.\tab}\tab \tab \tab \cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 148.\tab}\tab \tab \tab \tab \cf7 jmp\cf4  \cf0 izvjesceOpreljevu$\cf4 \par
+{\pntext\f0 149.\tab}\tab \tab \tab \tab \tab \cf0 izvjesceOpreljevu\cf4  \cf10 db\cf4  \cf3 "Upozorenje: Brojac mozda nece sadrzavati tocan rezultat, dogodio se preljev na %d. iteraciji."\cf4 \par
+{\pntext\f0 150.\tab}\tab \tab \tab \tab \tab \cf10 db\cf4  \cf3 " Najveca ocekivana pogreska za ovaj preljev je %d krivo prebrojanih izvrsavanja unutarnje petlje."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 151.\tab}\tab \tab \tab \tab \cf0 izvjesceOpreljevu$:\cf4 \par
+{\pntext\f0 152.\tab}\tab \tab \tab \tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 n\cf5 ]\cf4 \par
+{\pntext\f0 153.\tab}\tab \tab \tab \tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf5 ]\cf4 \par
+{\pntext\f0 154.\tab}\tab \tab \tab \tab \cf7 fsubp\cf4 \par
+{\pntext\f0 155.\tab}\tab \tab \tab \tab \cf7 fabs\cf4 \par
+{\pntext\f0 156.\tab}\tab \tab \tab \tab \cf7 fistp\cf4  \cf9 dword\cf4  \cf5 [\cf8 esp\cf5 +\cf6 4\cf5 ]\cf4 \par
+{\pntext\f0 157.\tab}\tab \tab \tab \tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 brojac\cf5 ]\cf4 \par
+{\pntext\f0 158.\tab}\tab \tab \tab \tab \cf7 fistp\cf4  \cf9 dword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 159.\tab}\tab \tab \tab \tab \cf7 invoke\cf4  \cf0 printf\cf5 ,\cf0 izvjesceOpreljevu\cf4 \par
+{\pntext\f0 160.\tab}\tab \tab \tab \cf7 end\cf4  \cf7 if\tab \tab \cf4 \par
+{\pntext\f0 161.\tab}\tab \tab \cf3 AsmEnd\cf4 \par
+{\pntext\f0 162.\tab}\tab \cf11 EndIf\cf4 \par
+{\pntext\f0 163.\tab}\cf11 EndWhile\cf4 \par
+{\pntext\f0 164.\tab}\cf3 AsmStart\cf4 \par
+{\pntext\f0 165.\tab}\tab \cf7 call\cf4  \cf5 [\cf0 clock\cf5 ]\cf4 \par
+{\pntext\f0 166.\tab}\tab \cf7 sub\cf4  \cf8 eax\cf5 ,[\cf0 procesorskoVrijeme\cf5 ]\cf4 \par
+{\pntext\f0 167.\tab}\tab \cf7 mov\cf4  \cf5 [\cf0 procesorskoVrijeme\cf5 ],\cf8 eax\cf4 \par
+{\pntext\f0 168.\tab}\cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 169.\tab}\tab \cf7 jmp\cf4  \cf0 sortiraniNizJe$\cf4 \par
+{\pntext\f0 170.\tab}\tab \tab \cf0 sortiraniNizJe\cf4  \cf10 db\cf4  \cf3 "Sortirani niz je:"\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 171.\tab}\tab \cf0 sortiraniNizJe$:\cf4 \par
+{\pntext\f0 172.\tab}\tab \cf0 staviStringNaSistemskiStog\cf4  \cf0 sortiraniNizJe\cf4 \par
+{\pntext\f0 173.\tab}\tab \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 174.\tab}\cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 175.\tab}\cf3 AsmEnd\cf4 \par
+{\pntext\f0 176.\tab}\cf0 i\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 177.\tab}\cf11 While\cf4  \cf0 i\cf5 <\cf0 n\cf4 \par
+{\pntext\f0 178.\tab}\tab \cf0 pokazivac\cf5 :=\cf6 4\cf5 *\cf0 i\cf4 \par
+{\pntext\f0 179.\tab}\tab \cf3 AsmStart\cf4 \par
+{\pntext\f0 180.\tab}\tab \tab \cf7 lea\cf4  \cf8 ebx\cf5 ,[\cf0 original\cf5 ]\cf4 \par
+{\pntext\f0 181.\tab}\tab \tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 182.\tab}\tab \tab \cf7 fistp\cf4  \cf9 dword\cf4  \cf5 [\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 183.\tab}\tab \tab \cf7 add\cf4  \cf8 ebx\cf5 ,[\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 184.\tab}\tab \tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf8 ebx\cf5 ]\cf4 \par
+{\pntext\f0 185.\tab}\tab \tab \cf7 fstp\cf4  \cf9 qword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 186.\tab}\tab \tab \cf0 staviStringNaSistemskiStog\cf4  \cf0 znakZaFloatPlusNoviRedPlusNulZnak\cf4 \par
+{\pntext\f0 187.\tab}\tab \tab \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 188.\tab}\tab \cf3 AsmEnd\cf4 \par
+{\pntext\f0 189.\tab}\tab \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 190.\tab}\cf11 EndWhile\cf4 \par
+{\pntext\f0 191.\tab}\cf3 AsmStart\cf4 \par
+{\pntext\f0 192.\tab}\cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 193.\tab}\tab \cf0 staviIntNaSistemskiStog\cf4  \cf0 brojac\cf4 \par
+{\pntext\f0 194.\tab}\tab \cf0 staviStringNaSistemskiStog\cf4  \cf0 unutrasnjaPetljaString\cf4 \par
+{\pntext\f0 195.\tab}\tab \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 196.\tab}\cf3 AsmEnd\cf4 \par
+{\pntext\f0 197.\tab}\tab \cf0 brojac\cf5 :=\cf0 n\cf5 *\cf6 ln\cf5 (\cf0 n\cf5 )/\cf6 ln\cf5 (\cf6 2\cf5 )\cf4 \par
+{\pntext\f0 198.\tab}\cf3 AsmStart\cf4 \par
+{\pntext\f0 199.\tab}\tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 brojac\cf5 ]\cf4 \par
+{\pntext\f0 200.\tab}\tab \cf7 fstp\cf4  \cf9 qword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 201.\tab}\tab \cf0 staviStringNaSistemskiStog\cf4  \cf0 slozenostString\cf4 \par
+{\pntext\f0 202.\tab}\tab \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 203.\tab}\tab \cf0 push\cf4  \cf9 dword\cf4  \cf5 [\cf0 procesorskoVrijeme\cf5 ]\cf4 \par
+{\pntext\f0 204.\tab}\tab \cf7 invoke\cf4  \cf0 printf\cf5 ,\cf0 sortiranjeJeTrajalo\cf4 \par
+{\pntext\f0 205.\tab}\tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 razvrstanost\cf5 ]\cf4 \par
+{\pntext\f0 206.\tab}\tab \cf7 fstp\cf4  \cf9 qword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 207.\tab}\tab \cf7 invoke\cf4  \cf0 printf\cf5 ,\cf0 stringORazvrstanosti\cf4 \par
+{\pntext\f0 208.\tab}\tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 ocekivaniBrojUsporedbi\cf5 ]\cf4 \par
+{\pntext\f0 209.\tab}\tab \cf7 fstp\cf4  \cf9 qword\cf4  \cf5 [\cf8 esp\cf5 +\cf6 8\cf5 ]\cf4  \cf1 ;Zato sto "printf" iz MSVCRT-a za "%f" ocekuje 8-bajtni "double", i izgleda da ju nije moguce namjestiti da ocekuje 4-bajtni "float".\par
+{\pntext\f0 210.\tab}\tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 eNaKoju\cf5 ]\cf4 \par
+{\pntext\f0 211.\tab}\tab \cf7 fstp\cf4  \cf9 qword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 212.\tab}\tab \cf7 invoke\cf4  \cf0 printf\cf5 ,\cf0 izvjestajOFormuli\cf4 \par
+{\pntext\f0 213.\tab}\tab \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 polinomPodApsolutnom\cf5 ]\cf4 \par
+{\pntext\f0 214.\tab}\tab \cf7 fstp\cf4  \cf9 qword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 215.\tab}\tab \cf7 invoke\cf4  \cf0 printf\cf5 ,\cf0 izvjestajOPolinomu\cf4 \par
+{\pntext\f0 216.\tab}\tab \cf7 invoke\cf4  \cf0 system\cf5 ,\cf0 _pause\cf4  \cf1 ;"Press any key to continue..."\par
+{\pntext\f0 217.\tab}\cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 218.\tab}\cf7 invoke\cf4  \cf0 exit\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 219.\tab}\par
+{\pntext\f0 220.\tab}\cf1 ;Deklaracije konstanti.\par
+{\pntext\f0 221.\tab}\cf0 _pause\cf4  \cf10 db\cf4  \cf3 "PAUSE"\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 222.\tab}\cf0 znakZaCijeliBrojBroj\cf4  \cf10 db\cf4  \cf3 "%d"\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 223.\tab}\cf0 znakZaNoviRedPlusNulZnak\cf4  \cf10 db\cf4  \cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 224.\tab}\cf0 znakZaFloatPlusNoviRedPlusNulZnak\cf4  \cf10 db\cf4  \cf3 "%f"\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 225.\tab}\cf0 unutrasnjaPetljaString\cf4  \cf10 db\cf4  \cf3 "Unutrasnja petlja izvrsila se %d puta."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 226.\tab}\cf0 slozenostString\cf4  \cf10 db\cf4  \cf3 "Ocekivani broj ponavljanja te petlje, po formuli n*log2(n), bio bi %.1f."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 227.\tab}\cf0 sortiranjeJeTrajalo\cf4  \cf10 db\cf4  \cf3 "Sortiranje je trajalo %d milisekundi."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 228.\tab}\cf0 stringORazvrstanosti\cf4  \cf10 db\cf4  \cf3 "Razvrstanost pocetnog niza (s) iznosila je: %f"\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 229.\tab}\cf0 izvjestajOFormuli\cf4  \cf10 db\cf4  \cf3 "Ocekivani broj usporedbi, po formuli: "\cf5 ,\cf6 10\cf4 \par
+{\pntext\f0 230.\tab}\cf10 db\cf4  \cf3 "exp((ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(2.38854*pow(s,7)-0.284258*pow(s,6)-1.87104*pow(s,5)+0.372637*pow(s,4)+0.167242*pow(s,3)-0.0884977*pow(s,2)+0.315119*s))"\cf5 ,\cf6 10\cf4 \par
+{\pntext\f0 231.\tab}\cf10 db\cf4  \cf3 "bio bi: exp(%f)=%f"\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 232.\tab}\cf0 izvjestajOPolinomu:\cf4 \par
+{\pntext\f0 233.\tab}\cf7 if\cf4  \cf0 debug\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 234.\tab}\tab \cf10 db\cf4  \cf3 "Polinom pod apsolutnom vrijednosti iznosi: %f"\cf5 ,\cf6 10\cf4 \par
+{\pntext\f0 235.\tab}\cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 236.\tab}\tab \cf10 db\cf4  \cf6 0\cf4 \par
+{\pntext\f0 237.\tab}\par
+{\pntext\f0 238.\tab}\cf7 section\cf4  \cf3 '.rdata'\cf4  \cf0 readable\cf4  \cf0 writable\cf4  \cf1 ; Deklaracije varijabli.\par
+{\pntext\f0 239.\tab}\cf0 original\cf4  \cf10 dd\cf4  \cf6 32768\cf5 *\cf6 4\cf4  \cf0 DUP\cf5 (\cf0 ?\cf5 )\cf4 \par
+{\pntext\f0 240.\tab}\cf0 n\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 241.\tab}\cf3 result\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 242.\tab}\cf0 brojac\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 243.\tab}\cf0 pokazivac\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 244.\tab}\cf0 i\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 245.\tab}\cf0 stogSDonjimGranicama\cf4  \cf10 dd\cf4  \cf6 32768\cf5 *\cf6 4\cf4  \cf0 DUP\cf5 (\cf0 ?\cf5 )\cf4 \par
+{\pntext\f0 246.\tab}\cf0 stogSGornjimGranicama\cf4  \cf10 dd\cf4  \cf6 32768\cf5 *\cf6 4\cf4  \cf0 DUP\cf5 (\cf0 ?\cf5 )\cf4 \par
+{\pntext\f0 247.\tab}\cf0 pomocni\cf4  \cf10 dd\cf4  \cf6 32768\cf5 *\cf6 4\cf4  \cf0 DUP\cf5 (\cf0 ?\cf5 )\cf4 \par
+{\pntext\f0 248.\tab}\cf0 vrhStoga\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 249.\tab}\cf0 donjaGranica\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 250.\tab}\cf0 gornjaGranica\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 251.\tab}\cf0 staviVece\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 252.\tab}\cf0 staviManje\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 253.\tab}\cf0 gdjeJePivot\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 254.\tab}\cf0 procesorskoVrijeme\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 255.\tab}\cf0 razvrstanost\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 256.\tab}\cf0 razvrstanostNa\cf4  \cf10 dd\cf4  \cf6 8\cf4  \cf0 DUP\cf5 (\cf0 ?\cf5 )\cf4 \par
+{\pntext\f0 257.\tab}\cf0 polinomPodApsolutnom\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 258.\tab}\cf0 eNaKoju\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 259.\tab}\cf0 ocekivaniBrojUsporedbi\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 260.\tab}\cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 261.\tab}\cf0 pomocniBrojac\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 262.\tab}\cf0 testZaPreljev\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 263.\tab}\par
+{\pntext\f0 264.\tab}\cf7 section\cf4  \cf3 '.idata'\cf4  \cf0 data\cf4  \cf0 readable\cf4  \cf7 import\cf4  \cf1 ;Uvoz funkcija iz DLL-ova.\par
+{\pntext\f0 265.\tab}\cf7 library\cf4  \cf0 msvcrt\cf5 ,\cf3 'msvcrt.dll'\cf4  \cf1 ; "msvcrt.dll" je stara verzija Microsoft Visual C Runtime Libraryja dostupna u C:\\Windows\\System32\\msvcrt.dll na Windows 95 i novijim.\par
+{\pntext\f0 266.\tab}\cf7 import\cf4  \cf0 msvcrt\cf5 ,\cf0 printf\cf5 ,\cf3 'printf'\cf5 ,\cf0 system\cf5 ,\cf3 'system'\cf5 ,\cf0 exit\cf5 ,\cf3 'exit'\cf5 ,\cf0 scanf\cf5 ,\cf3 'scanf'\cf5 ,\cf0 clock\cf5 ,\cf3 'clock'\cf4 \par
+{\pntext\f0 267.\tab}\cf3 AsmEnd\cf4 \par
+} 
