@@ -140,20 +140,23 @@ While vrhStoga>0
 		stogSDonjimGranicama(vrhStoga):=donjaGranica
 		stogSGornjimGranicama(vrhStoga):=gdjeJePivot
 	EndIf
-	testZaPrelijev:=brojac+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim.
-	If not(testZaPrelijev>brojac)
+	testZaPreljev:=brojac+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim.
+	If not(testZaPreljev>brojac)
 		najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac*2
 		AsmStart
 			if ispisPoruka=1
-				jmp izvjesceOPrelijevu$
-					izvjesceOPrelijevu db "Upozorenje: Brojac mozda nece sadrzavati tocan rezultat, dogodio se prelijev na %d. iteraciji."
-					db " Najveca ocekivana pogreska za ovaj prelijev je %d krivo prebrojanih izvrsavanja unutarnje petlje.",10,0
-				izvjesceOPrelijevu$:
+				jmp izvjesceOpreljevu$
+					izvjesceOpreljevu db "Upozorenje: Brojac mozda nece sadrzavati tocan rezultat, dogodio se preljev na %d. iteraciji."
+					db " Najveca ocekivana pogreska za ovaj preljev je %d krivo prebrojanih izvrsavanja unutarnje petlje.",10,0
+				izvjesceOpreljevu$:
+				fld dword [n]
 				fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
+				fsubp
+				fabs
 				fistp dword [esp+4]
 				fld dword [brojac]
 				fistp dword [esp]
-				invoke printf,izvjesceOPrelijevu
+				invoke printf,izvjesceOpreljevu
 			end if		
 		AsmEnd
 	EndIf
@@ -203,7 +206,7 @@ AsmStart
 	fstp qword [esp]
 	invoke printf,stringORazvrstanosti
 	fld dword [ocekivaniBrojUsporedbi]
-	fstp qword [esp+8] ;Zato sto "printf" iz MSVCRT-a za "%f" ocekuje 8-bajtni "double", i izgleda da ju nije moguce namjestiti da ocekuje 4-bajtni float.
+	fstp qword [esp+8] ;Zato sto "printf" iz MSVCRT-a za "%f" ocekuje 8-bajtni "double", i izgleda da ju nije moguce namjestiti da ocekuje 4-bajtni "float".
 	fld dword [eNaKoju]
 	fstp qword [esp]
 	invoke printf,izvjestajOFormuli
@@ -256,7 +259,7 @@ eNaKoju dd ?
 ocekivaniBrojUsporedbi dd ?
 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac dd ?
 pomocniBrojac dd ?
-testZaPrelijev dd ?
+testZaPreljev dd ?
 
 section '.idata' data readable import ;Uvoz funkcija iz DLL-ova.
 library msvcrt,'msvcrt.dll' ; "msvcrt.dll" je stara verzija Microsoft Visual C Runtime Libraryja dostupna u C:\Windows\System32\msvcrt.dll na Windows 95 i novijim.

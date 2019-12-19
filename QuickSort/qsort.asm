@@ -71,21 +71,21 @@ push dword [result]
 pop dword [vrhStoga]
 ;While i<n
 finit
-l687939:
+l517887:
 fld dword [i]
 fld dword [n]
 fcomip st1
 fstp dword [result]
-jna l667629
+jna l683508
 fld1
-jmp l304117
-l667629:
+jmp l402353
+l683508:
 fldz
-l304117:
+l402353:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l452085
+je l593143
 ;pokazivac:=4*i
 finit
 mov dword [result],0x40800000 ;4
@@ -115,8 +115,8 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l687939
-l452085:
+jmp l517887
+l593143:
 ;Inline assembly begins.
 call [clock]
 mov [procesorskoVrijeme],eax
@@ -137,7 +137,7 @@ push dword [result]
 pop dword [i]
 ;While i<n-1
 finit
-l791632:
+l71435:
 fld dword [n]
 mov dword [result],0x3F800000 ;1
 fld dword [result]
@@ -146,16 +146,16 @@ fld dword [i]
 fxch
 fcomip st1
 fstp dword [result]
-jna l18713
+jna l45806
 fld1
-jmp l402523
-l18713:
+jmp l158621
+l45806:
 fldz
-l402523:
+l158621:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l640772
+je l93512
 ;razvrstanost:=razvrstanost+(original(i)<original(i+1))
 finit
 fld dword [i]
@@ -172,12 +172,12 @@ fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply
 fxch
 fcomip st1
 fstp dword [result]
-jna l270473
+jna l539867
 fld1
-jmp l109220
-l270473:
+jmp l260977
+l539867:
 fldz
-l109220:
+l260977:
 fld dword [razvrstanost]
 fxch
 faddp st1,st0
@@ -195,8 +195,8 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l791632
-l640772:
+jmp l71435
+l93512:
 ;razvrstanost:=razvrstanost/((n-1)/2)-1
 finit
 fld dword [n]
@@ -224,29 +224,29 @@ push dword [result]
 pop dword [i]
 ;While i<7 | i=7 ;Kada nisam stavio operator "<=" u svoj jezik.
 finit
-l458579:
+l954992:
 fld dword [i]
 mov dword [result],0x40E00000 ;7
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jna l392563
+jna l23333
 fld1
-jmp l912256
-l392563:
+jmp l12935
+l23333:
 fldz
-l912256:
+l12935:
 fld dword [i]
 mov dword [result],0x40E00000 ;7
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jne l975966
+jne l498853
 fld1
-jmp l957881
-l975966:
+jmp l599935
+l498853:
 fldz
-l957881:
+l599935:
 fistp dword [result]
 mov eax,[result]
 fistp dword [result]
@@ -255,7 +255,7 @@ fild dword [result]
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l874265
+je l135135
 ;razvrstanostNa(i):=pow(abs(razvrstanost),i) ;Zato sto je "pow(x,y)" u tom mom jeziku samo sintakticki secer za "exp(ln(x)*y)", i to vraca "NaN" za x<=0. Nema ocitog nacina da se "pow" prevede na Assembler.
 finit
 fld dword [razvrstanost]
@@ -292,16 +292,16 @@ mov dword [result],0x0 ;0
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jne l52780
+jne l840258
 fld1
-jmp l706547
-l52780:
+jmp l672905
+l840258:
 fldz
-l706547:
+l672905:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l490170
+jz l95403
 ;razvrstanostNa(i):=0
 finit
 mov dword [result],0x0 ;0
@@ -314,8 +314,8 @@ mov ebx,[result]
 pop dword [razvrstanostNa+4*ebx]
 ;EndIf
 finit
-l490170:
-l771418:
+l95403:
+l356199:
 ;If mod(i,2)=1 & razvrstanost<0
 finit
 fld dword [i]
@@ -329,23 +329,23 @@ mov dword [result],0x3F800000 ;1
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jne l577658
+jne l47183
 fld1
-jmp l40817
-l577658:
+jmp l331418
+l47183:
 fldz
-l40817:
+l331418:
 fld dword [razvrstanost]
 mov dword [result],0x0 ;0
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jna l611259
+jna l374663
 fld1
-jmp l791971
-l611259:
+jmp l18734
+l374663:
 fldz
-l791971:
+l18734:
 fistp dword [result]
 mov eax,[result]
 fistp dword [result]
@@ -354,7 +354,7 @@ fild dword [result]
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l581435
+jz l992040
 ;razvrstanostNa(i):=-razvrstanostNa(i)
 finit
 fld dword [i]
@@ -373,8 +373,8 @@ mov ebx,[result]
 pop dword [razvrstanostNa+4*ebx]
 ;EndIf
 finit
-l581435:
-l493260:
+l992040:
+l99921:
 ;i:=i+1
 finit
 fld dword [i]
@@ -386,8 +386,8 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l458579
-l874265:
+jmp l954992
+l135135:
 ;;f(n,s)=exp((ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(2.38854*pow(s,7)-0.284258*pow(s,6)-1.87104*pow(s,5)+0.372637*pow(s,4)+0.167242*pow(s,3)-0.0884977*pow(s,2)+0.315119*s))
 ;polinomPodApsolutnom:=2.38854*razvrstanostNa(7)-0.284258*razvrstanostNa(6)-1.87104*razvrstanostNa(5)+0.372637*razvrstanostNa(4)+0.167242*razvrstanostNa(3)-0.0884977*razvrstanostNa(2)+0.315119*razvrstanost
 finit
@@ -573,22 +573,22 @@ mov ebx,[result]
 pop dword [stogSGornjimGranicama+4*ebx]
 ;While vrhStoga>0
 finit
-l727138:
+l199648:
 fld dword [vrhStoga]
 mov dword [result],0x0 ;0
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jnb l108937
+jnb l308257
 fld1
-jmp l855768
-l108937:
+jmp l357881
+l308257:
 fldz
-l855768:
+l357881:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l608382
+je l738426
 ;gornjaGranica:=stogSGornjimGranicama(vrhStoga)
 finit
 fld dword [vrhStoga]
@@ -633,21 +633,21 @@ push dword [result]
 pop dword [i]
 ;While i<gornjaGranica
 finit
-l988511:
+l452218:
 fld dword [i]
 fld dword [gornjaGranica]
 fcomip st1
 fstp dword [result]
-jna l380686
+jna l318143
 fld1
-jmp l736271
-l380686:
+jmp l343616
+l318143:
 fldz
-l736271:
+l343616:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l24033
+je l990527
 ;If original(i)<original(donjaGranica)
 finit
 fld dword [i]
@@ -660,16 +660,16 @@ mov ebx,[result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
 fcomip st1
 fstp dword [result]
-jna l256178
+jna l990528
 fld1
-jmp l512633
-l256178:
+jmp l891677
+l990528:
 fldz
-l512633:
+l891677:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l375512
+jz l901036
 ;gdjeJePivot:=gdjeJePivot+1
 finit
 fld dword [gdjeJePivot]
@@ -681,8 +681,8 @@ push dword [result]
 pop dword [gdjeJePivot]
 ;EndIf
 finit
-l375512:
-l233738:
+l901036:
+l44074:
 ;i:=i++
 finit
 fld dword [i]
@@ -694,8 +694,8 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l988511
-l24033:
+jmp l452218
+l990527:
 ;staviManje:=donjaGranica
 finit
 fld dword [donjaGranica]
@@ -734,21 +734,21 @@ push dword [result]
 pop dword [i]
 ;While i<gornjaGranica
 finit
-l770283:
+l738683:
 fld dword [i]
 fld dword [gornjaGranica]
 fcomip st1
 fstp dword [result]
-jna l438483
+jna l747824
 fld1
-jmp l680902
-l438483:
+jmp l924997
+l747824:
 fldz
-l680902:
+l924997:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l564254
+je l449856
 ;If original(i)<original(donjaGranica)
 finit
 fld dword [i]
@@ -761,16 +761,16 @@ mov ebx,[result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
 fcomip st1
 fstp dword [result]
-jna l928288
+jna l32102
 fld1
-jmp l899462
-l928288:
+jmp l492534
+l32102:
 fldz
-l899462:
+l492534:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l684154
+jz l640471
 ;pomocni(staviManje):=original(i)
 finit
 fld dword [i]
@@ -794,8 +794,8 @@ push dword [result]
 pop dword [staviManje]
 ;Else
 finit
-jmp l798262
-l684154:
+jmp l168993
+l640471:
 ;pomocni(staviVece):=original(i)
 finit
 fld dword [i]
@@ -819,7 +819,7 @@ push dword [result]
 pop dword [staviVece]
 ;EndIf
 finit
-l798262:
+l168993:
 ;pomocniBrojac:=pomocniBrojac+1
 finit
 fld dword [pomocniBrojac]
@@ -835,16 +835,16 @@ fld dword [pomocniBrojac]
 fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
 fcomip st1
 fstp dword [result]
-jne l453602
+jne l918265
 fld1
-jmp l698516
-l453602:
+jmp l822785
+l918265:
 fldz
-l698516:
+l822785:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l934302
+jz l827208
 ;brojac:=brojac+pomocniBrojac
 finit
 fld dword [brojac]
@@ -862,8 +862,8 @@ push dword [result]
 pop dword [pomocniBrojac]
 ;EndIf
 finit
-l934302:
-l39364:
+l827208:
+l416520:
 ;i:=i+1
 finit
 fld dword [i]
@@ -875,8 +875,8 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l770283
-l564254:
+jmp l738683
+l449856:
 ;i:=donjaGranica
 finit
 fld dword [donjaGranica]
@@ -885,21 +885,21 @@ push dword [result]
 pop dword [i]
 ;While i<gornjaGranica
 finit
-l849918:
+l129659:
 fld dword [i]
 fld dword [gornjaGranica]
 fcomip st1
 fstp dword [result]
-jna l214805
+jna l536868
 fld1
-jmp l685841
-l214805:
+jmp l477537
+l536868:
 fldz
-l685841:
+l477537:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l746966
+je l380996
 ;original(i):=pomocni(i)
 finit
 fld dword [i]
@@ -923,8 +923,8 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l849918
-l746966:
+jmp l129659
+l380996:
 ;If gdjeJePivot<gornjaGranica-1
 finit
 fld dword [gornjaGranica]
@@ -935,16 +935,16 @@ fld dword [gdjeJePivot]
 fxch
 fcomip st1
 fstp dword [result]
-jna l808012
+jna l519252
 fld1
-jmp l174813
-l808012:
+jmp l323191
+l519252:
 fldz
-l174813:
+l323191:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l884741
+jz l934730
 ;vrhStoga:=vrhStoga+1
 finit
 fld dword [vrhStoga]
@@ -977,8 +977,8 @@ mov ebx,[result]
 pop dword [stogSGornjimGranicama+4*ebx]
 ;EndIf
 finit
-l884741:
-l584508:
+l934730:
+l995353:
 ;If gdjeJePivot>donjaGranica+1
 finit
 fld dword [donjaGranica]
@@ -989,16 +989,16 @@ fld dword [gdjeJePivot]
 fxch
 fcomip st1
 fstp dword [result]
-jnb l966926
+jnb l308059
 fld1
-jmp l822230
-l966926:
+jmp l389217
+l308059:
 fldz
-l822230:
+l389217:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l728891
+jz l747077
 ;vrhStoga:=vrhStoga+1
 finit
 fld dword [vrhStoga]
@@ -1028,35 +1028,35 @@ mov ebx,[result]
 pop dword [stogSGornjimGranicama+4*ebx]
 ;EndIf
 finit
-l728891:
-l139126:
-;testZaPrelijev:=brojac+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim.
+l747077:
+l652118:
+;testZaPreljev:=brojac+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim.
 finit
 fld dword [brojac]
 fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
 faddp st1,st0
 fstp dword [result]
 push dword [result]
-pop dword [testZaPrelijev]
-;If not(testZaPrelijev>brojac)
+pop dword [testZaPreljev]
+;If not(testZaPreljev>brojac)
 finit
-fld dword [testZaPrelijev]
+fld dword [testZaPreljev]
 fld dword [brojac]
 fcomip st1
 fstp dword [result]
-jnb l767107
+jnb l117955
 fld1
-jmp l158064
-l767107:
+jmp l888178
+l117955:
 fldz
-l158064:
+l888178:
 fld1
 fxch
 fsubp st1,st0
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-jz l880133
+jz l471635
 ;najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac*2
 finit
 fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
@@ -1068,25 +1068,28 @@ push dword [result]
 pop dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
 ;Inline assembly begins.
 if ispisPoruka=1
-jmp izvjesceOPrelijevu$
-izvjesceOPrelijevu db "Upozorenje: Brojac mozda nece sadrzavati tocan rezultat, dogodio se prelijev na %d. iteraciji."
-db " Najveca ocekivana pogreska za ovaj prelijev je %d krivo prebrojanih izvrsavanja unutarnje petlje.",10,0
-izvjesceOPrelijevu$:
+jmp izvjesceOpreljevu$
+izvjesceOpreljevu db "Upozorenje: Brojac mozda nece sadrzavati tocan rezultat, dogodio se preljev na %d. iteraciji."
+db " Najveca ocekivana pogreska za ovaj preljev je %d krivo prebrojanih izvrsavanja unutarnje petlje.",10,0
+izvjesceOpreljevu$:
+fld dword [n]
 fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
+fsubp
+fabs
 fistp dword [esp+4]
 fld dword [brojac]
 fistp dword [esp]
-invoke printf,izvjesceOPrelijevu
+invoke printf,izvjesceOpreljevu
 end if		
 ;Inline assembly ended.
 ;EndIf
 finit
-l880133:
-l672293:
+l471635:
+l286780:
 ;EndWhile
 finit
-jmp l727138
-l608382:
+jmp l199648
+l738426:
 ;Inline assembly begins.
 call [clock]
 sub eax,[procesorskoVrijeme]
@@ -1108,21 +1111,21 @@ push dword [result]
 pop dword [i]
 ;While i<n
 finit
-l85050:
+l783834:
 fld dword [i]
 fld dword [n]
 fcomip st1
 fstp dword [result]
-jna l929682
+jna l856583
 fld1
-jmp l10908
-l929682:
+jmp l691728
+l856583:
 fldz
-l10908:
+l691728:
 fistp dword [result]
 mov eax,[result]
 test eax,eax
-je l322286
+je l498470
 ;pokazivac:=4*i
 finit
 mov dword [result],0x40800000 ;4
@@ -1153,8 +1156,8 @@ push dword [result]
 pop dword [i]
 ;EndWhile
 finit
-jmp l85050
-l322286:
+jmp l783834
+l498470:
 ;Inline assembly begins.
 if ispisPoruka=1
 staviIntNaSistemskiStog brojac
@@ -1194,7 +1197,7 @@ fld dword [razvrstanost]
 fstp qword [esp]
 invoke printf,stringORazvrstanosti
 fld dword [ocekivaniBrojUsporedbi]
-fstp qword [esp+8] ;Zato sto "printf" iz MSVCRT-a za "%f" ocekuje 8-bajtni "double", i izgleda da ju nije moguce namjestiti da ocekuje 4-bajtni float.
+fstp qword [esp+8] ;Zato sto "printf" iz MSVCRT-a za "%f" ocekuje 8-bajtni "double", i izgleda da ju nije moguce namjestiti da ocekuje 4-bajtni "float".
 fld dword [eNaKoju]
 fstp qword [esp]
 invoke printf,izvjestajOFormuli
@@ -1247,7 +1250,7 @@ eNaKoju dd ?
 ocekivaniBrojUsporedbi dd ?
 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac dd ?
 pomocniBrojac dd ?
-testZaPrelijev dd ?
+testZaPreljev dd ?
 
 section '.idata' data readable import ;Uvoz funkcija iz DLL-ova.
 library msvcrt,'msvcrt.dll' ; "msvcrt.dll" je stara verzija Microsoft Visual C Runtime Libraryja dostupna u C:\Windows\System32\msvcrt.dll na Windows 95 i novijim.
