@@ -1,0 +1,1 @@
+So, this is a seminar I've made for my Algorithms and Data Structures class about this project. I've made it in LibreOffice, and exported it into many different file formats, hopefully your computer can usefully open at least one of those files.
