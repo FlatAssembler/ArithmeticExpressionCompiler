@@ -3,11 +3,15 @@ int scanf(const char*,...);
 int system(const char*);
 long long clock();
 double log(double);
+double pow(double,double);
+double fabs(double);
+double exp(double);
 
 int original[32768],pomocni[32768];
 int stog_s_donjim_granicama[32768],stog_s_gornjim_granicama[32768];
 int vrh_stoga=0;
 int brojac=0;
+float razvrstanost,polinomPodApsolutnom,eNaKoju,ocekivaniBrojUsporedbi;
 
 int main() {
 	int n;
@@ -21,6 +25,19 @@ int main() {
 	for (int i=0; i<n; i++)
 		scanf("%d",&original[i]);
 	long long procesorskoVrijeme=clock();
+	int i=0;
+	razvrstanost=0;
+	while (i<n-1) {
+		razvrstanost+=original[i]<original[i+1];
+		i++;
+	}
+	razvrstanost=razvrstanost/((float)(n-1)/2)-1;
+	polinomPodApsolutnom=2.38854*pow(razvrstanost,7)-0.284258*pow(razvrstanost,6)
+						-1.87104*pow(razvrstanost,5)+0.372637*pow(razvrstanost,4)
+						+0.167242*pow(razvrstanost,3)-0.0884977*pow(razvrstanost,2)
+						+0.315119*razvrstanost;
+	eNaKoju=(log(n)+log(log(n)))*1.05+(log(n)-log(log(n)))*0.83*fabs(polinomPodApsolutnom);
+	ocekivaniBrojUsporedbi=exp(eNaKoju);
 	vrh_stoga++;
 	stog_s_donjim_granicama[vrh_stoga]=0;
 	stog_s_gornjim_granicama[vrh_stoga]=n;
@@ -89,6 +106,10 @@ int main() {
 	printf("Unutrasnja petlja izvrsila se %d puta.\n",brojac);
 	printf("Ocekivani broj ponavljanja te petlje, po formuli n*log2(n), bio bi %.1f.\n",n*log(n)/log(2));
 	printf("Sortiranje je trajalo %d milisekundi.\n",(int)procesorskoVrijeme);
+	printf("Razvrstanost pocetnog niza (s) iznosila je: %f\n",razvrstanost);
+	printf("Ocekivani broj usporedbi, po formuli: \n"
+			"exp((ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(2.38854*pow(s,7)-0.284258*pow(s,6)-1.87104*pow(s,5)+0.372637*pow(s,4)+0.167242*pow(s,3)-0.0884977*pow(s,2)+0.315119*s))\n"
+			"bio bi: exp(%f)=%f\n",eNaKoju,ocekivaniBrojUsporedbi);
 	printf("Pritisnite CTRL+C za izlaz.\n");
 	while (1);
 #endif
