@@ -2,10 +2,42 @@ int printf(const char*,...);
 int scanf(const char*,...);
 int system(const char*);
 long long clock();
-double log(double);
-double pow(double,double);
-double fabs(double);
-double exp(double);
+//Uklonit cu potrebu da se nekim compilerima pri compiliranju ovog koda naznaci da on koristi matematicku biblioteku.
+double log(double x) {
+	double i=1,delta=1/1000.;
+	if (x<1) delta*=-1;
+	double y=0; //ln(1)=0
+	while ((x<1 && i>x) || (x>1 && i<x)) {
+		y+=delta*1/i; //(d/dx)*ln(x)=1/x
+		i+=delta;
+		if (i+delta==i) delta*=2;
+	}
+	return y;
+}
+double exp(double x) {
+	double i=0,delta=1/1000.;
+	if (x<0) delta*=-1;
+	double y=1; //exp(0)=1
+	while ((x<0 && i>x) || (x>0 && i<x)) {
+		y+=delta*y; //(d/dx)*exp(x)=exp(x)
+		i+=delta;
+		if (i+delta==i) delta*=2;
+	}
+	return y;
+}
+double fabs(double x) {
+	if (x<0) return -x;
+	return x;
+}
+double pow(double x,double y) {
+	if (!x) return 0;
+	double ret=exp(log(fabs(x))*y);
+	int y_as_int=y;
+	if (fabs(y-y_as_int)<1./1000 && y_as_int%2 && x<0)
+		ret*=-1;
+	return ret;
+}
+
 
 int original[32768],pomocni[32768];
 int stog_s_donjim_granicama[32768],stog_s_gornjim_granicama[32768];
