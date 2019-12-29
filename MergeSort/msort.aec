@@ -1,0 +1,196 @@
+;Implementacija MergeSorta u AEC-u.
+AsmStart
+	ispisPoruka=1
+	macro staviIntNaSistemskiStog x
+	{
+		sub esp,4
+		fld dword [x]
+		fistp dword [esp]
+	}
+	macro staviPokazivacNaSistemskiStog x
+	{
+		sub esp,4
+		lea ebx,[x]
+		mov [esp],ebx
+	}
+	macro staviStringNaSistemskiStog x
+	{
+		sub esp,4
+		mov dword [esp],x
+	}
+	format PE console
+	entry start
+
+	include 'win32a.inc'
+
+	section '.text' code executable
+	start:
+if ispisPoruka=1
+	jmp velicinaUnosa$
+		velicinaUnosa db "Unesite koliko cete brojeva unijeti.",10,0
+	velicinaUnosa$:
+	staviStringNaSistemskiStog velicinaUnosa
+	call [printf]
+end if
+	staviPokazivacNaSistemskiStog n
+	jmp znakZaFloat$
+		znakZaFloat db "%f",0
+	znakZaFloat$:
+	staviStringNaSistemskiStog znakZaFloat
+	call [scanf]
+	if ispisPoruka=1
+		jmp pitajZaUnos$
+			pitajZaUnos db "Unesite te brojeve:",10,0
+		pitajZaUnos$:
+		staviStringNaSistemskiStog pitajZaUnos
+		call [printf]
+	end if
+AsmEnd
+i:=0
+brojac:=0
+vrhStoga:=0
+While i<n
+	pokazivac:=4*i
+	AsmStart
+		fld dword [pokazivac]
+		fistp dword [pokazivac]
+		lea ebx,[original]
+		add ebx,[pokazivac]
+		staviPokazivacNaSistemskiStog ebx
+		staviStringNaSistemskiStog znakZaFloat
+		call [scanf]
+	AsmEnd
+	i:=i+1
+EndWhile
+AsmStart
+	call [clock]
+	mov [procesorskoVrijeme],eax
+AsmEnd
+vrhStoga:=vrhStoga+1
+stogSDonjimGranicama(vrhStoga):=0
+stogSGornjimGranicama(vrhStoga):=n
+stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=0
+While vrhStoga>0
+	gornjaGranica:=stogSGornjimGranicama(vrhStoga)
+	donjaGranica:=stogSDonjimGranicama(vrhStoga)
+	trebaLiSpajatiIliRazdvajati:=stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga)
+	vrhStoga:=vrhStoga-1
+	sredinaNiza:=(donjaGranica+gornjaGranica)/2
+	sredinaNiza:=sredinaNiza-mod(sredinaNiza,1) ;Kada u svoj jezik nisam ugradio "floor" naredbu.
+	If trebaLiSpajatiIliRazdvajati=0 ;Razdvajanje niza u dva priblizno jednaka, njihova granica ce biti "sredinaNiza" (ona ce pripadati drugom nizu, a sve do nje prvom nizu).
+        If gornjaGranica-donjaGranica>1 ;Niz velicine 1 ili 0 uvijek je poredan, i ne trebamo nista dalje raditi.
+            vrhStoga:=vrhStoga+1
+            stogSDonjimGranicama(vrhStoga):=donjaGranica
+            stogSGornjimGranicama(vrhStoga):=gornjaGranica
+            stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=1 ;Nakon sto smo poredali ta dva niza, trebamo ih spojiti.
+			;Podatak o sadasnjim granicama stavljamo prvi na stog kako bi bio zadnji izvaden sa stoga.
+            vrhStoga:=vrhStoga+1
+            stogSDonjimGranicama(vrhStoga):=donjaGranica
+            stogSGornjimGranicama(vrhStoga):=sredinaNiza
+            stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=0
+            vrhStoga:=vrhStoga+1
+            stogSDonjimGranicama(vrhStoga):=sredinaNiza
+            stogSGornjimGranicama(vrhStoga):=gornjaGranica
+            stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=0
+        EndIf
+    Else ;Spajanje dva poredana niza u treci poredani niz, gdje prvi niz ima granice "donjaGranica" i "sredinaNiza", a drugi "sredinaNiza" i "gornjaGranica".
+        i:=donjaGranica
+        gdjeSmoUPrvomNizu:=donjaGranica
+        gdjeSmoUDrugomNizu:=sredinaNiza
+        While i<gornjaGranica
+            If (gdjeSmoUPrvomNizu=sredinaNiza | original(gdjeSmoUDrugomNizu)<original(gdjeSmoUPrvomNizu)) & gdjeSmoUDrugomNizu<gornjaGranica
+                pomocni(i):=original(gdjeSmoUDrugomNizu)
+                gdjeSmoUDrugomNizu:=gdjeSmoUDrugomNizu+1
+            Else
+                pomocni(i):=original(gdjeSmoUPrvomNizu)
+                gdjeSmoUPrvomNizu:=gdjeSmoUPrvomNizu+1
+			EndIf
+            i:=i+1
+            brojac:=brojac+1
+        EndWhile
+        i:=donjaGranica
+        While i<gornjaGranica
+            original(i):=pomocni(i)
+            brojac:=brojac+1
+            i:=i+1
+        EndWhile
+    EndIf
+EndWhile
+AsmStart
+	call [clock]
+	sub eax,[procesorskoVrijeme]
+	mov [procesorskoVrijeme],eax
+if ispisPoruka=1
+	jmp sortiraniNizJe$
+		sortiraniNizJe db "Sortirani niz je:",10,0
+	sortiraniNizJe$:
+	staviStringNaSistemskiStog sortiraniNizJe
+	call [printf]
+end if
+AsmEnd
+i:=0
+While i<n
+	pokazivac:=4*i
+	AsmStart
+		lea ebx,[original]
+		fld dword [pokazivac]
+		fistp dword [pokazivac]
+		add ebx,[pokazivac]
+		fld dword [ebx]
+		fstp qword [esp]
+		staviStringNaSistemskiStog znakZaFloatPlusNoviRedPlusNulZnak
+		call [printf]
+	AsmEnd
+	i:=i+1
+EndWhile
+AsmStart
+if ispisPoruka=1
+	staviIntNaSistemskiStog brojac
+	staviStringNaSistemskiStog unutrasnjaPetljaString
+	call [printf]
+AsmEnd
+	brojac:=2*n*ln(n)/ln(2)
+AsmStart
+	fld dword [brojac]
+	fstp qword [esp]
+	staviStringNaSistemskiStog slozenostString
+	call [printf]
+	push dword [procesorskoVrijeme]
+	invoke printf,sortiranjeJeTrajalo
+	invoke system,_pause
+end if
+invoke exit,0
+
+_pause db "PAUSE",0
+znakZaCijeliBrojBroj db "%d",0
+znakZaNoviRedPlusNulZnak db 10,0
+znakZaFloatPlusNoviRedPlusNulZnak db "%f",10,0
+unutrasnjaPetljaString db "Unutrasnja petlja izvrsila se %d puta.",10,0
+slozenostString db "Ocekivani broj ponavljanja te petlje, po formuli 2*n*log2(n), bio bi %.1f.",10,0
+sortiranjeJeTrajalo db "Sortiranje je trajalo %d milisekundi.",10,0
+
+
+section '.rdata' readable writable
+original dd 32768*4 DUP(?)
+n dd ?
+result dd ?
+brojac dd ?
+pokazivac dd ?
+i dd ?
+stogSDonjimGranicama dd 32768*4 DUP(?)
+stogSGornjimGranicama dd 32768*4 DUP(?)
+stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove dd 32768*4 DUP(?)
+pomocni dd 32768*4 DUP(?)
+vrhStoga dd ?
+donjaGranica dd ?
+gornjaGranica dd ?
+sredinaNiza dd ?
+gdjeSmoUDrugomNizu dd ?
+gdjeSmoUPrvomNizu dd ?
+trebaLiSpajatiIliRazdvajati dd ?
+procesorskoVrijeme dd ?
+
+section '.idata' data readable import
+library msvcrt,'msvcrt.dll'
+import msvcrt,printf,'printf',system,'system',exit,'exit',scanf,'scanf',clock,'clock'
+AsmEnd
