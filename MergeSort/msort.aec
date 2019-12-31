@@ -1,89 +1,89 @@
 ;Implementacija MergeSorta u AEC-u.
 AsmStart
-	ispisPoruka=1
-	macro staviIntNaSistemskiStog x
-	{
-		sub esp,4
-		fld dword [x]
-		fistp dword [esp]
-	}
-	macro staviPokazivacNaSistemskiStog x
-	{
-		sub esp,4
-		lea ebx,[x]
-		mov [esp],ebx
-	}
-	macro staviStringNaSistemskiStog x
-	{
-		sub esp,4
-		mov dword [esp],x
-	}
-	format PE console
-	entry start
+    ispisPoruka=1
+    macro staviIntNaSistemskiStog x
+    {
+        sub esp,4
+        fld dword [x]
+        fistp dword [esp]
+    }
+    macro staviPokazivacNaSistemskiStog x
+    {
+        sub esp,4
+        lea ebx,[x]
+        mov [esp],ebx
+    }
+    macro staviStringNaSistemskiStog x
+    {
+        sub esp,4
+        mov dword [esp],x
+    }
+    format PE console
+    entry start
 
-	include 'win32a.inc'
+    include 'win32a.inc'
 
-	section '.text' code executable
-	start:
+    section '.text' code executable
+    start:
 if ispisPoruka=1
-	jmp velicinaUnosa$
-		velicinaUnosa db "Unesite koliko cete brojeva unijeti.",10,0
-	velicinaUnosa$:
-	staviStringNaSistemskiStog velicinaUnosa
-	call [printf]
+    jmp velicinaUnosa$
+        velicinaUnosa db "Unesite koliko cete brojeva unijeti.",10,0
+    velicinaUnosa$:
+    staviStringNaSistemskiStog velicinaUnosa
+    call [printf]
 end if
-	staviPokazivacNaSistemskiStog n
-	jmp znakZaFloat$
-		znakZaFloat db "%f",0
-	znakZaFloat$:
-	staviStringNaSistemskiStog znakZaFloat
-	call [scanf]
-	if ispisPoruka=1
-		jmp pitajZaUnos$
-			pitajZaUnos db "Unesite te brojeve:",10,0
-		pitajZaUnos$:
-		staviStringNaSistemskiStog pitajZaUnos
-		call [printf]
-	end if
+    staviPokazivacNaSistemskiStog n
+    jmp znakZaFloat$
+        znakZaFloat db "%f",0
+    znakZaFloat$:
+    staviStringNaSistemskiStog znakZaFloat
+    call [scanf]
+    if ispisPoruka=1
+        jmp pitajZaUnos$
+            pitajZaUnos db "Unesite te brojeve:",10,0
+        pitajZaUnos$:
+        staviStringNaSistemskiStog pitajZaUnos
+        call [printf]
+    end if
 AsmEnd
 i:=0
 brojac:=0
 vrhStoga:=0
 While i<n
-	pokazivac:=4*i
-	AsmStart
-		fld dword [pokazivac]
-		fistp dword [pokazivac]
-		lea ebx,[original]
-		add ebx,[pokazivac]
-		staviPokazivacNaSistemskiStog ebx
-		staviStringNaSistemskiStog znakZaFloat
-		call [scanf]
-	AsmEnd
-	i:=i+1
+    pokazivac:=4*i
+    AsmStart
+        fld dword [pokazivac]
+        fistp dword [pokazivac]
+        lea ebx,[original]
+        add ebx,[pokazivac]
+        staviPokazivacNaSistemskiStog ebx
+        staviStringNaSistemskiStog znakZaFloat
+        call [scanf]
+    AsmEnd
+    i:=i+1
 EndWhile
 AsmStart
-	call [clock]
-	mov [procesorskoVrijeme],eax
+    call [clock]
+    mov [procesorskoVrijeme],eax
 AsmEnd
 vrhStoga:=vrhStoga+1
 stogSDonjimGranicama(vrhStoga):=0
 stogSGornjimGranicama(vrhStoga):=n
 stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=0
 While vrhStoga>0
-	gornjaGranica:=stogSGornjimGranicama(vrhStoga)
-	donjaGranica:=stogSDonjimGranicama(vrhStoga)
-	trebaLiSpajatiIliRazdvajati:=stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga)
-	vrhStoga:=vrhStoga-1
-	sredinaNiza:=(donjaGranica+gornjaGranica)/2
-	sredinaNiza:=sredinaNiza-mod(sredinaNiza,1) ;Kada u svoj jezik nisam ugradio "floor" naredbu.
-	If trebaLiSpajatiIliRazdvajati=0 ;Razdvajanje niza u dva priblizno jednaka, njihova granica ce biti "sredinaNiza" (ona ce pripadati drugom nizu, a sve do nje prvom nizu).
+    gornjaGranica:=stogSGornjimGranicama(vrhStoga)
+    donjaGranica:=stogSDonjimGranicama(vrhStoga)
+    trebaLiSpajatiIliRazdvajati:=stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga)
+    vrhStoga:=vrhStoga-1
+    sredinaNiza:=(donjaGranica+gornjaGranica)/2
+    sredinaNiza:=sredinaNiza-mod(sredinaNiza,1) ;Kada u svoj jezik nisam ugradio "floor" naredbu.
+    If trebaLiSpajatiIliRazdvajati=0 ;Razdvajanje niza u dva priblizno jednaka, njihova granica ce biti "sredinaNiza" (ona ce pripadati drugom nizu, a sve do nje prvom nizu).
         If gornjaGranica-donjaGranica>1 ;Niz velicine 1 ili 0 uvijek je poredan, i ne trebamo nista dalje raditi.
             vrhStoga:=vrhStoga+1
             stogSDonjimGranicama(vrhStoga):=donjaGranica
             stogSGornjimGranicama(vrhStoga):=gornjaGranica
             stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=1 ;Nakon sto smo poredali ta dva niza, trebamo ih spojiti.
-			;Podatak o sadasnjim granicama stavljamo prvi na stog kako bi bio zadnji izvaden sa stoga.
+            ;Podatak o sadasnjim granicama stavljamo prvi na stog kako bi bio zadnji izvaden sa stoga.
             vrhStoga:=vrhStoga+1
             stogSDonjimGranicama(vrhStoga):=donjaGranica
             stogSGornjimGranicama(vrhStoga):=sredinaNiza
@@ -104,7 +104,7 @@ While vrhStoga>0
             Else
                 pomocni(i):=original(gdjeSmoUPrvomNizu)
                 gdjeSmoUPrvomNizu:=gdjeSmoUPrvomNizu+1
-			EndIf
+            EndIf
             i:=i+1
             brojac:=brojac+1
         EndWhile
@@ -117,47 +117,47 @@ While vrhStoga>0
     EndIf
 EndWhile
 AsmStart
-	call [clock]
-	sub eax,[procesorskoVrijeme]
-	mov [procesorskoVrijeme],eax
+    call [clock]
+    sub eax,[procesorskoVrijeme]
+    mov [procesorskoVrijeme],eax
 if ispisPoruka=1
-	jmp sortiraniNizJe$
-		sortiraniNizJe db "Sortirani niz je:",10,0
-	sortiraniNizJe$:
-	staviStringNaSistemskiStog sortiraniNizJe
-	call [printf]
+    jmp sortiraniNizJe$
+        sortiraniNizJe db "Sortirani niz je:",10,0
+    sortiraniNizJe$:
+    staviStringNaSistemskiStog sortiraniNizJe
+    call [printf]
 end if
 AsmEnd
 i:=0
 While i<n
-	pokazivac:=4*i
-	AsmStart
-		lea ebx,[original]
-		fld dword [pokazivac]
-		fistp dword [pokazivac]
-		add ebx,[pokazivac]
-		fld dword [ebx]
-		fstp qword [esp]
-		staviStringNaSistemskiStog znakZaFloatPlusNoviRedPlusNulZnak
-		call [printf]
-	AsmEnd
-	i:=i+1
+    pokazivac:=4*i
+    AsmStart
+        lea ebx,[original]
+        fld dword [pokazivac]
+        fistp dword [pokazivac]
+        add ebx,[pokazivac]
+        fld dword [ebx]
+        fstp qword [esp]
+        staviStringNaSistemskiStog znakZaFloatPlusNoviRedPlusNulZnak
+        call [printf]
+    AsmEnd
+    i:=i+1
 EndWhile
 AsmStart
 if ispisPoruka=1
-	staviIntNaSistemskiStog brojac
-	staviStringNaSistemskiStog unutrasnjaPetljaString
-	call [printf]
+    staviIntNaSistemskiStog brojac
+    staviStringNaSistemskiStog unutrasnjaPetljaString
+    call [printf]
 AsmEnd
-	brojac:=2*n*ln(n)/ln(2)
+    brojac:=2*n*ln(n)/ln(2)
 AsmStart
-	fld dword [brojac]
-	fstp qword [esp]
-	staviStringNaSistemskiStog slozenostString
-	call [printf]
-	push dword [procesorskoVrijeme]
-	invoke printf,sortiranjeJeTrajalo
-	invoke system,_pause
+    fld dword [brojac]
+    fstp qword [esp]
+    staviStringNaSistemskiStog slozenostString
+    call [printf]
+    push dword [procesorskoVrijeme]
+    invoke printf,sortiranjeJeTrajalo
+    invoke system,_pause
 end if
 invoke exit,0
 
