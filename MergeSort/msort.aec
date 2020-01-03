@@ -38,13 +38,13 @@ end if
     znakZaFloat$:
     staviStringNaSistemskiStog znakZaFloat
     call [scanf]
-    if ispisPoruka=1
-        jmp pitajZaUnos$
-            pitajZaUnos db "Unesite te brojeve:",10,0
-        pitajZaUnos$:
-        staviStringNaSistemskiStog pitajZaUnos
-        call [printf]
-    end if
+if ispisPoruka=1
+    jmp pitajZaUnos$
+        pitajZaUnos db "Unesite te brojeve:",10,0
+    pitajZaUnos$:
+    staviStringNaSistemskiStog pitajZaUnos
+    call [printf]
+end if
 AsmEnd
 i:=0
 brojac:=0
@@ -159,38 +159,38 @@ AsmStart
     invoke printf,sortiranjeJeTrajalo
     invoke system,_pause
 end if
-invoke exit,0
+    invoke exit,0
 
-_pause db "PAUSE",0
-znakZaCijeliBrojBroj db "%d",0
-znakZaNoviRedPlusNulZnak db 10,0
-znakZaFloatPlusNoviRedPlusNulZnak db "%f",10,0
-unutrasnjaPetljaString db "Unutrasnja petlja izvrsila se %d puta.",10,0
-slozenostString db "Ocekivani broj ponavljanja te petlje, po formuli 2*n*log2(n), bio bi %.1f.",10,0
-sortiranjeJeTrajalo db "Sortiranje je trajalo %d milisekundi.",10,0
+    _pause db "PAUSE",0
+    znakZaCijeliBrojBroj db "%d",0
+    znakZaNoviRedPlusNulZnak db 10,0
+    znakZaFloatPlusNoviRedPlusNulZnak db "%f",10,0
+    unutrasnjaPetljaString db "Unutrasnja petlja izvrsila se %d puta.",10,0
+    slozenostString db "Ocekivani broj ponavljanja te petlje, po formuli 2*n*log2(n), bio bi %.1f.",10,0
+    sortiranjeJeTrajalo db "Sortiranje je trajalo %d milisekundi.",10,0
 
 
 section '.rdata' readable writable
-original dd 32768*4 DUP(?)
-n dd ?
-result dd ?
-brojac dd ?
-pokazivac dd ?
-i dd ?
-stogSDonjimGranicama dd 32768*4 DUP(?)
-stogSGornjimGranicama dd 32768*4 DUP(?)
-stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove dd 32768*4 DUP(?)
-pomocni dd 32768*4 DUP(?)
-vrhStoga dd ?
-donjaGranica dd ?
-gornjaGranica dd ?
-sredinaNiza dd ?
-gdjeSmoUDrugomNizu dd ?
-gdjeSmoUPrvomNizu dd ?
-trebaLiSpajatiIliRazdvajati dd ?
-procesorskoVrijeme dd ?
+    original dd 32768*4 DUP(?)
+    n dd ?
+    result dd ?
+    brojac dd ?
+    pokazivac dd ?
+    i dd ?
+    stogSDonjimGranicama dd 32768*4 DUP(?)
+    stogSGornjimGranicama dd 32768*4 DUP(?)
+    stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove dd 32768*4 DUP(?)
+    pomocni dd 32768*4 DUP(?)
+    vrhStoga dd ?
+    donjaGranica dd ?
+    gornjaGranica dd ?
+    sredinaNiza dd ?
+    gdjeSmoUDrugomNizu dd ?
+    gdjeSmoUPrvomNizu dd ?
+    trebaLiSpajatiIliRazdvajati dd ?
+    procesorskoVrijeme dd ?
 
 section '.idata' data readable import
-library msvcrt,'msvcrt.dll'
-import msvcrt,printf,'printf',system,'system',exit,'exit',scanf,'scanf',clock,'clock'
+    library msvcrt,'msvcrt.dll'
+        import msvcrt,printf,'printf',system,'system',exit,'exit',scanf,'scanf',clock,'clock'
 AsmEnd
