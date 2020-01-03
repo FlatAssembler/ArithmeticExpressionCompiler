@@ -3,7 +3,9 @@ A compiler for my own simple low-level programming language, built in JavaScript
 
 See this link for more information: http://flatassembler.000webhostapp.com/compiler.html
 
-The file "compiler.html" contains the not-minified JavaScript of the file "compiler.js".
+"ArithmeticExpressionCompiler.zip" contains the 32-bit Windows executables. The source code is available at: https://flatassembler.000webhostapp.com/Duktape.zip
+
+The file "compiler.html" contains the not-minified JavaScript of the file "compiler.js", present in those ZIP archives and necessary for ArithmeticExpressionCompiler to work.
 
 I've made a YouTube video about how you can set up a modern computer to program it in your own programming language, you can see it here: https://youtu.be/N2C1i8CW7Io
 
