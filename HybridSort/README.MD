@@ -3,3 +3,5 @@ This is an implementation of a hybrid sort algorithm, combining MergeSort and Qu
 "hsort.aec" contains the source code in the language of ArithmeticExpressionCompiler, "hsort.asm" contains the assembly that ArithmeticExpressionCompiler outputted for it, and "hsort.exe" is a 32-bit Windows executable produced by FlatAssembler by compiling "hsort.asm".
 
 "hsort.c" is supposed to be an equivalent C program, and "hsort.s" is the assembly code printed by CLANG when asked to convert "hsort.c" to assembly.
+
+"tester3.cpp" is the program I've used to measure performance of HybridSort.
