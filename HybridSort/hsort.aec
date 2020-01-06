@@ -1,7 +1,7 @@
 ;HybridSort algoritam - kombinacija QuickSort algoritma i MergeSort algoritma.
 AsmStart
     ispisPoruka=1
-    macro staviIntNaSistemskiStog x
+    macro staviIntNaSistemskiStog x ;"x" treba biti pokazivac na 32-bitni decimalni broj ("float"), kojeg ce ova makro-naredba pretvoriti u 32-bitni cijeli broj ("int") i staviti na sistemski stog.
     {
         sub esp,4
         fld dword [x]
@@ -18,10 +18,10 @@ AsmStart
         sub esp,4
         mov dword [esp],x
     }
-    format PE console
+    format PE console ;"PE" je 32-bitna Windowsova ".EXE" datoteka (to nije sve sto FlatAssembler moze stvarati).
     entry start
 
-    include 'win32a.inc'
+    include 'win32a.inc' ;FlatAssemblerove naredbe za upravljanje DLL-ovima (ovdje se koriste za pozivanje C-ovih  funkcija iz MSVCRT-a).
 
     section '.text' code executable
     start:
@@ -50,7 +50,7 @@ i:=0
 brojac:=0
 vrhStoga:=0
 While i<n
-    pokazivac:=4*i
+    pokazivac:=4*i ;"float" ima 4 bajta.
     AsmStart
         fld dword [pokazivac]
         fistp dword [pokazivac]
@@ -63,7 +63,7 @@ While i<n
     i:=i+1
 EndWhile
 AsmStart
-    call [clock]
+    call [clock] ;"clock" na Windowsima vraca broj milisekundi otkad se program pokrenuo, zadnja 32 bita vraca u procesorski registar "eax".
     mov [procesorskoVrijeme],eax
 AsmEnd
 razvrstanost:=0
@@ -87,7 +87,7 @@ AsmStart
 AsmEnd
 i:=2
 While i<7 | i=7 
-    razvrstanostNa(i):=pow(abs(razvrstanost),i)
+    razvrstanostNa(i):=pow(abs(razvrstanost),i) ;"pow(x,y)" je u AEC-u samo sintaksni secer za "exp(ln(x)*y)", i to vraca NaN za x=0 ili x<0. Nema ocitog nacina da se "pow(x,y)" prevede na asemblerski.
     If razvrstanost=0
         razvrstanostNa(i):=0
     EndIf
@@ -96,24 +96,25 @@ While i<7 | i=7
     EndIf
     i:=i+1
 EndWhile
+;Formula koju je ispisao genetski algoritam za predvidanje koliko ce usporedbi QuickSort napraviti: https://github.com/FlatAssembler/ArithmeticExpressionCompiler/tree/master/QuickSort/Genetic_algorithm_for_deriving_the_formula
 polinomPodApsolutnom:=2.38854*razvrstanostNa(7)-0.284258*razvrstanostNa(6)-1.87104*razvrstanostNa(5)+0.372637*razvrstanostNa(4)+0.167242*razvrstanostNa(3)-0.0884977*razvrstanostNa(2)+0.315119*razvrstanost
 eNaKoju:=(ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(polinomPodApsolutnom)
-ocekivaniBrojUsporedbi:=exp(eNaKoju)
-ocekivanoOdMergeSorta:=2*n*ln(n)/ln(2)
+kolikoUsporedbiOcekujemoOdQuickSorta:=exp(eNaKoju)
+kolikoUsporedbiOcekujemoOdMergeSorta:=2*n*ln(n)/ln(2)
 AsmStart
     if ispisPoruka=1
         jmp ispisOTomeStoOcekujemo$
             ispisOTomeStoOcekujemo db "Od QuickSorta ocekujemo %f usporedbi, a od MergeSorta ocekujemo %f usporedbi.",10,0
         ispisOTomeStoOcekujemo$:
-        fld dword [ocekivanoOdMergeSorta]
+        fld dword [kolikoUsporedbiOcekujemoOdMergeSorta]
         fstp qword [esp+8]
-        fld dword [ocekivaniBrojUsporedbi]
+        fld dword [kolikoUsporedbiOcekujemoOdQuickSorta]
         fstp qword [esp]
         staviStringNaSistemskiStog ispisOTomeStoOcekujemo
         call [printf]
     end if
 AsmEnd
-najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=1
+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=1 ;Da ne prijedemo MAX_SAFE_INT za "float".
 pomocniBrojac:=0
 If razvrstanost=1
     AsmStart
@@ -124,7 +125,7 @@ If razvrstanost=1
             invoke printf,nizJeVecRazvrstan
         end if
     AsmEnd
-ElseIf razvrstanost=(-1)
+ElseIf razvrstanost=(-1) ;Da, parser od AEC-a jos nije savrsen i javlja gresku za "razvrstanost=-1".
     AsmStart
         if ispisPoruka=1
             jmp nizJeObrnutoRazvrstan$
@@ -144,7 +145,7 @@ ElseIf razvrstanost=(-1)
         original(i):=pomocni(i)
         i:=i+1
     EndWhile
-ElseIf ocekivaniBrojUsporedbi<ocekivanoOdMergeSorta
+ElseIf kolikoUsporedbiOcekujemoOdQuickSorta<kolikoUsporedbiOcekujemoOdMergeSorta
     AsmStart
         if ispisPoruka=1
             jmp radimoQuickSort$
@@ -164,15 +165,15 @@ ElseIf ocekivaniBrojUsporedbi<ocekivanoOdMergeSorta
         i:=donjaGranica+1
         While i<gornjaGranica
             If original(i)<original(donjaGranica)
-                gdjeJePivot:=gdjeJePivot+1
+                gdjeJePivot:=gdjeJePivot+1 ;Gdje ce doci element koji je sada prvi ("pivot").
             EndIf
-            i:=i++
+            i:=i++ ;"++" je u AEC-u jednostavno sintaksni secer za "+1".
         EndWhile
         staviManje:=donjaGranica
         staviVece:=gdjeJePivot+1
         pomocni(gdjeJePivot):=original(donjaGranica)
         i:=donjaGranica+1
-        While i<gornjaGranica
+        While i<gornjaGranica ;Preuredi niz original(donjaGranica..gornjaGranica-1) tako da svi elementi koji su manji od onoga koji je bio prvi dodu prije njega.
             If original(i)<original(donjaGranica)
                 pomocni(staviManje):=original(i)
                 staviManje:=staviManje+1
@@ -192,6 +193,9 @@ ElseIf ocekivaniBrojUsporedbi<ocekivanoOdMergeSorta
             original(i):=pomocni(i)
             i:=i+1
         EndWhile
+		;Razdvoji niz original(donjaGranica..gornjaGranica-1) na nizove original(donjaGranica..gdjeJePivot-1) i original(gdjeJePivot+1..gornjaGranica-1).
+		;Znamo gdje je pivot, pa njega ne trebamo ukljuciti ni u jedan od tih nizova.
+		;I ne trebamo na stog stavljati naputke o razvrstavanju nizova velicine 0 ili 1.
         If gdjeJePivot<gornjaGranica-1
             vrhStoga:=vrhStoga+1
             stogSDonjimGranicama(vrhStoga):=gdjeJePivot+1
@@ -202,7 +206,7 @@ ElseIf ocekivaniBrojUsporedbi<ocekivanoOdMergeSorta
             stogSDonjimGranicama(vrhStoga):=donjaGranica
             stogSGornjimGranicama(vrhStoga):=gdjeJePivot
         EndIf
-        testZaPreljev:=brojac+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim.
+        testZaPreljev:=brojac+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim. Izgubio sam hrpu vremena da to shvatim.
         If not(testZaPreljev>brojac)
             najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac*2
             AsmStart
@@ -211,8 +215,8 @@ ElseIf ocekivaniBrojUsporedbi<ocekivanoOdMergeSorta
                         izvjesceOpreljevu db "Upozorenje: Brojac mozda nece sadrzavati tocan rezultat, dogodio se preljev na %d. iteraciji."
                         db " Najveca ocekivana pogreska za ovaj preljev je %d krivo prebrojanih izvrsavanja unutarnje petlje.",10,0
                     izvjesceOpreljevu$:
-                    fld dword [n]
-                    fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
+                    fld dword [gornjaGranica]
+                    fld dword [donjaGranica]
                     fsubp
                     fabs
                     fistp dword [esp+4]
@@ -235,7 +239,7 @@ Else
     vrhStoga:=vrhStoga+1
     stogSDonjimGranicama(vrhStoga):=0
     stogSGornjimGranicama(vrhStoga):=n
-    stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=0
+    stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=razdvajati
     While vrhStoga>0
         gornjaGranica:=stogSGornjimGranicama(vrhStoga)
         donjaGranica:=stogSDonjimGranicama(vrhStoga)
@@ -243,22 +247,23 @@ Else
         vrhStoga:=vrhStoga-1
         sredinaNiza:=(donjaGranica+gornjaGranica)/2
         sredinaNiza:=sredinaNiza-mod(sredinaNiza,1)
-        If trebaLiSpajatiIliRazdvajati=0
-            If gornjaGranica-donjaGranica>1
+        If trebaLiSpajatiIliRazdvajati=razdvajati ;Razdvoji niz original(donjaGranica..gornjaGranica-1) na original(donjaGranica..sredinaNiza-1) i original(sredinaNiza..gornjaGranica-1).
+            If gornjaGranica-donjaGranica>1 ;Niz velicine 0 ili 1 vec je poredan i ne radimo nista dalje.
                 vrhStoga:=vrhStoga+1
                 stogSDonjimGranicama(vrhStoga):=donjaGranica
                 stogSGornjimGranicama(vrhStoga):=gornjaGranica
-                stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=1
+                stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=spajati
+				;Stavljamo naputak za spajanje nizova prvog na stog kako bi on onda bio zadnji izvaden iz njega.
                 vrhStoga:=vrhStoga+1
                 stogSDonjimGranicama(vrhStoga):=donjaGranica
                 stogSGornjimGranicama(vrhStoga):=sredinaNiza
-                stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=0
+                stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=razdvajati
                 vrhStoga:=vrhStoga+1
                 stogSDonjimGranicama(vrhStoga):=sredinaNiza
                 stogSGornjimGranicama(vrhStoga):=gornjaGranica
-                stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=0
+                stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=razdvajati
             EndIf
-        Else
+        Else ;Spoji vec poredane nizove original(donjaGranica..sredinaNiza-1) i original(sredinaNiza..gornjaGranica-1) u novi poredani niz original(donjaGranica..gornjaGranica-1).
             i:=donjaGranica
             gdjeSmoUPrvomNizu:=donjaGranica
             gdjeSmoUDrugomNizu:=sredinaNiza
@@ -315,10 +320,10 @@ if ispisPoruka=1
     staviStringNaSistemskiStog unutrasnjaPetljaString
     call [printf]
 AsmEnd
-    brojac:=n*ln(n)/ln(2)
+    n*ln(n)/ln(2) ;Ovo ce se spremiti u "result", pomocnu varijablu koju koristi compiler za AEC.
 AsmStart
-    fld dword [brojac]
-    fstp qword [esp]
+    fld dword [result]
+    fstp qword [esp] ;"printf" iz MSVCRT-a za "%f" ocekuje 64-bitni "double", ili, na asemblerskom jeziku, "qword".
     staviStringNaSistemskiStog slozenostString
     call [printf]
     push dword [procesorskoVrijeme]
@@ -327,6 +332,7 @@ AsmStart
 end if
 invoke exit,0
 
+;"Konstante", ako njih pokusamo mijenjati, dobijemo Segmentation Fault:
 _pause db "PAUSE",0
 znakZaCijeliBrojBroj db "%d",0
 znakZaNoviRedPlusNulZnak db 10,0
@@ -334,10 +340,12 @@ znakZaFloatPlusNoviRedPlusNulZnak db "%f",10,0
 unutrasnjaPetljaString db "Unutrasnja petlja izvrsila se %d puta.",10,0
 slozenostString db "Ocekivani broj ponavljanja te petlje, po formuli n*log2(n), bio bi %.1f.",10,0
 sortiranjeJeTrajalo db "Sortiranje je trajalo %d milisekundi.",10,0
+razdvajati dd 0f
+spajati dd 1f
 
 section '.rdata' readable writable
     original:
-        repeat 32768
+        repeat 32768 ;Nije preporucljivo ovako na asemblerskom deklarirati nizove, ali zasto bih se pretvarao da radim za racunalom s 4 MB RAM-a, gdje je problem ucitati program gdje je jedan segment velik 640 KB?
             dd 0
         end repeat
     n dd ?
@@ -368,8 +376,8 @@ section '.rdata' readable writable
     razvrstanostNa dd 8 DUP(?)
     polinomPodApsolutnom dd ?
     eNaKoju dd ?
-    ocekivaniBrojUsporedbi dd ?
-    ocekivanoOdMergeSorta dd ?
+    kolikoUsporedbiOcekujemoOdQuickSorta dd ?
+    kolikoUsporedbiOcekujemoOdMergeSorta dd ?
     najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac dd ?
     pomocniBrojac dd ?
     testZaPreljev dd ?
@@ -384,6 +392,6 @@ section '.rdata' readable writable
 
 
 section '.idata' data readable import
-    library msvcrt,'msvcrt.dll'
+    library msvcrt,'msvcrt.dll' ;"msvcrt.dll" je Microsoft Visual C Runtime Library, dostupna u "C:\Windows\System32\msvcrt.dll" na Windows 98 i novijim.
         import msvcrt,printf,'printf',system,'system',exit,'exit',scanf,'scanf',clock,'clock'
 AsmEnd
