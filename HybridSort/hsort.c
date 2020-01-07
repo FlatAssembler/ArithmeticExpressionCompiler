@@ -52,20 +52,19 @@ double pow(double x, double y)
 
 
 int original[32768], pomocni[32768];
-int stog_s_donjim_granicama[32768],
-    stog_s_gornjim_granicama[32768];
+int stog_s_donjim_granicama[32768], stog_s_gornjim_granicama[32768];
 int vrh_stoga = 0,
     donja_granica,
     gornja_granica,
     sredina_niza, gdje_je_pivot, gdje_smo_u_prvom_nizu,
-    gdje_smo_u_drugom_nizu,
-	stavi_manje, stavi_vece;
+    gdje_smo_u_drugom_nizu, stavi_manje, stavi_vece;
 int brojac = 0, i;
-enum {razdvajati,spajati} treba_li_spajati_ili_razdvajati,
-	stog_s_podacima_treba_li_petlja_razdvajati_ili_spajati_nizove[32768];
+enum { razdvajati, spajati } treba_li_spajati_ili_razdvajati,
+    stog_s_podacima_treba_li_petlja_razdvajati_ili_spajati_nizove[32768];
 float razvrstanost,
     polinomPodApsolutnom,
-    eNaKoju, kolikoUsporedbiOcekujemoOdQuickSorta, kolikoUsporedbiOcekujemoOdMergeSorta;
+    eNaKoju, kolikoUsporedbiOcekujemoOdQuickSorta,
+    kolikoUsporedbiOcekujemoOdMergeSorta;
 
 int main()
 {
@@ -108,7 +107,8 @@ int main()
 #ifdef IspisujPoruke
     printf
 	("Od QuickSorta ocekujemo %f usporedbi, a od MergeSorta ocekujemo %f usporedbi.\n",
-	 kolikoUsporedbiOcekujemoOdQuickSorta, kolikoUsporedbiOcekujemoOdMergeSorta);
+	 kolikoUsporedbiOcekujemoOdQuickSorta,
+	 kolikoUsporedbiOcekujemoOdMergeSorta);
 #endif
     if (razvrstanost == 1) {
 #ifdef IspisujPoruke
@@ -129,7 +129,8 @@ int main()
 	    original[i] = pomocni[i];
 	    i = i + 1;
 	}
-    } else if (kolikoUsporedbiOcekujemoOdQuickSorta < kolikoUsporedbiOcekujemoOdMergeSorta) {
+    } else if (kolikoUsporedbiOcekujemoOdQuickSorta <
+	       kolikoUsporedbiOcekujemoOdMergeSorta) {
 #ifdef IspisujPoruke
 	printf("Primijenit cemo QuickSort algoritam.\n");
 #endif
@@ -196,7 +197,7 @@ int main()
 		[vrh_stoga];
 	    vrh_stoga--;
 	    int sredina_niza = (donja_granica + gornja_granica) / 2;
-	    if (!treba_li_spajati_ili_razdvajati) {
+	    if (treba_li_spajati_ili_razdvajati == razdvajati) {
 		if (gornja_granica - donja_granica > 1) {
 		    vrh_stoga++;
 		    stog_s_donjim_granicama[vrh_stoga] = donja_granica;
