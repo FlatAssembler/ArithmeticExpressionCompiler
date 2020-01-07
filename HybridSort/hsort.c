@@ -53,17 +53,19 @@ double pow(double x, double y)
 
 int original[32768], pomocni[32768];
 int stog_s_donjim_granicama[32768],
-    stog_s_gornjim_granicama[32768],
-    stog_s_podacima_treba_li_petlja_razdvajati_ili_spajati_nizove[32768];
+    stog_s_gornjim_granicama[32768];
 int vrh_stoga = 0,
     donja_granica,
     gornja_granica,
     sredina_niza, gdje_je_pivot, gdje_smo_u_prvom_nizu,
-    gdje_smo_u_drugom_nizu;
-int brojac = 0, i, treba_li_spajati_ili_razdvajati;
+    gdje_smo_u_drugom_nizu,
+	stavi_manje, stavi_vece;
+int brojac = 0, i;
+enum {razdvajati,spajati} treba_li_spajati_ili_razdvajati,
+	stog_s_podacima_treba_li_petlja_razdvajati_ili_spajati_nizove[32768];
 float razvrstanost,
     polinomPodApsolutnom,
-    eNaKoju, ocekivaniBrojUsporedbi, ocekivanoOdMergeSorta;
+    eNaKoju, kolikoUsporedbiOcekujemoOdQuickSorta, kolikoUsporedbiOcekujemoOdMergeSorta;
 
 int main()
 {
@@ -78,7 +80,7 @@ int main()
     for (int i = 0; i < n; i++)
 	scanf("%d", &original[i]);
     long long procesorskoVrijeme = clock();
-    int i = 0;
+    i = 0;
     razvrstanost = 0;
     while (i < n - 1) {
 	razvrstanost += original[i] < original[i + 1];
@@ -101,12 +103,12 @@ int main()
 	(log(n) + log(log(n))) * 1.05 + (log(n) -
 					 log(log(n))) * 0.83 *
 	fabs(polinomPodApsolutnom);
-    ocekivaniBrojUsporedbi = exp(eNaKoju);
-    ocekivanoOdMergeSorta = 2 * n * log(n) / log(2);
+    kolikoUsporedbiOcekujemoOdQuickSorta = exp(eNaKoju);
+    kolikoUsporedbiOcekujemoOdMergeSorta = 2 * n * log(n) / log(2);
 #ifdef IspisujPoruke
     printf
 	("Od QuickSorta ocekujemo %f usporedbi, a od MergeSorta ocekujemo %f usporedbi.\n",
-	 ocekivaniBrojUsporedbi, ocekivanoOdMergeSorta);
+	 kolikoUsporedbiOcekujemoOdQuickSorta, kolikoUsporedbiOcekujemoOdMergeSorta);
 #endif
     if (razvrstanost == 1) {
 #ifdef IspisujPoruke
@@ -127,7 +129,7 @@ int main()
 	    original[i] = pomocni[i];
 	    i = i + 1;
 	}
-    } else if (ocekivaniBrojUsporedbi < ocekivanoOdMergeSorta) {
+    } else if (kolikoUsporedbiOcekujemoOdQuickSorta < kolikoUsporedbiOcekujemoOdMergeSorta) {
 #ifdef IspisujPoruke
 	printf("Primijenit cemo QuickSort algoritam.\n");
 #endif
@@ -146,8 +148,8 @@ int main()
 		    gdje_je_pivot++;
 		i++;
 	    }
-	    int stavi_manje = donja_granica;
-	    int stavi_vece = gdje_je_pivot + 1;
+	    stavi_manje = donja_granica;
+	    stavi_vece = gdje_je_pivot + 1;
 	    pomocni[gdje_je_pivot] = original[donja_granica];
 	    i = donja_granica + 1;
 	    while (i < gornja_granica) {
@@ -185,7 +187,7 @@ int main()
 	stog_s_donjim_granicama[vrh_stoga] = 0;
 	stog_s_gornjim_granicama[vrh_stoga] = n;
 	stog_s_podacima_treba_li_petlja_razdvajati_ili_spajati_nizove
-	    [vrh_stoga] = 0;
+	    [vrh_stoga] = razdvajati;
 	while (vrh_stoga) {
 	    gornja_granica = stog_s_gornjim_granicama[vrh_stoga];
 	    donja_granica = stog_s_donjim_granicama[vrh_stoga];
@@ -200,17 +202,17 @@ int main()
 		    stog_s_donjim_granicama[vrh_stoga] = donja_granica;
 		    stog_s_gornjim_granicama[vrh_stoga] = gornja_granica;
 		    stog_s_podacima_treba_li_petlja_razdvajati_ili_spajati_nizove
-			[vrh_stoga] = 1;
+			[vrh_stoga] = spajati;
 		    vrh_stoga++;
 		    stog_s_donjim_granicama[vrh_stoga] = donja_granica;
 		    stog_s_gornjim_granicama[vrh_stoga] = sredina_niza;
 		    stog_s_podacima_treba_li_petlja_razdvajati_ili_spajati_nizove
-			[vrh_stoga] = 0;
+			[vrh_stoga] = razdvajati;
 		    vrh_stoga++;
 		    stog_s_donjim_granicama[vrh_stoga] = sredina_niza;
 		    stog_s_gornjim_granicama[vrh_stoga] = gornja_granica;
 		    stog_s_podacima_treba_li_petlja_razdvajati_ili_spajati_nizove
-			[vrh_stoga] = 0;
+			[vrh_stoga] = razdvajati;
 		}
 	    } else {
 		i = donja_granica;
