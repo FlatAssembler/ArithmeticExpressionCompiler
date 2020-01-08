@@ -21,7 +21,7 @@ AsmStart
     format PE console ;"PE" je 32-bitna Windowsova ".EXE" datoteka (to nije sve sto FlatAssembler moze stvarati).
     entry start
 
-    include 'win32a.inc' ;FlatAssemblerove naredbe za upravljanje DLL-ovima (ovdje se koriste za pozivanje C-ovih  funkcija iz MSVCRT-a).
+    include 'win32a.inc' ;FlatAssemblerove naredbe za upravljanje DLL-ovima (ovdje se koriste za pozivanje C-ovih funkcija iz MSVCRT-a).
 
     section '.text' code executable
     start:
@@ -114,7 +114,7 @@ AsmStart
         call [printf]
     end if
 AsmEnd
-najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=1 ;Da ne prijedemo MAX_SAFE_INT za "float".
+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=1 ;Da, kada prijedemo MAX_SAFE_INTEGER za "float", ne pokusavamo vise dodavati jedinicu.
 pomocniBrojac:=0
 If razvrstanost=1
     AsmStart
@@ -193,9 +193,9 @@ ElseIf kolikoUsporedbiOcekujemoOdQuickSorta<kolikoUsporedbiOcekujemoOdMergeSorta
             original(i):=pomocni(i)
             i:=i+1
         EndWhile
-		;Razdvoji niz original(donjaGranica..gornjaGranica-1) na nizove original(donjaGranica..gdjeJePivot-1) i original(gdjeJePivot+1..gornjaGranica-1).
-		;Znamo gdje je pivot, pa njega ne trebamo ukljuciti ni u jedan od tih nizova.
-		;I ne trebamo na stog stavljati naputke o razvrstavanju nizova velicine 0 ili 1.
+        ;Razdvoji niz original(donjaGranica..gornjaGranica-1) na nizove original(donjaGranica..gdjeJePivot-1) i original(gdjeJePivot+1..gornjaGranica-1).
+        ;Znamo gdje je pivot, pa njega ne trebamo ukljuciti ni u jedan od tih nizova.
+        ;I ne trebamo na stog stavljati naputke o razvrstavanju nizova velicine 0 ili 1.
         If gdjeJePivot<gornjaGranica-1
             vrhStoga:=vrhStoga+1
             stogSDonjimGranicama(vrhStoga):=gdjeJePivot+1
@@ -253,7 +253,7 @@ Else
                 stogSDonjimGranicama(vrhStoga):=donjaGranica
                 stogSGornjimGranicama(vrhStoga):=gornjaGranica
                 stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=spajati
-				;Stavljamo naputak za spajanje nizova prvog na stog kako bi on onda bio zadnji izvaden iz njega.
+                ;Stavljamo naputak za spajanje nizova prvog na stog kako bi on onda bio zadnji izvaden iz njega.
                 vrhStoga:=vrhStoga+1
                 stogSDonjimGranicama(vrhStoga):=donjaGranica
                 stogSGornjimGranicama(vrhStoga):=sredinaNiza
@@ -343,7 +343,7 @@ sortiranjeJeTrajalo db "Sortiranje je trajalo %d milisekundi.",10,0
 razdvajati dd 0f
 spajati dd 1f
 
-section '.rdata' readable writable
+section '.rdata' readable writable ;Varijable i polja (u drugom segmentu programa nego sto je izvrsni dio).
     original:
         repeat 32768 ;Nije preporucljivo ovako na asemblerskom deklarirati nizove, ali zasto bih se pretvarao da radim za racunalom s 4 MB RAM-a, gdje je problem ucitati program gdje je jedan segment velik 640 KB?
             dd 0

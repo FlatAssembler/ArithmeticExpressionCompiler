@@ -1,0 +1,401 @@
+{\rtf1\ansi\ansicpg1252\uc1\deff0\deflang1033\deflangfe1033{\fonttbl{\f0 Courier New;}}
+{\colortbl;\red128\green128\blue128;\red255\green255\blue255;\red255\green0\blue0;\red0\green0\blue0;\red128\green128\blue0;\red0\green128\blue0;\red0\green0\blue128;\red255\green0\blue255;\red128\green0\blue128;\red255\green128\blue0;\red128\green64\blue64;}
+{\*\generator Wine Riched20 2.0;}
+\pard{\pntext\f0 1.\tab}{\*\pn\pnlvlbody\pnf0\pnindent360\pnstart1\pndec{\pntxta.}}\sl-240\slmult1\li360\fi360 \highlight2\cf1\lang1033\fs20\f0 ;HybridSort algoritam - kombinacija QuickSort algoritma i MergeSort algoritma.\par
+{\pntext\f0 2.\tab}\cf3 AsmStart\cf4 \par
+{\pntext\f0 3.\tab}    \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 4.\tab}    \cf7 macro\cf4  \cf0 staviIntNaSistemskiStog\cf4  \cf0 x\cf4  \cf1 ;"x" treba biti pokazivac na 32-bitni decimalni broj ("float"), kojeg ce ova makro-naredba pretvoriti u 32-bitni cijeli broj ("int") i staviti na sistemski stog.\par
+{\pntext\f0 5.\tab}\cf4     \cf0 \{\cf4 \par
+{\pntext\f0 6.\tab}        \cf7 sub\cf4  \cf8 esp\cf5 ,\cf6 4\cf4 \par
+{\pntext\f0 7.\tab}        \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 x\cf5 ]\cf4 \par
+{\pntext\f0 8.\tab}        \cf7 fistp\cf4  \cf9 dword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 9.\tab}    \cf0 \}\cf4 \par
+{\pntext\f0 10.\tab}    \cf7 macro\cf4  \cf0 staviPokazivacNaSistemskiStog\cf4  \cf0 x\cf4 \par
+{\pntext\f0 11.\tab}    \cf0 \{\cf4 \par
+{\pntext\f0 12.\tab}        \cf7 sub\cf4  \cf8 esp\cf5 ,\cf6 4\cf4 \par
+{\pntext\f0 13.\tab}        \cf7 lea\cf4  \cf8 ebx\cf5 ,[\cf0 x\cf5 ]\cf4 \par
+{\pntext\f0 14.\tab}        \cf7 mov\cf4  \cf5 [\cf8 esp\cf5 ],\cf8 ebx\cf4 \par
+{\pntext\f0 15.\tab}    \cf0 \}\cf4 \par
+{\pntext\f0 16.\tab}    \cf7 macro\cf4  \cf0 staviStringNaSistemskiStog\cf4  \cf0 x\cf4 \par
+{\pntext\f0 17.\tab}    \cf0 \{\cf4 \par
+{\pntext\f0 18.\tab}        \cf7 sub\cf4  \cf8 esp\cf5 ,\cf6 4\cf4 \par
+{\pntext\f0 19.\tab}        \cf7 mov\cf4  \cf9 dword\cf4  \cf5 [\cf8 esp\cf5 ],\cf0 x\cf4 \par
+{\pntext\f0 20.\tab}    \cf0 \}\cf4 \par
+{\pntext\f0 21.\tab}    \cf7 format\cf4  \cf0 PE\cf4  \cf0 console\cf4  \cf1 ;"PE" je 32-bitna Windowsova ".EXE" datoteka (to nije sve sto FlatAssembler moze stvarati).\par
+{\pntext\f0 22.\tab}\cf4     \cf7 entry\cf4  \cf0 start\cf4 \par
+{\pntext\f0 23.\tab}\par
+{\pntext\f0 24.\tab}    \cf7 include\cf4  \cf3 'win32a.inc'\cf4  \cf1 ;FlatAssemblerove naredbe za upravljanje DLL-ovima (ovdje se koriste za pozivanje C-ovih funkcija iz MSVCRT-a).\par
+{\pntext\f0 25.\tab}\cf4 \par
+{\pntext\f0 26.\tab}    \cf7 section\cf4  \cf3 '.text'\cf4  \cf0 code\cf4  \cf0 executable\cf4 \par
+{\pntext\f0 27.\tab}    \cf0 start:\cf4 \par
+{\pntext\f0 28.\tab}\cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 29.\tab}    \cf7 jmp\cf4  \cf0 velicinaUnosa$\cf4 \par
+{\pntext\f0 30.\tab}        \cf0 velicinaUnosa\cf4  \cf10 db\cf4  \cf3 "Unesite koliko cete brojeva unijeti."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 31.\tab}    \cf0 velicinaUnosa$:\cf4 \par
+{\pntext\f0 32.\tab}    \cf0 staviStringNaSistemskiStog\cf4  \cf0 velicinaUnosa\cf4 \par
+{\pntext\f0 33.\tab}    \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 34.\tab}\cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 35.\tab}    \cf0 staviPokazivacNaSistemskiStog\cf4  \cf0 n\cf4 \par
+{\pntext\f0 36.\tab}    \cf7 jmp\cf4  \cf0 znakZaFloat$\cf4 \par
+{\pntext\f0 37.\tab}        \cf0 znakZaFloat\cf4  \cf10 db\cf4  \cf3 "%f"\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 38.\tab}    \cf0 znakZaFloat$:\cf4 \par
+{\pntext\f0 39.\tab}    \cf0 staviStringNaSistemskiStog\cf4  \cf0 znakZaFloat\cf4 \par
+{\pntext\f0 40.\tab}    \cf7 call\cf4  \cf5 [\cf0 scanf\cf5 ]\cf4 \par
+{\pntext\f0 41.\tab}    \cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 42.\tab}        \cf7 jmp\cf4  \cf0 pitajZaUnos$\cf4 \par
+{\pntext\f0 43.\tab}            \cf0 pitajZaUnos\cf4  \cf10 db\cf4  \cf3 "Unesite te brojeve:"\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 44.\tab}        \cf0 pitajZaUnos$:\cf4 \par
+{\pntext\f0 45.\tab}        \cf0 staviStringNaSistemskiStog\cf4  \cf0 pitajZaUnos\cf4 \par
+{\pntext\f0 46.\tab}        \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 47.\tab}    \cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 48.\tab}\cf3 AsmEnd\cf4 \par
+{\pntext\f0 49.\tab}\cf0 i\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 50.\tab}\cf0 brojac\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 51.\tab}\cf0 vrhStoga\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 52.\tab}\cf11 While\cf4  \cf0 i\cf5 <\cf0 n\cf4 \par
+{\pntext\f0 53.\tab}    \cf0 pokazivac\cf5 :=\cf6 4\cf5 *\cf0 i\cf4  \cf1 ;"float" ima 4 bajta.\par
+{\pntext\f0 54.\tab}\cf4     \cf3 AsmStart\cf4 \par
+{\pntext\f0 55.\tab}        \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 56.\tab}        \cf7 fistp\cf4  \cf9 dword\cf4  \cf5 [\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 57.\tab}        \cf7 lea\cf4  \cf8 ebx\cf5 ,[\cf0 original\cf5 ]\cf4 \par
+{\pntext\f0 58.\tab}        \cf7 add\cf4  \cf8 ebx\cf5 ,[\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 59.\tab}        \cf0 staviPokazivacNaSistemskiStog\cf4  \cf8 ebx\cf4 \par
+{\pntext\f0 60.\tab}        \cf0 staviStringNaSistemskiStog\cf4  \cf0 znakZaFloat\cf4 \par
+{\pntext\f0 61.\tab}        \cf7 call\cf4  \cf5 [\cf0 scanf\cf5 ]\cf4 \par
+{\pntext\f0 62.\tab}    \cf3 AsmEnd\cf4 \par
+{\pntext\f0 63.\tab}    \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 64.\tab}\cf11 EndWhile\cf4 \par
+{\pntext\f0 65.\tab}\cf3 AsmStart\cf4 \par
+{\pntext\f0 66.\tab}    \cf7 call\cf4  \cf5 [\cf0 clock\cf5 ]\cf4  \cf1 ;"clock" na Windowsima vraca broj milisekundi otkad se program pokrenuo, zadnja 32 bita vraca u procesorski registar "eax".\par
+{\pntext\f0 67.\tab}\cf4     \cf7 mov\cf4  \cf5 [\cf0 procesorskoVrijeme\cf5 ],\cf8 eax\cf4 \par
+{\pntext\f0 68.\tab}\cf3 AsmEnd\cf4 \par
+{\pntext\f0 69.\tab}\cf0 razvrstanost\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 70.\tab}\cf0 i\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 71.\tab}\cf11 While\cf4  \cf0 i\cf5 <\cf0 n\cf5 -\cf6 1\cf4 \par
+{\pntext\f0 72.\tab}    \cf0 razvrstanost\cf5 :=\cf0 razvrstanost\cf5 +(\cf0 original\cf5 (\cf0 i\cf5 )<\cf0 original\cf5 (\cf0 i\cf5 +\cf6 1\cf5 ))\cf4 \par
+{\pntext\f0 73.\tab}    \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 74.\tab}    \cf0 brojac\cf5 :=\cf0 brojac\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 75.\tab}\cf11 EndWhile\cf4 \par
+{\pntext\f0 76.\tab}\cf0 razvrstanost\cf5 :=\cf0 razvrstanost\cf5 /((\cf0 n\cf5 -\cf6 1\cf5 )/\cf6 2\cf5 )\cf6 -1\cf4 \par
+{\pntext\f0 77.\tab}\cf3 AsmStart\cf4 \par
+{\pntext\f0 78.\tab}    \cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 79.\tab}        \cf7 jmp\cf4  \cf0 izvjesceORazvrstanosti$\cf4 \par
+{\pntext\f0 80.\tab}            \cf0 izvjesceORazvrstanosti\cf4  \cf10 db\cf4  \cf3 "Razvrstanost pocetnog niza iznosi: %f"\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 81.\tab}        \cf0 izvjesceORazvrstanosti$:\cf4 \par
+{\pntext\f0 82.\tab}        \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 razvrstanost\cf5 ]\cf4 \par
+{\pntext\f0 83.\tab}        \cf7 fstp\cf4  \cf9 qword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 84.\tab}        \cf0 staviStringNaSistemskiStog\cf4  \cf0 izvjesceORazvrstanosti\cf4 \par
+{\pntext\f0 85.\tab}        \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 86.\tab}    \cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 87.\tab}\cf3 AsmEnd\cf4 \par
+{\pntext\f0 88.\tab}\cf0 i\cf5 :=\cf6 2\cf4 \par
+{\pntext\f0 89.\tab}\cf11 While\cf4  \cf0 i\cf5 <\cf6 7\cf4  \cf5 |\cf4  \cf0 i\cf5 =\cf6 7\cf4  \par
+{\pntext\f0 90.\tab}    \cf0 razvrstanostNa\cf5 (\cf0 i\cf5 ):=\cf6 pow\cf5 (\cf6 abs\cf5 (\cf0 razvrstanost\cf5 ),\cf0 i\cf5 )\cf4  \cf1 ;"pow(x,y)" je u AEC-u samo sintaksni secer za "exp(ln(x)*y)", i to vraca NaN za x=0 ili x<0. Nema ocitog nacina da se "pow(x,y)" prevede na asemblerski.\par
+{\pntext\f0 91.\tab}\cf4     \cf11 If\cf4  \cf0 razvrstanost\cf5 =\cf6 0\cf4 \par
+{\pntext\f0 92.\tab}        \cf0 razvrstanostNa\cf5 (\cf0 i\cf5 ):=\cf6 0\cf4 \par
+{\pntext\f0 93.\tab}    \cf11 EndIf\cf4 \par
+{\pntext\f0 94.\tab}    \cf11 If\cf4  \cf6 mod\cf5 (\cf0 i\cf5 ,\cf6 2\cf5 )=\cf6 1\cf4  \cf5 &\cf4  \cf0 razvrstanost\cf5 <\cf6 0\cf4 \par
+{\pntext\f0 95.\tab}        \cf0 razvrstanostNa\cf5 (\cf0 i\cf5 ):=-\cf0 razvrstanostNa\cf5 (\cf0 i\cf5 )\cf4 \par
+{\pntext\f0 96.\tab}    \cf11 EndIf\cf4 \par
+{\pntext\f0 97.\tab}    \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 98.\tab}\cf11 EndWhile\cf4 \par
+{\pntext\f0 99.\tab}\cf1 ;Formula koju je ispisao genetski algoritam za predvidanje koliko ce usporedbi QuickSort napraviti: https://github.com/FlatAssembler/ArithmeticExpressionCompiler/tree/master/QuickSort/Genetic_algorithm_for_deriving_the_formula\par
+{\pntext\f0 100.\tab}\cf0 polinomPodApsolutnom\cf5 :=\cf6 2.38854\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 7\cf5 )\cf6 -0.284258\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 6\cf5 )\cf6 -1.87104\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 5\cf5 )\cf6 +0.372637\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 4\cf5 )\cf6 +0.167242\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 3\cf5 )\cf6 -0.0884977\cf5 *\cf0 razvrstanostNa\cf5 (\cf6 2\cf5 )\cf6 +0.315119\cf5 *\cf0 razvrstanost\cf4 \par
+{\pntext\f0 101.\tab}\cf0 eNaKoju\cf5 :=(\cf6 ln\cf5 (\cf0 n\cf5 )+\cf6 ln\cf5 (\cf6 ln\cf5 (\cf0 n\cf5 )))*\cf6 1.05\cf5 +(\cf6 ln\cf5 (\cf0 n\cf5 )-\cf6 ln\cf5 (\cf6 ln\cf5 (\cf0 n\cf5 )))*\cf6 0.83\cf5 *\cf6 abs\cf5 (\cf0 polinomPodApsolutnom\cf5 )\cf4 \par
+{\pntext\f0 102.\tab}\cf0 kolikoUsporedbiOcekujemoOdQuickSorta\cf5 :=\cf6 exp\cf5 (\cf0 eNaKoju\cf5 )\cf4 \par
+{\pntext\f0 103.\tab}\cf0 kolikoUsporedbiOcekujemoOdMergeSorta\cf5 :=\cf6 2\cf5 *\cf0 n\cf5 *\cf6 ln\cf5 (\cf0 n\cf5 )/\cf6 ln\cf5 (\cf6 2\cf5 )\cf4 \par
+{\pntext\f0 104.\tab}\cf3 AsmStart\cf4 \par
+{\pntext\f0 105.\tab}    \cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 106.\tab}        \cf7 jmp\cf4  \cf0 ispisOTomeStoOcekujemo$\cf4 \par
+{\pntext\f0 107.\tab}            \cf0 ispisOTomeStoOcekujemo\cf4  \cf10 db\cf4  \cf3 "Od QuickSorta ocekujemo %f usporedbi, a od MergeSorta ocekujemo %f usporedbi."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 108.\tab}        \cf0 ispisOTomeStoOcekujemo$:\cf4 \par
+{\pntext\f0 109.\tab}        \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 kolikoUsporedbiOcekujemoOdMergeSorta\cf5 ]\cf4 \par
+{\pntext\f0 110.\tab}        \cf7 fstp\cf4  \cf9 qword\cf4  \cf5 [\cf8 esp\cf5 +\cf6 8\cf5 ]\cf4 \par
+{\pntext\f0 111.\tab}        \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 kolikoUsporedbiOcekujemoOdQuickSorta\cf5 ]\cf4 \par
+{\pntext\f0 112.\tab}        \cf7 fstp\cf4  \cf9 qword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 113.\tab}        \cf0 staviStringNaSistemskiStog\cf4  \cf0 ispisOTomeStoOcekujemo\cf4 \par
+{\pntext\f0 114.\tab}        \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 115.\tab}    \cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 116.\tab}\cf3 AsmEnd\cf4 \par
+{\pntext\f0 117.\tab}\cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf5 :=\cf6 1\cf4  \cf1 ;Da, kada prijedemo MAX_SAFE_INTEGER za "float", ne pokusavamo vise dodavati jedinicu.\par
+{\pntext\f0 118.\tab}\cf0 pomocniBrojac\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 119.\tab}\cf11 If\cf4  \cf0 razvrstanost\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 120.\tab}    \cf3 AsmStart\cf4 \par
+{\pntext\f0 121.\tab}        \cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 122.\tab}            \cf7 jmp\cf4  \cf0 nizJeVecRazvrstan$\cf4 \par
+{\pntext\f0 123.\tab}                \cf0 nizJeVecRazvrstan\cf4  \cf10 db\cf4  \cf3 "Niz je vec poredan, ne radimo nista."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 124.\tab}            \cf0 nizJeVecRazvrstan$:\cf4 \par
+{\pntext\f0 125.\tab}            \cf7 invoke\cf4  \cf0 printf\cf5 ,\cf0 nizJeVecRazvrstan\cf4 \par
+{\pntext\f0 126.\tab}        \cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 127.\tab}    \cf3 AsmEnd\cf4 \par
+{\pntext\f0 128.\tab}\cf11 ElseIf\cf4  \cf0 razvrstanost\cf5 =(\cf6 -1\cf5 )\cf4  \cf1 ;Da, parser od AEC-a jos nije savrsen i javlja gresku za "razvrstanost=-1".\par
+{\pntext\f0 129.\tab}\cf4     \cf3 AsmStart\cf4 \par
+{\pntext\f0 130.\tab}        \cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 131.\tab}            \cf7 jmp\cf4  \cf0 nizJeObrnutoRazvrstan$\cf4 \par
+{\pntext\f0 132.\tab}                \cf0 nizJeObrnutoRazvrstan\cf4  \cf10 db\cf4  \cf3 "Niz je obrnuto poredan."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 133.\tab}            \cf0 nizJeObrnutoRazvrstan$:\cf4 \par
+{\pntext\f0 134.\tab}            \cf7 invoke\cf4  \cf0 printf\cf5 ,\cf0 nizJeObrnutoRazvrstan\cf4 \par
+{\pntext\f0 135.\tab}        \cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 136.\tab}    \cf3 AsmEnd\cf4 \par
+{\pntext\f0 137.\tab}    \cf0 i\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 138.\tab}    \cf11 While\cf4  \cf0 i\cf5 <\cf0 n\cf4 \par
+{\pntext\f0 139.\tab}        \cf0 pomocni\cf5 (\cf0 i\cf5 ):=\cf0 original\cf5 (\cf0 n\cf5 -\cf0 i\cf5 -\cf6 1\cf5 )\cf4 \par
+{\pntext\f0 140.\tab}        \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 141.\tab}        \cf0 brojac\cf5 :=\cf0 brojac\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 142.\tab}    \cf11 EndWhile\cf4 \par
+{\pntext\f0 143.\tab}    \cf0 i\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 144.\tab}    \cf11 While\cf4  \cf0 i\cf5 <\cf0 n\cf4 \par
+{\pntext\f0 145.\tab}        \cf0 original\cf5 (\cf0 i\cf5 ):=\cf0 pomocni\cf5 (\cf0 i\cf5 )\cf4 \par
+{\pntext\f0 146.\tab}        \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 147.\tab}    \cf11 EndWhile\cf4 \par
+{\pntext\f0 148.\tab}\cf11 ElseIf\cf4  \cf0 kolikoUsporedbiOcekujemoOdQuickSorta\cf5 <\cf0 kolikoUsporedbiOcekujemoOdMergeSorta\cf4 \par
+{\pntext\f0 149.\tab}    \cf3 AsmStart\cf4 \par
+{\pntext\f0 150.\tab}        \cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 151.\tab}            \cf7 jmp\cf4  \cf0 radimoQuickSort$\cf4 \par
+{\pntext\f0 152.\tab}                \cf0 radimoQuickSort\cf4  \cf10 db\cf4  \cf3 "Primijenit cemo QuickSort algoritam."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 153.\tab}            \cf0 radimoQuickSort$:\cf4 \par
+{\pntext\f0 154.\tab}            \cf7 invoke\cf4  \cf0 printf\cf5 ,\cf0 radimoQuickSort\cf4 \par
+{\pntext\f0 155.\tab}        \cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 156.\tab}    \cf3 AsmEnd\cf4 \par
+{\pntext\f0 157.\tab}    \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 158.\tab}    \cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf6 0\cf4 \par
+{\pntext\f0 159.\tab}    \cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 n\cf4 \par
+{\pntext\f0 160.\tab}    \cf11 While\cf4  \cf0 vrhStoga\cf5 >\cf6 0\cf4 \par
+{\pntext\f0 161.\tab}        \cf0 gornjaGranica\cf5 :=\cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 )\cf4 \par
+{\pntext\f0 162.\tab}        \cf0 donjaGranica\cf5 :=\cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 )\cf4 \par
+{\pntext\f0 163.\tab}        \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 -\cf6 1\cf4 \par
+{\pntext\f0 164.\tab}        \cf0 gdjeJePivot\cf5 :=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 165.\tab}        \cf0 i\cf5 :=\cf0 donjaGranica\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 166.\tab}        \cf11 While\cf4  \cf0 i\cf5 <\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 167.\tab}            \cf11 If\cf4  \cf0 original\cf5 (\cf0 i\cf5 )<\cf0 original\cf5 (\cf0 donjaGranica\cf5 )\cf4 \par
+{\pntext\f0 168.\tab}                \cf0 gdjeJePivot\cf5 :=\cf0 gdjeJePivot\cf5 +\cf6 1\cf4  \cf1 ;Gdje ce doci element koji je sada prvi ("pivot").\par
+{\pntext\f0 169.\tab}\cf4             \cf11 EndIf\cf4 \par
+{\pntext\f0 170.\tab}            \cf0 i\cf5 :=\cf0 i\cf5 ++\cf4  \cf1 ;"++" je u AEC-u jednostavno sintaksni secer za "+1".\par
+{\pntext\f0 171.\tab}\cf4         \cf11 EndWhile\cf4 \par
+{\pntext\f0 172.\tab}        \cf0 staviManje\cf5 :=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 173.\tab}        \cf0 staviVece\cf5 :=\cf0 gdjeJePivot\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 174.\tab}        \cf0 pomocni\cf5 (\cf0 gdjeJePivot\cf5 ):=\cf0 original\cf5 (\cf0 donjaGranica\cf5 )\cf4 \par
+{\pntext\f0 175.\tab}        \cf0 i\cf5 :=\cf0 donjaGranica\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 176.\tab}        \cf11 While\cf4  \cf0 i\cf5 <\cf0 gornjaGranica\cf4  \cf1 ;Preuredi niz original(donjaGranica..gornjaGranica-1) tako da svi elementi koji su manji od onoga koji je bio prvi dodu prije njega.\par
+{\pntext\f0 177.\tab}\cf4             \cf11 If\cf4  \cf0 original\cf5 (\cf0 i\cf5 )<\cf0 original\cf5 (\cf0 donjaGranica\cf5 )\cf4 \par
+{\pntext\f0 178.\tab}                \cf0 pomocni\cf5 (\cf0 staviManje\cf5 ):=\cf0 original\cf5 (\cf0 i\cf5 )\cf4 \par
+{\pntext\f0 179.\tab}                \cf0 staviManje\cf5 :=\cf0 staviManje\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 180.\tab}            \cf11 Else\cf4 \par
+{\pntext\f0 181.\tab}                \cf0 pomocni\cf5 (\cf0 staviVece\cf5 ):=\cf0 original\cf5 (\cf0 i\cf5 )\cf4 \par
+{\pntext\f0 182.\tab}                \cf0 staviVece\cf5 :=\cf0 staviVece\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 183.\tab}            \cf11 EndIf\cf4 \par
+{\pntext\f0 184.\tab}            \cf0 pomocniBrojac\cf5 :=\cf0 pomocniBrojac\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 185.\tab}            \cf11 If\cf4  \cf0 pomocniBrojac\cf5 =\cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf4 \par
+{\pntext\f0 186.\tab}                \cf0 brojac\cf5 :=\cf0 brojac\cf5 +\cf0 pomocniBrojac\cf4 \par
+{\pntext\f0 187.\tab}                \cf0 pomocniBrojac\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 188.\tab}            \cf11 EndIf\cf4 \par
+{\pntext\f0 189.\tab}            \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 190.\tab}        \cf11 EndWhile\cf4 \par
+{\pntext\f0 191.\tab}        \cf0 i\cf5 :=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 192.\tab}        \cf11 While\cf4  \cf0 i\cf5 <\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 193.\tab}            \cf0 original\cf5 (\cf0 i\cf5 ):=\cf0 pomocni\cf5 (\cf0 i\cf5 )\cf4 \par
+{\pntext\f0 194.\tab}            \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 195.\tab}        \cf11 EndWhile\cf4 \par
+{\pntext\f0 196.\tab}        \cf1 ;Razdvoji niz original(donjaGranica..gornjaGranica-1) na nizove original(donjaGranica..gdjeJePivot-1) i original(gdjeJePivot+1..gornjaGranica-1).\par
+{\pntext\f0 197.\tab}\cf4         \cf1 ;Znamo gdje je pivot, pa njega ne trebamo ukljuciti ni u jedan od tih nizova.\par
+{\pntext\f0 198.\tab}\cf4         \cf1 ;I ne trebamo na stog stavljati naputke o razvrstavanju nizova velicine 0 ili 1.\par
+{\pntext\f0 199.\tab}\cf4         \cf11 If\cf4  \cf0 gdjeJePivot\cf5 <\cf0 gornjaGranica\cf5 -\cf6 1\cf4 \par
+{\pntext\f0 200.\tab}            \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 201.\tab}            \cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 gdjeJePivot\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 202.\tab}            \cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 203.\tab}        \cf11 EndIf\cf4 \par
+{\pntext\f0 204.\tab}        \cf11 If\cf4  \cf0 gdjeJePivot\cf5 >\cf0 donjaGranica\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 205.\tab}            \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 206.\tab}            \cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 207.\tab}            \cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 gdjeJePivot\cf4 \par
+{\pntext\f0 208.\tab}        \cf11 EndIf\cf4 \par
+{\pntext\f0 209.\tab}        \cf0 testZaPreljev\cf5 :=\cf0 brojac\cf5 +\cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf4  \cf1 ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim. Izgubio sam hrpu vremena da to shvatim.\par
+{\pntext\f0 210.\tab}\cf4         \cf11 If\cf4  \cf6 not\cf5 (\cf0 testZaPreljev\cf5 >\cf0 brojac\cf5 )\cf4 \par
+{\pntext\f0 211.\tab}            \cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf5 :=\cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf5 *\cf6 2\cf4 \par
+{\pntext\f0 212.\tab}            \cf3 AsmStart\cf4 \par
+{\pntext\f0 213.\tab}                \cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 214.\tab}                    \cf7 jmp\cf4  \cf0 izvjesceOpreljevu$\cf4 \par
+{\pntext\f0 215.\tab}                        \cf0 izvjesceOpreljevu\cf4  \cf10 db\cf4  \cf3 "Upozorenje: Brojac mozda nece sadrzavati tocan rezultat, dogodio se preljev na %d. iteraciji."\cf4 \par
+{\pntext\f0 216.\tab}                        \cf10 db\cf4  \cf3 " Najveca ocekivana pogreska za ovaj preljev je %d krivo prebrojanih izvrsavanja unutarnje petlje."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 217.\tab}                    \cf0 izvjesceOpreljevu$:\cf4 \par
+{\pntext\f0 218.\tab}                    \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 gornjaGranica\cf5 ]\cf4 \par
+{\pntext\f0 219.\tab}                    \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 donjaGranica\cf5 ]\cf4 \par
+{\pntext\f0 220.\tab}                    \cf7 fsubp\cf4 \par
+{\pntext\f0 221.\tab}                    \cf7 fabs\cf4 \par
+{\pntext\f0 222.\tab}                    \cf7 fistp\cf4  \cf9 dword\cf4  \cf5 [\cf8 esp\cf5 +\cf6 4\cf5 ]\cf4 \par
+{\pntext\f0 223.\tab}                    \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 brojac\cf5 ]\cf4 \par
+{\pntext\f0 224.\tab}                    \cf7 fistp\cf4  \cf9 dword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 225.\tab}                    \cf7 invoke\cf4  \cf0 printf\cf5 ,\cf0 izvjesceOpreljevu\cf4 \par
+{\pntext\f0 226.\tab}                \cf7 end\cf4  \cf7 if\cf4       \par
+{\pntext\f0 227.\tab}            \cf3 AsmEnd\cf4 \par
+{\pntext\f0 228.\tab}        \cf11 EndIf\cf4 \par
+{\pntext\f0 229.\tab}    \cf11 EndWhile\cf4 \par
+{\pntext\f0 230.\tab}\cf11 Else\cf4 \par
+{\pntext\f0 231.\tab}    \cf3 AsmStart\cf4 \par
+{\pntext\f0 232.\tab}        \cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 233.\tab}            \cf7 jmp\cf4  \cf0 radimoMergeSort$\cf4 \par
+{\pntext\f0 234.\tab}                \cf0 radimoMergeSort\cf4  \cf10 db\cf4  \cf3 "Primijenit cemo MergeSort algoritam."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 235.\tab}            \cf0 radimoMergeSort$:\cf4 \par
+{\pntext\f0 236.\tab}            \cf7 invoke\cf4  \cf0 printf\cf5 ,\cf0 radimoMergeSort\cf4 \par
+{\pntext\f0 237.\tab}        \cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 238.\tab}    \cf3 AsmEnd\cf4 \par
+{\pntext\f0 239.\tab}    \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 240.\tab}    \cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf6 0\cf4 \par
+{\pntext\f0 241.\tab}    \cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 n\cf4 \par
+{\pntext\f0 242.\tab}    \cf0 stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 razdvajati\cf4 \par
+{\pntext\f0 243.\tab}    \cf11 While\cf4  \cf0 vrhStoga\cf5 >\cf6 0\cf4 \par
+{\pntext\f0 244.\tab}        \cf0 gornjaGranica\cf5 :=\cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 )\cf4 \par
+{\pntext\f0 245.\tab}        \cf0 donjaGranica\cf5 :=\cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 )\cf4 \par
+{\pntext\f0 246.\tab}        \cf0 trebaLiSpajatiIliRazdvajati\cf5 :=\cf0 stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove\cf5 (\cf0 vrhStoga\cf5 )\cf4 \par
+{\pntext\f0 247.\tab}        \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 -\cf6 1\cf4 \par
+{\pntext\f0 248.\tab}        \cf0 sredinaNiza\cf5 :=(\cf0 donjaGranica\cf5 +\cf0 gornjaGranica\cf5 )/\cf6 2\cf4 \par
+{\pntext\f0 249.\tab}        \cf0 sredinaNiza\cf5 :=\cf0 sredinaNiza\cf5 -\cf6 mod\cf5 (\cf0 sredinaNiza\cf5 ,\cf6 1\cf5 )\cf4 \par
+{\pntext\f0 250.\tab}        \cf11 If\cf4  \cf0 trebaLiSpajatiIliRazdvajati\cf5 =\cf0 razdvajati\cf4  \cf1 ;Razdvoji niz original(donjaGranica..gornjaGranica-1) na original(donjaGranica..sredinaNiza-1) i original(sredinaNiza..gornjaGranica-1).\par
+{\pntext\f0 251.\tab}\cf4             \cf11 If\cf4  \cf0 gornjaGranica\cf5 -\cf0 donjaGranica\cf5 >\cf6 1\cf4  \cf1 ;Niz velicine 0 ili 1 vec je poredan i ne radimo nista dalje.\par
+{\pntext\f0 252.\tab}\cf4                 \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 253.\tab}                \cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 254.\tab}                \cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 255.\tab}                \cf0 stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 spajati\cf4 \par
+{\pntext\f0 256.\tab}                \cf1 ;Stavljamo naputak za spajanje nizova prvog na stog kako bi on onda bio zadnji izvaden iz njega.\par
+{\pntext\f0 257.\tab}\cf4                 \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 258.\tab}                \cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 259.\tab}                \cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 sredinaNiza\cf4 \par
+{\pntext\f0 260.\tab}                \cf0 stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 razdvajati\cf4 \par
+{\pntext\f0 261.\tab}                \cf0 vrhStoga\cf5 :=\cf0 vrhStoga\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 262.\tab}                \cf0 stogSDonjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 sredinaNiza\cf4 \par
+{\pntext\f0 263.\tab}                \cf0 stogSGornjimGranicama\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 264.\tab}                \cf0 stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove\cf5 (\cf0 vrhStoga\cf5 ):=\cf0 razdvajati\cf4 \par
+{\pntext\f0 265.\tab}            \cf11 EndIf\cf4 \par
+{\pntext\f0 266.\tab}        \cf11 Else\cf4  \cf1 ;Spoji vec poredane nizove original(donjaGranica..sredinaNiza-1) i original(sredinaNiza..gornjaGranica-1) u novi poredani niz original(donjaGranica..gornjaGranica-1).\par
+{\pntext\f0 267.\tab}\cf4             \cf0 i\cf5 :=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 268.\tab}            \cf0 gdjeSmoUPrvomNizu\cf5 :=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 269.\tab}            \cf0 gdjeSmoUDrugomNizu\cf5 :=\cf0 sredinaNiza\cf4 \par
+{\pntext\f0 270.\tab}            \cf11 While\cf4  \cf0 i\cf5 <\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 271.\tab}                \cf11 If\cf4  \cf5 (\cf0 gdjeSmoUPrvomNizu\cf5 =\cf0 sredinaNiza\cf4  \cf5 |\cf4  \cf0 original\cf5 (\cf0 gdjeSmoUDrugomNizu\cf5 )<\cf0 original\cf5 (\cf0 gdjeSmoUPrvomNizu\cf5 ))\cf4  \cf5 &\cf4  \cf0 gdjeSmoUDrugomNizu\cf5 <\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 272.\tab}                    \cf0 pomocni\cf5 (\cf0 i\cf5 ):=\cf0 original\cf5 (\cf0 gdjeSmoUDrugomNizu\cf5 )\cf4 \par
+{\pntext\f0 273.\tab}                    \cf0 gdjeSmoUDrugomNizu\cf5 :=\cf0 gdjeSmoUDrugomNizu\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 274.\tab}                \cf11 Else\cf4 \par
+{\pntext\f0 275.\tab}                    \cf0 pomocni\cf5 (\cf0 i\cf5 ):=\cf0 original\cf5 (\cf0 gdjeSmoUPrvomNizu\cf5 )\cf4 \par
+{\pntext\f0 276.\tab}                    \cf0 gdjeSmoUPrvomNizu\cf5 :=\cf0 gdjeSmoUPrvomNizu\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 277.\tab}                \cf11 EndIf\cf4 \par
+{\pntext\f0 278.\tab}                \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 279.\tab}                \cf0 brojac\cf5 :=\cf0 brojac\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 280.\tab}            \cf11 EndWhile\cf4 \par
+{\pntext\f0 281.\tab}            \cf0 i\cf5 :=\cf0 donjaGranica\cf4 \par
+{\pntext\f0 282.\tab}            \cf11 While\cf4  \cf0 i\cf5 <\cf0 gornjaGranica\cf4 \par
+{\pntext\f0 283.\tab}                \cf0 original\cf5 (\cf0 i\cf5 ):=\cf0 pomocni\cf5 (\cf0 i\cf5 )\cf4 \par
+{\pntext\f0 284.\tab}                \cf0 brojac\cf5 :=\cf0 brojac\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 285.\tab}                \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 286.\tab}            \cf11 EndWhile\cf4 \par
+{\pntext\f0 287.\tab}        \cf11 EndIf\cf4 \par
+{\pntext\f0 288.\tab}    \cf11 EndWhile\cf4 \par
+{\pntext\f0 289.\tab}\cf11 EndIf\cf4 \par
+{\pntext\f0 290.\tab}\cf3 AsmStart\cf4 \par
+{\pntext\f0 291.\tab}    \cf7 call\cf4  \cf5 [\cf0 clock\cf5 ]\cf4 \par
+{\pntext\f0 292.\tab}    \cf7 sub\cf4  \cf8 eax\cf5 ,[\cf0 procesorskoVrijeme\cf5 ]\cf4 \par
+{\pntext\f0 293.\tab}    \cf7 mov\cf4  \cf5 [\cf0 procesorskoVrijeme\cf5 ],\cf8 eax\cf4 \par
+{\pntext\f0 294.\tab}\cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 295.\tab}    \cf7 jmp\cf4  \cf0 sortiraniNizJe$\cf4 \par
+{\pntext\f0 296.\tab}        \cf0 sortiraniNizJe\cf4  \cf10 db\cf4  \cf3 "Sortirani niz je:"\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 297.\tab}    \cf0 sortiraniNizJe$:\cf4 \par
+{\pntext\f0 298.\tab}    \cf0 staviStringNaSistemskiStog\cf4  \cf0 sortiraniNizJe\cf4 \par
+{\pntext\f0 299.\tab}    \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 300.\tab}\cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 301.\tab}\cf3 AsmEnd\cf4 \par
+{\pntext\f0 302.\tab}\cf0 i\cf5 :=\cf6 0\cf4 \par
+{\pntext\f0 303.\tab}\cf11 While\cf4  \cf0 i\cf5 <\cf0 n\cf4 \par
+{\pntext\f0 304.\tab}    \cf0 pokazivac\cf5 :=\cf6 4\cf5 *\cf0 i\cf4 \par
+{\pntext\f0 305.\tab}    \cf3 AsmStart\cf4 \par
+{\pntext\f0 306.\tab}        \cf7 lea\cf4  \cf8 ebx\cf5 ,[\cf0 original\cf5 ]\cf4 \par
+{\pntext\f0 307.\tab}        \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 308.\tab}        \cf7 fistp\cf4  \cf9 dword\cf4  \cf5 [\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 309.\tab}        \cf7 add\cf4  \cf8 ebx\cf5 ,[\cf0 pokazivac\cf5 ]\cf4 \par
+{\pntext\f0 310.\tab}        \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf8 ebx\cf5 ]\cf4 \par
+{\pntext\f0 311.\tab}        \cf7 fstp\cf4  \cf9 qword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4 \par
+{\pntext\f0 312.\tab}        \cf0 staviStringNaSistemskiStog\cf4  \cf0 znakZaFloatPlusNoviRedPlusNulZnak\cf4 \par
+{\pntext\f0 313.\tab}        \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 314.\tab}    \cf3 AsmEnd\cf4 \par
+{\pntext\f0 315.\tab}    \cf0 i\cf5 :=\cf0 i\cf5 +\cf6 1\cf4 \par
+{\pntext\f0 316.\tab}\cf11 EndWhile\cf4 \par
+{\pntext\f0 317.\tab}\cf3 AsmStart\cf4 \par
+{\pntext\f0 318.\tab}\cf7 if\cf4  \cf0 ispisPoruka\cf5 =\cf6 1\cf4 \par
+{\pntext\f0 319.\tab}    \cf0 staviIntNaSistemskiStog\cf4  \cf0 brojac\cf4 \par
+{\pntext\f0 320.\tab}    \cf0 staviStringNaSistemskiStog\cf4  \cf0 unutrasnjaPetljaString\cf4 \par
+{\pntext\f0 321.\tab}    \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 322.\tab}\cf3 AsmEnd\cf4 \par
+{\pntext\f0 323.\tab}    \cf0 n\cf5 *\cf6 ln\cf5 (\cf0 n\cf5 )/\cf6 ln\cf5 (\cf6 2\cf5 )\cf4  \cf1 ;Ovo ce se spremiti u "result", pomocnu varijablu koju koristi compiler za AEC.\par
+{\pntext\f0 324.\tab}\cf3 AsmStart\cf4 \par
+{\pntext\f0 325.\tab}    \cf7 fld\cf4  \cf9 dword\cf4  \cf5 [\cf3 result\cf5 ]\cf4 \par
+{\pntext\f0 326.\tab}    \cf7 fstp\cf4  \cf9 qword\cf4  \cf5 [\cf8 esp\cf5 ]\cf4  \cf1 ;"printf" iz MSVCRT-a za "%f" ocekuje 64-bitni "double", ili, na asemblerskom jeziku, "qword".\par
+{\pntext\f0 327.\tab}\cf4     \cf0 staviStringNaSistemskiStog\cf4  \cf0 slozenostString\cf4 \par
+{\pntext\f0 328.\tab}    \cf7 call\cf4  \cf5 [\cf0 printf\cf5 ]\cf4 \par
+{\pntext\f0 329.\tab}    \cf0 push\cf4  \cf9 dword\cf4  \cf5 [\cf0 procesorskoVrijeme\cf5 ]\cf4 \par
+{\pntext\f0 330.\tab}    \cf7 invoke\cf4  \cf0 printf\cf5 ,\cf0 sortiranjeJeTrajalo\cf4 \par
+{\pntext\f0 331.\tab}    \cf7 invoke\cf4  \cf0 system\cf5 ,\cf0 _pause\cf4 \par
+{\pntext\f0 332.\tab}\cf7 end\cf4  \cf7 if\cf4 \par
+{\pntext\f0 333.\tab}\cf7 invoke\cf4  \cf0 exit\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 334.\tab}\par
+{\pntext\f0 335.\tab}\cf1 ;"Konstante", ako njih pokusamo mijenjati, dobijemo Segmentation Fault:\par
+{\pntext\f0 336.\tab}\cf0 _pause\cf4  \cf10 db\cf4  \cf3 "PAUSE"\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 337.\tab}\cf0 znakZaCijeliBrojBroj\cf4  \cf10 db\cf4  \cf3 "%d"\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 338.\tab}\cf0 znakZaNoviRedPlusNulZnak\cf4  \cf10 db\cf4  \cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 339.\tab}\cf0 znakZaFloatPlusNoviRedPlusNulZnak\cf4  \cf10 db\cf4  \cf3 "%f"\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 340.\tab}\cf0 unutrasnjaPetljaString\cf4  \cf10 db\cf4  \cf3 "Unutrasnja petlja izvrsila se %d puta."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 341.\tab}\cf0 slozenostString\cf4  \cf10 db\cf4  \cf3 "Ocekivani broj ponavljanja te petlje, po formuli n*log2(n), bio bi %.1f."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 342.\tab}\cf0 sortiranjeJeTrajalo\cf4  \cf10 db\cf4  \cf3 "Sortiranje je trajalo %d milisekundi."\cf5 ,\cf6 10\cf5 ,\cf6 0\cf4 \par
+{\pntext\f0 343.\tab}\cf0 razdvajati\cf4  \cf10 dd\cf4  \cf6 0f\cf4 \par
+{\pntext\f0 344.\tab}\cf0 spajati\cf4  \cf10 dd\cf4  \cf6 1f\cf4 \par
+{\pntext\f0 345.\tab}\par
+{\pntext\f0 346.\tab}\cf7 section\cf4  \cf3 '.rdata'\cf4  \cf0 readable\cf4  \cf0 writable\cf4  \cf1 ;Varijable i polja (u drugom segmentu programa nego sto je izvrsni dio).\par
+{\pntext\f0 347.\tab}\cf4     \cf0 original:\cf4 \par
+{\pntext\f0 348.\tab}        \cf7 repeat\cf4  \cf6 32768\cf4  \cf1 ;Nije preporucljivo ovako na asemblerskom deklarirati nizove, ali zasto bih se pretvarao da radim za racunalom s 4 MB RAM-a, gdje je problem ucitati program gdje je jedan segment velik 640 KB?\par
+{\pntext\f0 349.\tab}\cf4             \cf10 dd\cf4  \cf6 0\cf4 \par
+{\pntext\f0 350.\tab}        \cf7 end\cf4  \cf7 repeat\cf4 \par
+{\pntext\f0 351.\tab}    \cf0 n\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 352.\tab}    \cf3 result\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 353.\tab}    \cf0 brojac\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 354.\tab}    \cf0 pokazivac\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 355.\tab}    \cf0 i\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 356.\tab}    \cf0 stogSDonjimGranicama:\cf4 \par
+{\pntext\f0 357.\tab}        \cf7 repeat\cf4  \cf6 32768\cf4 \par
+{\pntext\f0 358.\tab}            \cf10 dd\cf4  \cf6 0\cf4 \par
+{\pntext\f0 359.\tab}        \cf7 end\cf4  \cf7 repeat\cf4 \par
+{\pntext\f0 360.\tab}    \cf0 stogSGornjimGranicama:\cf4 \par
+{\pntext\f0 361.\tab}        \cf7 repeat\cf4  \cf6 32768\cf4 \par
+{\pntext\f0 362.\tab}            \cf10 dd\cf4  \cf6 0\cf4 \par
+{\pntext\f0 363.\tab}        \cf7 end\cf4  \cf7 repeat\cf4 \par
+{\pntext\f0 364.\tab}    \cf0 pomocni:\cf4 \par
+{\pntext\f0 365.\tab}        \cf7 repeat\cf4  \cf6 32768\cf4 \par
+{\pntext\f0 366.\tab}            \cf10 dd\cf4  \cf6 0\cf4 \par
+{\pntext\f0 367.\tab}        \cf7 end\cf4  \cf7 repeat\cf4 \par
+{\pntext\f0 368.\tab}    \cf0 vrhStoga\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 369.\tab}    \cf0 donjaGranica\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 370.\tab}    \cf0 gornjaGranica\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 371.\tab}    \cf0 staviVece\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 372.\tab}    \cf0 staviManje\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 373.\tab}    \cf0 gdjeJePivot\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 374.\tab}    \cf0 procesorskoVrijeme\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 375.\tab}    \cf0 razvrstanost\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 376.\tab}    \cf0 razvrstanostNa\cf4  \cf10 dd\cf4  \cf6 8\cf4  \cf0 DUP\cf5 (\cf0 ?\cf5 )\cf4 \par
+{\pntext\f0 377.\tab}    \cf0 polinomPodApsolutnom\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 378.\tab}    \cf0 eNaKoju\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 379.\tab}    \cf0 kolikoUsporedbiOcekujemoOdQuickSorta\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 380.\tab}    \cf0 kolikoUsporedbiOcekujemoOdMergeSorta\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 381.\tab}    \cf0 najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 382.\tab}    \cf0 pomocniBrojac\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 383.\tab}    \cf0 testZaPreljev\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 384.\tab}    \cf0 gdjeSmoUDrugomNizu\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 385.\tab}    \cf0 gdjeSmoUPrvomNizu\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 386.\tab}    \cf0 trebaLiSpajatiIliRazdvajati\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 387.\tab}    \cf0 sredinaNiza\cf4  \cf10 dd\cf4  \cf0 ?\cf4 \par
+{\pntext\f0 388.\tab}    \cf0 stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove:\cf4 \par
+{\pntext\f0 389.\tab}        \cf7 repeat\cf4  \cf6 32768\cf4 \par
+{\pntext\f0 390.\tab}            \cf10 dd\cf4  \cf6 0\cf4 \par
+{\pntext\f0 391.\tab}        \cf7 end\cf4  \cf7 repeat\cf4 \par
+{\pntext\f0 392.\tab}\par
+{\pntext\f0 393.\tab}\par
+{\pntext\f0 394.\tab}\cf7 section\cf4  \cf3 '.idata'\cf4  \cf0 data\cf4  \cf0 readable\cf4  \cf7 import\cf4 \par
+{\pntext\f0 395.\tab}    \cf7 library\cf4  \cf0 msvcrt\cf5 ,\cf3 'msvcrt.dll'\cf4  \cf1 ;"msvcrt.dll" je Microsoft Visual C Runtime Library, dostupna u "C:\\Windows\\System32\\msvcrt.dll" na Windows 98 i novijim.\par
+{\pntext\f0 396.\tab}\cf4         \cf7 import\cf4  \cf0 msvcrt\cf5 ,\cf0 printf\cf5 ,\cf3 'printf'\cf5 ,\cf0 system\cf5 ,\cf3 'system'\cf5 ,\cf0 exit\cf5 ,\cf3 'exit'\cf5 ,\cf0 scanf\cf5 ,\cf3 'scanf'\cf5 ,\cf0 clock\cf5 ,\cf3 'clock'\cf4 \par
+{\pntext\f0 397.\tab}\cf3 AsmEnd\cf4 \par
+} 
