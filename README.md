@@ -1,9 +1,9 @@
 # ArithmeticExpressionCompiler
 A compiler for my own simple low-level programming language, built in JavaScript using the Duktape framework.
 
-See this link for more information: http://flatassembler.000webhostapp.com/compiler.html
+See this link for more information: https://flatassembler.github.io/compiler.html
 
-"ArithmeticExpressionCompiler.zip" contains the 32-bit Windows executables of the compiler and some example programs. The source code is available at: https://flatassembler.000webhostapp.com/Duktape.zip
+"ArithmeticExpressionCompiler.zip" contains the 32-bit Windows executables of the compiler and some example programs. The source code is available at: https://flatassembler.github.io/Duktape.zip
 
 The file "compiler.html" contains the not-minified JavaScript of the file "compiler.js", present in those ZIP archives and necessary for ArithmeticExpressionCompiler to work.
 
