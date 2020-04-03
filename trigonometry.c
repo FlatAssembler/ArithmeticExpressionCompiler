@@ -4,7 +4,7 @@
         into C programs that can be compiled with GCC and CLANG.
 	 
         For an introduction into the topic, see:
-        http://flatassembler.000webhostapp.com/quadratic.c
+        https://flatassembler.github.io/quadratic.c
  */
 
 int printf(const char*, ...);
