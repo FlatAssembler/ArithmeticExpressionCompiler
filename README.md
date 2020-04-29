@@ -5,7 +5,7 @@ See this link for more information: https://flatassembler.github.io/compiler.htm
 
 "ArithmeticExpressionCompiler.zip" contains the 32-bit Windows executables of the compiler and some example programs. The source code is available at: https://flatassembler.github.io/Duktape.zip
 
-The file "compiler.html" contains the not-minified JavaScript of the file "compiler.js", present in those ZIP archives and necessary for ArithmeticExpressionCompiler to work.
+The file "compiler.html" contains the not-minified JavaScript of the file "compiler.js", present in those ZIP archives and necessary for ArithmeticExpressionCompiler to work. The "control.js" file shows a primitive way to deal with "If", "Else", "EndIf", "While" and similar directives, it's also present in the ZIP archives and necessary for ArithmeticExpressionCompiler to work.
 
 I've made a YouTube video about how you can set up a modern computer to program it in your own programming language, you can see it here: https://youtu.be/N2C1i8CW7Io
 
