@@ -99,7 +99,7 @@
             <button id="showMenu" style="display:none;">Show menu</button>
             Enter an arithmetic expression here:<br/>
             <input type="text" id="input"
-                    value="(abs(-(pow(sin(alpha),2)+pow(cos(alpha),2))-(-1))<1/1000)&((2+2=5)|(3+1>3.5))&(not(abs(arcsin(45)-mod(15/2,1))<1/1000)) ;This should always output '1' (However, because the 'pow' in i486 Assembly doesn't support negative bases, this works only for 0<alpha<90.)."
+                    value="((abs(-(pow(sin(alpha),2)+pow(cos(alpha),2))-(-1))<1/1000)&amp;((2+2=5)|(3+1>3.5))&amp;(not(abs(arcsin(45)-mod(15/2,1))<1/1000)))+(2+2>5?3+3<7?1:-2:2+2-4<1?0:-1) ;This should always output '1' (However, because the 'pow' in i486 Assembly doesn't support negative bases, this works only for 0<alpha<90.)."
                    style="width:100%"/><br/>
             <button onclick="compile()" style="float:left">Compile!</button>
             <button onclick="interpret()" style="float:right;">Interpret</button><br/><br/>
@@ -108,7 +108,7 @@
             Parsed (AST converted to an <a href="https://en.wikipedia.org/wiki/S-expression">S-expression</a>):<br/>
             <div id="LISP" style="font-family:'Lucida Console'"></div><br/>
             Compiled (to x86 assembly, Intel Syntax):<br/>
-            <div id="assembly" style="font-family:'Lucida Console'; background-color:#EEEEEE"></div><br/>
+            <div id="assembly" style="font-family:'Lucida Console'; background-color:#EEEEEE; width:100%; overflow:scroll; max-height:100%; white-space:nowrap;"></div><br/>
             Interpreter output: <span id="interpreter" style="font-family:'Courier New'">null</span><br><br>
             WARNING: The tokenizer, the parser and the compiler
             appear to generate correct results, but they haven't been rigorously tested.
@@ -136,7 +136,7 @@
             UPDATE on 15/10/2018: You can download my presentation (in Croatian) about how
             the compilers work <a href="prezentacija.zip">here</a> (It's a ZIP archive containing
             an ODP file, a PPT file and a PDF file, all saved from Impress. Hopefully, your computer can usefully open at
-            least one of those files!).<br/><br/>
+            least one of those files!). (<i>UPDATE: A way better version, written more than a year later, is available <a href="https://github.com/FlatAssembler/ArithmeticExpressionCompiler/raw/master/seminar/PojednostavljeniSeminar.pdf">here</a>.</i>)<br/><br/>
             UPDATE on 18/10/2018: If you have a modern browser, you can see the AST diagram
             by clicking <a href="javascript:void(0)" onclick="showAST()">here</a> (it requires a relatively
             advanced SVG support, seen in, for example, Internet Explorer 11). If you don't have,
@@ -322,11 +322,12 @@
                         for (var i = 0; i < this.operands.length; i++)
                             this.depth = Math.max(this.depth, this.operands[i].DFS() + 1);
                     return this.depth;
-                }
+                };
                 ret.toLisp = function ()
                 {
                     this.name = this.text;
-                    if (this.text.charAt(this.text.length - 1) == '(')
+                    if (this.text.charAt(this.text.length - 1) == '(' ||
+                            this.text.charAt(this.text.length - 1) == '[')
                         this.name = this.text.slice(0, this.text.length - 1);
                     if (this.operands.length)
                     {
@@ -346,6 +347,8 @@
                         return 1;
                     else if (this.text.charAt(0) >= "0" && this.text.charAt(0) <= "9")
                         return this.text * 1
+                    else if (this.text=="?:")
+                        return (this.operands[0].interpret())?(this.operands[1].interpret()):(this.operands[2].interpret());
                     else if (this.text == "+")
                         return this.operands[0].interpret() + this.operands[1].interpret();
                     else if (this.text == "-")
@@ -387,11 +390,7 @@
                     else if (this.text == "abs(")
                         return Math.abs(this.operands[0].interpret());
                     else if (this.text == "mod(")
-                    {
-                        var x=this.operands[0].interpret();
-                        var y=this.operands[1].interpret();
-                        return x-y*Math.floor(x/y);
-                    }
+                        return this.operands[0].interpret()%this.operands[1].interpret(); //U JavaScriptu, za razliku od C-a, operator '%' podrzava decimalne brojeve.
                     else if (this.text == "=")
                         return (this.operands[0].interpret() == this.operands[1].interpret()) * 1;
                     else if (this.text == "<")
@@ -437,14 +436,37 @@
                         else
                             alert("Interpreter error: Variable \'"+this.text+"\' is not declared.");
                     return varijable[this.text] * 1;
-                }
+                };
                 ret.compile = function ()
                 {
-                    if (this.text == " ")
+                    if (this.text == ' ')
                         return;
                     if (this.text == '+' && !this.operands.length) //Ako netko unese, na primjer, "c++".
                         this.text = '1';
                     //Problem: Sto ako netko unese "c--"? Da to rijesimo, morali bismo nekako izmijeniti parser, ako ne i tokenizer.
+                    if (this.text == "?:") //Ako je rekurzija dosla na cvor u AST-u s uvijetnim operatorom.
+                    {
+                        this.operands[2].compile(); //Prevedi prvo treci operand na asemblerski...
+                        this.operands[1].compile(); //...zatim prevedi drugi operand...
+                        this.operands[0].compile(); //...te konacno prevedi uvijet.
+                        //Sada je uvijet na vrhu FPU stoga.
+                        asm("fistp dword [result]"); //Prebaci taj uvijet u varijablu "rezultat".
+                        asm("xor eax,eax"); //Obrisi sadrzaj CPU registra.
+                        asm("cmp dword [result],eax"); //Usporedi rezultat sa sadrzajem tog registra (to jest, s nulom).
+                        var prvi = (highlight?"<span style=\"color:#777700\">":"") + "l" + Math.round(Math.random() * 1000000) + (highlight?"<\/span>":"");
+                        var drugi = (highlight?"<span style=\"color:#777700\">":"") + "l" + Math.round(Math.random() * 1000000) + (highlight?"<\/span>":"");
+                        asm("jz " + prvi); //Ako prvi operand nije nula...
+                        asm("fstp dword [result]");
+                        asm("mov eax,[result]"); //Spremi drugi operand u CPU-ov registar i...
+                        asm("fstp dword [result]"); //...obrisi treci operand sa FPU stoga, a zatim...
+                        asm("mov dword [result],eax");
+                        asm("fld dword [result]"); //...ponovno ucitaj drugi operand iz registra na stog.
+                        asm("jmp " + drugi);
+                        asm(prvi + ":"); //Inace, ako prvi operand jest nula...
+                        asm("fstp dword [result]"); //Obrisi drugi operand sa stoga, a na stogu, naravno, zadrzi treci operand.
+                        asm(drugi + ":");
+                        return;
+                    }
                     var zamijeni = false;
                     if (this.operands.length > 1 && this.operands[0].DFS() < this.operands[1].DFS())
                     {
@@ -584,7 +606,7 @@
                         asm("fistp dword [result]");
                         asm("or [result],eax");
                         asm("fild dword [result]");
-                    } else if (this.text.charAt(this.text.length - 1) == '(') {
+                    } else if (this.text.charAt(this.text.length - 1) == '(' || this.text.charAt(this.text.length - 1) == '[') {
                         if (typeof window != "undefined") {
                             alerted = 1;
                             alert("Compiler error: Unrecognized function name \'" + this.text.slice(0, this.text.length - 1) + '\'.');
@@ -599,7 +621,7 @@
                     {
                         asm("fld dword "+(highlight?"<span style=\"color:#770000\">":"")+"[" + this.text + "]"+(highlight?"</span>":""));
                     }
-                }
+                };
                 return ret;
             }
             function tokenizeArth(arth)
@@ -625,6 +647,7 @@
                             && arth.charAtIndex(i) <= "Z"
                             || arth.charAtIndex(i) >= "a"
                             && arth.charAtIndex(i) <= "z"
+                            || arth.charAtIndex(i) == '_'
                             || ret[ret.length - 1] == "sin" && arth.charAtIndex(i) == '('
                             || ret[ret.length - 1] == "cos" && arth.charAtIndex(i) == '('
                             || ret[ret.length - 1] == "tan" && arth.charAtIndex(i) == '('
@@ -653,7 +676,8 @@
                             ret.pop();
                         }
                     }
-                    if (ret[ret.length - 1].charAtIndex(ret[ret.length - 1].length - 1) == '(' && !isString)
+                    if ((ret[ret.length - 1].charAtIndex(ret[ret.length - 1].length - 1) == '(' ||
+                        ret[ret.length - 1].charAtIndex(ret[ret.length - 1].length - 1) == '[')  && !isString)
                     {
                         ret.push("");
                     }
@@ -666,7 +690,8 @@
                     }
                 for (var i = 1; i < ret.length; i++)
                     if (ret[i] == '-' &&
-                            (ret[i - 1] == '+' || ret[i - 1] == '-' || ret[i - 1] == '*' || ret[i - 1] == '/')) //Ako netko unese nesto kao "a*-b"
+                            (ret[i - 1] == '+' || ret[i - 1] == '-' || ret[i - 1] == '*' || ret[i - 1] == '/' ||
+                            ret[i - 1] == '>' || ret[i - 1] == '<' || ret[i - 1] == '=' || ret[i - 1] == ':' || ret[i - 1] == '?')) //Ako netko unese nesto kao "a*-b"
                     {
                         ret.splice(i, 0, '(');
                         if (i + 2 >= ret.length)
@@ -699,9 +724,10 @@
                         }
                     }
                 for (var i = 0; i < ret.length; i++)
-                    if (ret[i].charAt(0) >= 'a' && ret[i].charAt(0) <= 'z' && ret[i + 1] == '(' && ret[i].charAt(ret[i].length - 1) != '(')
+                    if (ret[i].charAt(0) >= 'a' && ret[i].charAt(0) <= 'z' && (ret[i + 1] == '(' && ret[i].charAt(ret[i].length - 1) != '('
+                        || ret[i + 1] == '['))
                     {
-                        ret[i] += '(';
+                        ret[i] += ret[i + 1];
                         ret.splice(i + 1, 1);
                     } else if (ret[i].charAt(0) >= '0' && ret[i].charAt(0) <= '9')
                     {
@@ -735,7 +761,8 @@
                     return Token(" ");
                 }
                 for (var i = 0; i < arth.length; i++)
-                    arth[i] = Token(arth[i]);
+                    if (arth[i].text==undefined)
+                        arth[i] = Token(arth[i]);
                 for (var i = 0; i < arth.length; i++)
                     if ((arth[i].text == "pow(" || arth[i].text == "atan2(" || arth[i].text=="mod(") && !arth[i].operands.length)
                     {
@@ -787,7 +814,8 @@
                             tmp.operands.push(arth[i]);
                             arth[i] = tmp;
                         }
-                    } else if (arth[i].text.charAt(arth[i].text.length - 1) == '(' && !arth[i].operands.length
+                    } else if ((arth[i].text.charAt(arth[i].text.length - 1) == '(' || arth[i].text.charAt(arth[i].text.length - 1) == '[')
+                            && !arth[i].operands.length
                             && arth[i].text != "pow(" && arth[i].text != "atan2(" && arth[i].text != "mod(" && arth[i].text != '(')
                     {
                         var c = 1;
@@ -801,9 +829,9 @@
                                 alert("Parser error: Expected a ')' to mark the end of the argument of a unary function.");
                                 return arth[0];
                             }
-                            if (arth[i + j].text == ')')
+                            if (arth[i + j].text == ')' || arth[i + j].text == ']')
                                 c--;
-                            else if (arth[i + j].text.charAt(arth[i + j].text.length - 1) == '('
+                            else if ((arth[i + j].text.charAt(arth[i + j].text.length - 1) == '(' || arth[i + j].text.charAt(arth[i + j].text.length - 1) == '[')
                                     && !arth[i + j].operands.length)
                                 c++;
                         }
@@ -940,6 +968,38 @@
                         arth.splice(i, 1);
                         i--;
                     }
+                for (var i = 0; i < arth.length; i++)
+                    if (arth[i].text == '?') {
+                        if (arth.length - 1 == i || !i) {
+                            alerted = 1;
+                            alert("Parser error: The trinary operator '?:' has less than three operands!");
+                            return arth[0];
+                        }
+                        arth[i].operands.push(arth[i - 1]);
+                        arth[i].text = "?:";
+                        var j=1;
+                        var c=1;
+                        do {
+                            if (i+j>=arth.length) {
+                                alerted=1;
+                                alert("Parser error: There is a '?' without its corresponding ':'.");
+                                return arth[0];
+                            }
+                            if (arth[i+j].text=='?') c++;
+                            if (arth[i+j].text==':') c--;
+                            j++;
+                        }
+                        while (c);
+                        var drugiOperand=new Array();
+                        for (var k=i+1; k<i+j-1; k++)
+                            drugiOperand.push(arth[k]);
+                        arth[i].operands.push(parseArth(drugiOperand));
+                        var treciOperand=new Array();
+                        for (var k=i+j; k<arth.length; k++)
+                            treciOperand.push(arth[k]);
+                        arth[i].operands.push(parseArth(treciOperand));
+                        arth=[arth[i]]; //Znam da ovo nije bas pametno, ali raditi ce dokle god je uvijetni operator upravo operator najnizeg prioriteta u cijelom jeziku.
+                    }
                 if (arth.length > 1) {
                     alerted = 1;
                     alert("Parser error: Unexpected token \'" + arth[1].text + "\'.");
@@ -963,7 +1023,7 @@
             var mnemonike = ['mov', 'fxch', 'fabs', 'fild', 'f2xm1', 'fprem', 'fld1', 'fscale',
                 'fldl2e', 'fyl2x', 'fldpi', 'fstp', 'fld', 'fpatan', 'fsqrt', 'fsincos', 'fcos',
                 'fsin', 'fdivp', 'fmulp', 'fsubp', 'faddp', 'finit', 'fcomip', 'jne', 'jmp', 'fldz',
-                'jna', 'jnb', 'fistp', 'and', 'or'];
+                'jna', 'jnb', 'fistp', 'and', 'or','xor','jz','cmp'];
             var registri = ['eax', 'st0', 'st1'];
             var assembler = "";
             function compile()
