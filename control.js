@@ -3,7 +3,7 @@ var hasElse=[];
 isAssembly=false;
 function compileString(str)
 {
-	str=str.replace(/^\s*/,"");
+    str=str.replace(/^\s*/,"");
     if (/^AsmEnd/.test(str))
     {
         asm(";Inline assembly ended.");
@@ -24,14 +24,22 @@ function compileString(str)
     asm(';'+str);
     if (!str || str[0]==';') return;
     asm("finit");
-    if (str.indexOf(":=")+1)
-	{
-		var variableName=str.substr(0,str.indexOf(":="));
+    if (str.indexOf("<=")+1) {
+        var constantName=str.substr(0,str.indexOf("<="));
+        constantName=constantName.replace(/\s*$/,"");
+        var constantValue=str.substr(str.indexOf("<=")+"<=".length);
+        asm("jmp "+constantName+"$");
+        asm(constantName+" db "+constantValue);
+        asm(constantName+"$:");
+    }
+    else if (str.indexOf(":=")+1)
+    {
+        var variableName=str.substr(0,str.indexOf(":="));
         variableName=variableName.replace(/\s*$/,"");
-		var arth=str.substr(str.indexOf(":=")+":=".length);
-		parseArth(tokenizeArth(arth)).compile();
-		asm("fstp dword [result]");
-		asm("mov edx, dword [result]");
+        var arth=str.substr(str.indexOf(":=")+":=".length);
+        parseArth(tokenizeArth(arth)).compile();
+        asm("fstp dword [result]");
+        asm("mov edx, dword [result]");
         if (variableName.indexOf("[")+1 || variableName.indexOf("(")+1)
         {
             var indexOfBracket=(variableName.indexOf("[")+1 || variableName.indexOf("(")+1)-1;
@@ -44,8 +52,8 @@ function compileString(str)
         }
         else
             asm("mov dword ["+variableName+"],edx");
-	}
-    else if (/^If/.test(str))
+    }
+    else if (/^If\s/.test(str))
     {
         var arth=str.substr("If ".length);
         parseArth(tokenizeArth(arth)).compile();
@@ -67,7 +75,7 @@ function compileString(str)
             asm(stack.pop()+":");
             asm(stack.pop()+":");
         }
-    else if (/^ElseIf/.test(str)) {
+    else if (/^ElseIf\s/.test(str)) {
         var labelOfElse=stack.pop();
         var labelOfEndIf=stack.pop();
         asm("jmp "+labelOfEndIf);
@@ -92,7 +100,7 @@ function compileString(str)
         hasElse.pop();
         hasElse.push(true);
     }
-    else if (/^While/.test(str))
+    else if (/^While\s/.test(str))
     {
         var arth=str.substr("While ".length);
         var label1="l"+(Math.floor(Math.random()*1000000));
@@ -113,9 +121,9 @@ function compileString(str)
         asm("jmp "+whileLabel);
         asm(endWhileLabel+':');
     }
-	else
-	{
-		parseArth(tokenizeArth(str)).compile();
-		asm("fstp dword [result]");
-	}
+    else
+    {
+        parseArth(tokenizeArth(str)).compile();
+        asm("fstp dword [result]");
+    }
 }
