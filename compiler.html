@@ -331,19 +331,19 @@
       }
       function faddp() {
         //Dodaje pretposljednjem broju posljednji broj na FPU stogu i brise posljednji broj
-        asm("faddp st1,st0");
+        asm("faddp");
       }
       function fsubp() {
         //Oduzima posljednji broj od pretposljednjeg te brise posljednji broj na stogu
-        asm("fsubp st1,st0");
+        asm("fsubp");
       }
       function fmulp() {
         //Mnozi zadnja dva broja na FPU stogu, uklanja ih sa stoga, te rezultat dodaje na vrh stoga
-        asm("fmulp st1,st0");
+        asm("fmulp");
       }
       function fdivp() {
         //Dijeli pretposljednji broj na FPU stogu s posljednjim, brise sa stoga ta dva broja te rezultat dodaje na stog
-        asm("fdivp st1,st0");
+        asm("fdivp");
       }
       function fsinp() {
         //Zamijenjuje zadnji broj na stogu njegovim sinusom (radijani)
@@ -422,12 +422,12 @@
         // -||- dekadskim logaritmom (po formuli ln(x)/ln(10))
         flnp();
         asm(
-          "mov [result]," +
+          "mov dword [result]," +
             (highlight ? '<span style="color:#007700">' : "") +
             "10" +
             (highlight ? "</span>" : "")
         );
-        asm("fild [result]");
+        asm("fild dword [result]");
         flnp();
         fdivp();
       }
@@ -563,7 +563,7 @@
           else if (this.text == "ln(")
             return Math.log(this.operands[0].interpret());
           else if (this.text == "log(")
-            return Math.log10(this.operands[0].interpret());
+            return Math.log(this.operands[0].interpret()) / Math.log(10);
           else if (this.text == "exp(")
             return Math.exp(this.operands[0].interpret());
           else if (this.text == "pow(")
@@ -682,7 +682,7 @@
               (highlight ? "<\/span>" : "");
             asm("jz " + prvi); //Ako prvi operand nije nula...
             asm("fstp dword [result]");
-            asm("mov eax,[result]"); //Spremi drugi operand u CPU-ov registar i...
+            asm("mov eax, dword [result]"); //Spremi drugi operand u CPU-ov registar i...
             asm("fstp dword [result]"); //...obrisi treci operand sa FPU stoga, a zatim...
             asm("mov dword [result],eax");
             asm("fld dword [result]"); //...ponovno ucitaj drugi operand iz registra na stog.
@@ -709,7 +709,7 @@
             //Broj
             if (typeof getIEEE754 != "function")
               asm(
-                "mov [result]," +
+                "mov dword [result]," +
                   (highlight ? '<span style="color:#007700">' : "") +
                   this.text +
                   "f" +
@@ -739,7 +739,7 @@
           else if (this.text == "ctg(") {
             ftanp();
             asm(
-              "mov [result]," +
+              "mov dword [result]," +
                 (highlight ? '<span style="color:#007700">' : "") +
                 "-1f" +
                 (highlight ? "</span>" : "")
@@ -752,7 +752,7 @@
             fatanp();
             asm("fldpi");
             asm(
-              "mov [result]," +
+              "mov dword [result]," +
                 (highlight ? '<span style="color:#007700">' : "") +
                 "2f" +
                 (highlight ? "</span>" : "")
@@ -781,7 +781,7 @@
               "l" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
-            asm("fcomip st1");
+            asm("fcomip");
             asm("fstp dword [result]");
             asm("jne " + prvi);
             asm("fld1");
@@ -800,7 +800,7 @@
               "l" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
-            asm("fcomip st1");
+            asm("fcomip");
             asm("fstp dword [result]");
             asm("jna " + prvi);
             asm("fld1");
@@ -819,7 +819,7 @@
               "l" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
-            asm("fcomip st1");
+            asm("fcomip");
             asm("fstp dword [result]");
             asm("jnb " + prvi);
             asm("fld1");
@@ -844,9 +844,9 @@
                 "Compiler warning: Casting a non-Boolean number into Boolean, may cause undefined behaviour."
               );
             asm("fistp dword [result]");
-            asm("mov eax,[result]");
+            asm("mov eax,dword [result]");
             asm("fistp dword [result]");
-            asm("and [result],eax");
+            asm("and dword [result],eax");
             asm("fild dword [result]");
           } else if (this.text == "|") {
             if (
@@ -857,9 +857,9 @@
                 "Compiler warning: Casting a non-Boolean number into Boolean, may cause undefined behaviour."
               );
             asm("fistp dword [result]");
-            asm("mov eax,[result]");
+            asm("mov eax,dword [result]");
             asm("fistp dword [result]");
-            asm("or [result],eax");
+            asm("or dword [result],eax");
             asm("fild dword [result]");
           } else if (
             this.text.charAt(this.text.length - 1) == "(" ||
@@ -882,7 +882,7 @@
             } else {
               //Hajdemo ovako jednostavno implementirati pokazivace u Duktapeu, kao u QBASIC-u :-)!
               asm("fistp dword [result]");
-              asm("mov ebx,[result]");
+              asm("mov ebx, dword [result]");
               asm(
                 "fld dword [" +
                   this.text.substr(0, this.text.length - 1) +
