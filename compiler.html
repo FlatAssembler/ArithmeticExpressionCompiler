@@ -781,7 +781,7 @@
               "l" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
-            asm("fcomip");
+            asm("fcomip st1");
             asm("fstp dword [result]");
             asm("jne " + prvi);
             asm("fld1");
@@ -800,7 +800,7 @@
               "l" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
-            asm("fcomip");
+            asm("fcomip st1");
             asm("fstp dword [result]");
             asm("jna " + prvi);
             asm("fld1");
@@ -819,7 +819,7 @@
               "l" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
-            asm("fcomip");
+            asm("fcomip st1");
             asm("fstp dword [result]");
             asm("jnb " + prvi);
             asm("fld1");
@@ -1385,7 +1385,7 @@
         "fsubp",
         "faddp",
         "finit",
-        "fcomip",
+        "fcomip st1",
         "jne",
         "jmp",
         "fldz",
