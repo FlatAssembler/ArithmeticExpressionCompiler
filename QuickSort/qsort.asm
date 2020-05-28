@@ -73,21 +73,21 @@ mov edx, dword [result]
 mov dword [vrhStoga],edx
 ;While i<n
 finit
-WhileLabel987159:
+WhileLabel97768:
 fld dword [i]
 fld dword [n]
 fcomip st1
 fstp dword [result]
-jna l428826
+jna secondOperandOfTheComparisonIsSmallerLabel147258
 fld1
-jmp l743599
-l428826:
+jmp endOfTheLessThanComparisonLabel288792
+secondOperandOfTheComparisonIsSmallerLabel147258:
 fldz
-l743599:
+endOfTheLessThanComparisonLabel288792:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel369941
+je EndWhileLabel466207
 ;pokazivac:=4*i
 finit
 mov dword [result],0x40800000 ;IEEE754 hex of 4
@@ -119,8 +119,8 @@ mov edx, dword [result]
 mov dword [i],edx
 ;EndWhile
 finit
-jmp WhileLabel987159
-EndWhileLabel369941:
+jmp WhileLabel97768
+EndWhileLabel466207:
 ;AsmStart
 ;Inline assembly begins.
 call [clock]
@@ -143,7 +143,7 @@ mov edx, dword [result]
 mov dword [i],edx
 ;While i<n-1
 finit
-WhileLabel209135:
+WhileLabel161411:
 fld dword [n]
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
@@ -152,16 +152,16 @@ fld dword [i]
 fxch
 fcomip st1
 fstp dword [result]
-jna l617491
+jna secondOperandOfTheComparisonIsSmallerLabel989627
 fld1
-jmp l950755
-l617491:
+jmp endOfTheLessThanComparisonLabel808810
+secondOperandOfTheComparisonIsSmallerLabel989627:
 fldz
-l950755:
+endOfTheLessThanComparisonLabel808810:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel199772
+je EndWhileLabel590210
 ;razvrstanost:=razvrstanost+(original(i)<original(i+1))
 finit
 fld dword [i]
@@ -178,12 +178,12 @@ fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply
 fxch
 fcomip st1
 fstp dword [result]
-jna l873582
+jna secondOperandOfTheComparisonIsSmallerLabel808558
 fld1
-jmp l721478
-l873582:
+jmp endOfTheLessThanComparisonLabel789464
+secondOperandOfTheComparisonIsSmallerLabel808558:
 fldz
-l721478:
+endOfTheLessThanComparisonLabel789464:
 fld dword [razvrstanost]
 fxch
 faddp
@@ -201,8 +201,8 @@ mov edx, dword [result]
 mov dword [i],edx
 ;EndWhile
 finit
-jmp WhileLabel209135
-EndWhileLabel199772:
+jmp WhileLabel161411
+EndWhileLabel590210:
 ;razvrstanost:=razvrstanost/((n-1)/2)-1
 finit
 fld dword [n]
@@ -230,29 +230,29 @@ mov edx, dword [result]
 mov dword [i],edx
 ;While i<7 | i=7 ;Kada nisam stavio operator "<=" u svoj jezik.
 finit
-WhileLabel237798:
+WhileLabel944877:
 fld dword [i]
 mov dword [result],0x40e00000 ;IEEE754 hex of 7
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jna l432133
+jna secondOperandOfTheComparisonIsSmallerLabel787163
 fld1
-jmp l989810
-l432133:
+jmp endOfTheLessThanComparisonLabel68611
+secondOperandOfTheComparisonIsSmallerLabel787163:
 fldz
-l989810:
+endOfTheLessThanComparisonLabel68611:
 fld dword [i]
 mov dword [result],0x40e00000 ;IEEE754 hex of 7
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jne l950315
+jne operandsOfTheEqualityOperatorAreNotEqualLabel715154
 fld1
-jmp l459594
-l950315:
+jmp endOfTheEqualityOperatorLabel725416
+operandsOfTheEqualityOperatorAreNotEqualLabel715154:
 fldz
-l459594:
+endOfTheEqualityOperatorLabel725416:
 fistp dword [result]
 mov eax,dword [result]
 fistp dword [result]
@@ -261,7 +261,7 @@ fild dword [result]
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel904564
+je EndWhileLabel18671
 ;razvrstanostNa(i):=pow(abs(razvrstanost),i) ;Zato sto je "pow(x,y)" u tom mom jeziku samo sintakticki secer za "exp(ln(x)*y)", i to vraca "NaN" za x<=0. Nema ocitog nacina da se "pow" prevede na Assembler.
 finit
 fld dword [razvrstanost]
@@ -298,16 +298,16 @@ mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jne l931791
+jne operandsOfTheEqualityOperatorAreNotEqualLabel722204
 fld1
-jmp l233277
-l931791:
+jmp endOfTheEqualityOperatorLabel279087
+operandsOfTheEqualityOperatorAreNotEqualLabel722204:
 fldz
-l233277:
+endOfTheEqualityOperatorLabel279087:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel722864
+jz ElseLabel44013
 ;razvrstanostNa(i):=0
 finit
 mov dword [result],0x0 ;IEEE754 hex of 0
@@ -320,8 +320,8 @@ mov ebx, dword [result]
 mov dword [razvrstanostNa+4*ebx],edx
 ;EndIf
 finit
-ElseLabel722864:
-EndIfLabel957999:
+ElseLabel44013:
+EndIfLabel262392:
 ;If mod(i,2)=1 & razvrstanost<0
 finit
 fld dword [i]
@@ -335,23 +335,23 @@ mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jne l846688
+jne operandsOfTheEqualityOperatorAreNotEqualLabel174650
 fld1
-jmp l515907
-l846688:
+jmp endOfTheEqualityOperatorLabel380555
+operandsOfTheEqualityOperatorAreNotEqualLabel174650:
 fldz
-l515907:
+endOfTheEqualityOperatorLabel380555:
 fld dword [razvrstanost]
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jna l907735
+jna secondOperandOfTheComparisonIsSmallerLabel505499
 fld1
-jmp l28814
-l907735:
+jmp endOfTheLessThanComparisonLabel660858
+secondOperandOfTheComparisonIsSmallerLabel505499:
 fldz
-l28814:
+endOfTheLessThanComparisonLabel660858:
 fistp dword [result]
 mov eax,dword [result]
 fistp dword [result]
@@ -360,7 +360,7 @@ fild dword [result]
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel658392
+jz ElseLabel383841
 ;razvrstanostNa(i):=-razvrstanostNa(i)
 finit
 fld dword [i]
@@ -379,8 +379,8 @@ mov ebx, dword [result]
 mov dword [razvrstanostNa+4*ebx],edx
 ;EndIf
 finit
-ElseLabel658392:
-EndIfLabel666736:
+ElseLabel383841:
+EndIfLabel345255:
 ;i:=i+1
 finit
 fld dword [i]
@@ -392,8 +392,8 @@ mov edx, dword [result]
 mov dword [i],edx
 ;EndWhile
 finit
-jmp WhileLabel237798
-EndWhileLabel904564:
+jmp WhileLabel944877
+EndWhileLabel18671:
 ;;f(n,s)=exp((ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(2.38854*pow(s,7)-0.284258*pow(s,6)-1.87104*pow(s,5)+0.372637*pow(s,4)+0.167242*pow(s,3)-0.0884977*pow(s,2)+0.315119*s))
 ;polinomPodApsolutnom:=2.38854*razvrstanostNa(7)-0.284258*razvrstanostNa(6)-1.87104*razvrstanostNa(5)+0.372637*razvrstanostNa(4)+0.167242*razvrstanostNa(3)-0.0884977*razvrstanostNa(2)+0.315119*razvrstanost
 finit
@@ -579,22 +579,22 @@ mov ebx, dword [result]
 mov dword [stogSGornjimGranicama+4*ebx],edx
 ;While vrhStoga>0
 finit
-WhileLabel373013:
+WhileLabel130050:
 fld dword [vrhStoga]
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
 fcomip st1
 fstp dword [result]
-jnb l730177
+jnb secondOperandOfTheComparisonIsGreaterLabel731019
 fld1
-jmp l743999
-l730177:
+jmp endOfTheGreaterThanComparisonLabel77988
+secondOperandOfTheComparisonIsGreaterLabel731019:
 fldz
-l743999:
+endOfTheGreaterThanComparisonLabel77988:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel75360
+je EndWhileLabel397511
 ;gornjaGranica:=stogSGornjimGranicama(vrhStoga)
 finit
 fld dword [vrhStoga]
@@ -639,21 +639,21 @@ mov edx, dword [result]
 mov dword [i],edx
 ;While i<gornjaGranica
 finit
-WhileLabel393061:
+WhileLabel465875:
 fld dword [i]
 fld dword [gornjaGranica]
 fcomip st1
 fstp dword [result]
-jna l790133
+jna secondOperandOfTheComparisonIsSmallerLabel713523
 fld1
-jmp l446980
-l790133:
+jmp endOfTheLessThanComparisonLabel412706
+secondOperandOfTheComparisonIsSmallerLabel713523:
 fldz
-l446980:
+endOfTheLessThanComparisonLabel412706:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel696439
+je EndWhileLabel18870
 ;If original(i)<original(donjaGranica)
 finit
 fld dword [i]
@@ -666,16 +666,16 @@ mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
 fcomip st1
 fstp dword [result]
-jna l393207
+jna secondOperandOfTheComparisonIsSmallerLabel505856
 fld1
-jmp l709003
-l393207:
+jmp endOfTheLessThanComparisonLabel558624
+secondOperandOfTheComparisonIsSmallerLabel505856:
 fldz
-l709003:
+endOfTheLessThanComparisonLabel558624:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel449675
+jz ElseLabel215666
 ;gdjeJePivot:=gdjeJePivot+1
 finit
 fld dword [gdjeJePivot]
@@ -687,8 +687,8 @@ mov edx, dword [result]
 mov dword [gdjeJePivot],edx
 ;EndIf
 finit
-ElseLabel449675:
-EndIfLabel888184:
+ElseLabel215666:
+EndIfLabel232303:
 ;i:=i++
 finit
 fld dword [i]
@@ -700,8 +700,8 @@ mov edx, dword [result]
 mov dword [i],edx
 ;EndWhile
 finit
-jmp WhileLabel393061
-EndWhileLabel696439:
+jmp WhileLabel465875
+EndWhileLabel18870:
 ;staviManje:=donjaGranica
 finit
 fld dword [donjaGranica]
@@ -740,21 +740,21 @@ mov edx, dword [result]
 mov dword [i],edx
 ;While i<gornjaGranica
 finit
-WhileLabel112544:
+WhileLabel173143:
 fld dword [i]
 fld dword [gornjaGranica]
 fcomip st1
 fstp dword [result]
-jna l62334
+jna secondOperandOfTheComparisonIsSmallerLabel215208
 fld1
-jmp l493893
-l62334:
+jmp endOfTheLessThanComparisonLabel462015
+secondOperandOfTheComparisonIsSmallerLabel215208:
 fldz
-l493893:
+endOfTheLessThanComparisonLabel462015:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel527840
+je EndWhileLabel135846
 ;If original(i)<original(donjaGranica)
 finit
 fld dword [i]
@@ -767,16 +767,16 @@ mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
 fcomip st1
 fstp dword [result]
-jna l823414
+jna secondOperandOfTheComparisonIsSmallerLabel203029
 fld1
-jmp l241256
-l823414:
+jmp endOfTheLessThanComparisonLabel774523
+secondOperandOfTheComparisonIsSmallerLabel203029:
 fldz
-l241256:
+endOfTheLessThanComparisonLabel774523:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel320502
+jz ElseLabel915276
 ;pomocni(staviManje):=original(i)
 finit
 fld dword [i]
@@ -800,8 +800,8 @@ mov edx, dword [result]
 mov dword [staviManje],edx
 ;Else
 finit
-jmp EndIfLabel109559
-ElseLabel320502:
+jmp EndIfLabel83778
+ElseLabel915276:
 ;pomocni(staviVece):=original(i)
 finit
 fld dword [i]
@@ -825,7 +825,7 @@ mov edx, dword [result]
 mov dword [staviVece],edx
 ;EndIf
 finit
-EndIfLabel109559:
+EndIfLabel83778:
 ;pomocniBrojac:=pomocniBrojac+1
 finit
 fld dword [pomocniBrojac]
@@ -841,16 +841,16 @@ fld dword [pomocniBrojac]
 fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
 fcomip st1
 fstp dword [result]
-jne l157072
+jne operandsOfTheEqualityOperatorAreNotEqualLabel986692
 fld1
-jmp l572695
-l157072:
+jmp endOfTheEqualityOperatorLabel347029
+operandsOfTheEqualityOperatorAreNotEqualLabel986692:
 fldz
-l572695:
+endOfTheEqualityOperatorLabel347029:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel126373
+jz ElseLabel816099
 ;brojac:=brojac+pomocniBrojac
 finit
 fld dword [brojac]
@@ -868,8 +868,8 @@ mov edx, dword [result]
 mov dword [pomocniBrojac],edx
 ;EndIf
 finit
-ElseLabel126373:
-EndIfLabel273539:
+ElseLabel816099:
+EndIfLabel176013:
 ;i:=i+1
 finit
 fld dword [i]
@@ -881,8 +881,8 @@ mov edx, dword [result]
 mov dword [i],edx
 ;EndWhile
 finit
-jmp WhileLabel112544
-EndWhileLabel527840:
+jmp WhileLabel173143
+EndWhileLabel135846:
 ;i:=donjaGranica
 finit
 fld dword [donjaGranica]
@@ -891,21 +891,21 @@ mov edx, dword [result]
 mov dword [i],edx
 ;While i<gornjaGranica
 finit
-WhileLabel551536:
+WhileLabel697460:
 fld dword [i]
 fld dword [gornjaGranica]
 fcomip st1
 fstp dword [result]
-jna l278933
+jna secondOperandOfTheComparisonIsSmallerLabel693856
 fld1
-jmp l387063
-l278933:
+jmp endOfTheLessThanComparisonLabel754640
+secondOperandOfTheComparisonIsSmallerLabel693856:
 fldz
-l387063:
+endOfTheLessThanComparisonLabel754640:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel520340
+je EndWhileLabel156956
 ;original(i):=pomocni(i)
 finit
 fld dword [i]
@@ -929,8 +929,8 @@ mov edx, dword [result]
 mov dword [i],edx
 ;EndWhile
 finit
-jmp WhileLabel551536
-EndWhileLabel520340:
+jmp WhileLabel697460
+EndWhileLabel156956:
 ;If gdjeJePivot<gornjaGranica-1
 finit
 fld dword [gornjaGranica]
@@ -941,16 +941,16 @@ fld dword [gdjeJePivot]
 fxch
 fcomip st1
 fstp dword [result]
-jna l174612
+jna secondOperandOfTheComparisonIsSmallerLabel938093
 fld1
-jmp l29586
-l174612:
+jmp endOfTheLessThanComparisonLabel524613
+secondOperandOfTheComparisonIsSmallerLabel938093:
 fldz
-l29586:
+endOfTheLessThanComparisonLabel524613:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel224649
+jz ElseLabel110490
 ;vrhStoga:=vrhStoga+1
 finit
 fld dword [vrhStoga]
@@ -983,8 +983,8 @@ mov ebx, dword [result]
 mov dword [stogSGornjimGranicama+4*ebx],edx
 ;EndIf
 finit
-ElseLabel224649:
-EndIfLabel238593:
+ElseLabel110490:
+EndIfLabel218109:
 ;If gdjeJePivot>donjaGranica+1
 finit
 fld dword [donjaGranica]
@@ -995,16 +995,16 @@ fld dword [gdjeJePivot]
 fxch
 fcomip st1
 fstp dword [result]
-jnb l340677
+jnb secondOperandOfTheComparisonIsGreaterLabel873671
 fld1
-jmp l406454
-l340677:
+jmp endOfTheGreaterThanComparisonLabel940129
+secondOperandOfTheComparisonIsGreaterLabel873671:
 fldz
-l406454:
+endOfTheGreaterThanComparisonLabel940129:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel306751
+jz ElseLabel98048
 ;vrhStoga:=vrhStoga+1
 finit
 fld dword [vrhStoga]
@@ -1034,8 +1034,8 @@ mov ebx, dword [result]
 mov dword [stogSGornjimGranicama+4*ebx],edx
 ;EndIf
 finit
-ElseLabel306751:
-EndIfLabel829629:
+ElseLabel98048:
+EndIfLabel378150:
 ;testZaPreljev:=brojac+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim.
 finit
 fld dword [brojac]
@@ -1050,19 +1050,19 @@ fld dword [testZaPreljev]
 fld dword [brojac]
 fcomip st1
 fstp dword [result]
-jnb l970362
+jnb secondOperandOfTheComparisonIsGreaterLabel313580
 fld1
-jmp l792425
-l970362:
+jmp endOfTheGreaterThanComparisonLabel883477
+secondOperandOfTheComparisonIsGreaterLabel313580:
 fldz
-l792425:
+endOfTheGreaterThanComparisonLabel883477:
 fld1
 fxch
 fsubp
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel829322
+jz ElseLabel217661
 ;najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac*2
 finit
 fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
@@ -1092,12 +1092,12 @@ end if
 ;Inline assembly ended.
 ;EndIf
 finit
-ElseLabel829322:
-EndIfLabel77504:
+ElseLabel217661:
+EndIfLabel95041:
 ;EndWhile
 finit
-jmp WhileLabel373013
-EndWhileLabel75360:
+jmp WhileLabel130050
+EndWhileLabel397511:
 ;AsmStart
 ;Inline assembly begins.
 call [clock]
@@ -1121,21 +1121,21 @@ mov edx, dword [result]
 mov dword [i],edx
 ;While i<n
 finit
-WhileLabel143711:
+WhileLabel542504:
 fld dword [i]
 fld dword [n]
 fcomip st1
 fstp dword [result]
-jna l39391
+jna secondOperandOfTheComparisonIsSmallerLabel419506
 fld1
-jmp l424535
-l39391:
+jmp endOfTheLessThanComparisonLabel305415
+secondOperandOfTheComparisonIsSmallerLabel419506:
 fldz
-l424535:
+endOfTheLessThanComparisonLabel305415:
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel629938
+je EndWhileLabel827246
 ;pokazivac:=4*i
 finit
 mov dword [result],0x40800000 ;IEEE754 hex of 4
@@ -1168,8 +1168,8 @@ mov edx, dword [result]
 mov dword [i],edx
 ;EndWhile
 finit
-jmp WhileLabel143711
-EndWhileLabel629938:
+jmp WhileLabel542504
+EndWhileLabel827246:
 ;AsmStart
 ;Inline assembly begins.
 if ispisPoruka=1
