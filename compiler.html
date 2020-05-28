@@ -672,12 +672,12 @@
             asm("cmp dword [result],eax"); //Usporedi rezultat sa sadrzajem tog registra (to jest, s nulom).
             var prvi =
               (highlight ? '<span style="color:#777700">' : "") +
-              "l" +
+              "firstOperandOfTheTernaryOperatorIsZeroLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "<\/span>" : "");
             var drugi =
               (highlight ? '<span style="color:#777700">' : "") +
-              "l" +
+              "endOfTheTernaryOperatorLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "<\/span>" : "");
             asm("jz " + prvi); //Ako prvi operand nije nula...
@@ -773,12 +773,12 @@
           else if (this.text == "=") {
             var prvi =
               (highlight ? '<span style="color:#777700">' : "") +
-              "l" +
+              "operandsOfTheEqualityOperatorAreNotEqualLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
             var drugi =
               (highlight ? '<span style="color:#777700">' : "") +
-              "l" +
+              "endOfTheEqualityOperatorLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
             asm("fcomip st1");
@@ -792,12 +792,12 @@
           } else if (this.text == "<") {
             var prvi =
               (highlight ? '<span style="color:#777700">' : "") +
-              "l" +
+              "secondOperandOfTheComparisonIsSmallerLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
             var drugi =
               (highlight ? '<span style="color:#777700">' : "") +
-              "l" +
+              "endOfTheLessThanComparisonLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
             asm("fcomip st1");
@@ -811,12 +811,12 @@
           } else if (this.text == ">") {
             var prvi =
               (highlight ? '<span style="color:#777700">' : "") +
-              "l" +
+              "secondOperandOfTheComparisonIsGreaterLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
             var drugi =
               (highlight ? '<span style="color:#777700">' : "") +
-              "l" +
+              "endOfTheGreaterThanComparisonLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
             asm("fcomip st1");
