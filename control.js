@@ -32,14 +32,14 @@ function compileString(str) {
   asm("finit");
   if (str.indexOf("<=") + 1) {
     var constantName = str.substr(0, str.indexOf("<="));
-    constantName = constantName.replace(/\s*$/g, "");
+    constantName = constantName.replace(/\s*$/, "");
     var constantValue = str.substr(str.indexOf("<=") + "<=".length);
     asm("jmp " + constantName + "$");
     asm(constantName + " db " + constantValue);
     asm(constantName + "$:");
   } else if (str.indexOf(":=") + 1) {
     var variableName = str.substr(0, str.indexOf(":="));
-    variableName = variableName.replace(/\s*$/g, "");
+    variableName = variableName.replace(/\s*$/, "");
     var arth = str.substr(str.indexOf(":=") + ":=".length);
     parseArth(tokenizeArth(arth)).compile();
     asm("fstp dword [result]");
@@ -48,7 +48,7 @@ function compileString(str) {
       var indexOfBracket =
         (variableName.indexOf("[") + 1 || variableName.indexOf("(") + 1) - 1;
       var arrayName = variableName.substr(0, indexOfBracket);
-      arrayName.replace(/\s*$/g, "");
+      arrayName = arrayName.replace(/\s*$/, "");
       var subscript = variableName.substr(
         indexOfBracket + 1,
         variableName.length - indexOfBracket - 2
