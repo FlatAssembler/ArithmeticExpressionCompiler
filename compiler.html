@@ -195,13 +195,13 @@
       <mark id="backEndReset">Reset the Back-End</mark>
       <mark id="exit">Exit</mark>
     </nav>
-    <div id="content" style="">
+    <div id="content">
       <button id="showMenu" style="display: none;">Show menu</button>
       Enter an arithmetic expression here:<br />
       <input
         type="text"
         id="input"
-        value="((abs(-(pow(sin(alpha),2)+pow(cos(alpha),2))-(-1))<1/1000)&amp;((2+2=5)|(3+1>3.5))&amp;(not(abs(arcsin(45)-mod(15/2,1))<1/1000)))+(2+2>5?3+3<7?1:-2:2+2-4<1?0:-1) ;This should always output '1' (However, because the 'pow' in i486 Assembly doesn't support negative bases, this works only for 0<alpha<90.)."
+        value="((abs(-(pow(sin(alpha),2)+pow(cos(alpha),2))-(-1))<1/1000)&amp;((2+2=5)|(3+1>3.5))&amp;(not(abs(arcsin(45)-mod(15/2,1))<1/1000)))+(2+2>5?3+3<7?1:-2:2+2-4<1?0:2+2<4?-1:-3) ;This should always output '1' (However, because the 'pow' in i486 Assembly doesn't support negative bases, this works only for 0<alpha<90.)."
         style="width: 100%;"
       /><br />
       <button onclick="compile()" style="float: left;">Compile!</button>
