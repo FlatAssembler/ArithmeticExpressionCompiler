@@ -276,7 +276,12 @@
         >(UPDATE: If you just need the automatic decimal-number-to-IEEE754
         conversion, you don't actually need to download it, you only need to run
         this web-page in a modern browser (that supports
-        <span style="font-family: Monospace;">ArrayBuffer</span>).)</i
+        <span style="font-family: Monospace;">ArrayBuffer</span>). Also, now
+        there is a version that can be run in NodeJS, it can be downloaded
+        <a
+          href="https://github.com/FlatAssembler/ArithmeticExpressionCompiler/releases/download/1.0/aec.js"
+          >here</a
+        >, maybe it comes useful to somebody.)</i
       >
       You can also download a Notepad++ script for syntax-highlighting of that
       language <a href="Arth.xml">here</a>. Neither do I, nor do the creators of
@@ -1004,9 +1009,10 @@
                   (syntax == "gas" ? " ptr" : "") +
                   " [" +
                   this.text.substr(0, this.text.length - 1) +
-                  "+4*ebx]"+(syntax=="fasm"?
-" ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive."
-:"")
+                  "+4*ebx]" +
+                  (syntax == "fasm"
+                    ? " ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive."
+                    : "")
               );
             }
           } //Ako je this.text naziv neke varijable
