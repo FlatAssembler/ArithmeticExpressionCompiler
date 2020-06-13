@@ -94,11 +94,12 @@
         overflow: hidden;
       }
       #assembly {
-        font-family: "Lucida Console";
+        font-family: monospace;
+        font-size: 1.5em;
         background-color: #eeeeee;
         width: 100%;
         overflow: scroll;
-        max-height: 100%;
+        max-height: 85%;
         white-space: nowrap;
       }
       #diagramSpan {
@@ -207,13 +208,28 @@
       <button onclick="compile()" style="float: left;">Compile!</button>
       <button onclick="interpret()" style="float: right;">Interpret</button
       ><br /><br />
+      Choose the Assembly syntax:
+      <input type="radio" id="GAS" name="syntax" value="gas" />
+      <label for="GAS">GNU Assembler</label>
+      <input type="radio" id="FASM" name="syntax" value="fasm" checked />
+      <label for="FASM">FlatAssembler</label><br />
+      Verbose output: <input type="checkbox" id="verbose" /><label for="verbose"
+        >Print
+        <a href="https://www.britannica.com/technology/LISP-computer-language"
+          >LISP-style</a
+        >
+        S-Expressions inside Assembly.</label
+      ><br /><br />
       Tokenized:<br />
-      <div id="tokenized" style="font-family: 'Lucida Console';"></div>
+      <div
+        id="tokenized"
+        style="font-family: monospace; font-size: 1.5em;"
+      ></div>
       <br />
       Parsed (AST converted to an
       <a href="https://en.wikipedia.org/wiki/S-expression">S-expression</a
       >):<br />
-      <div id="LISP" style="font-family: 'Lucida Console';"></div>
+      <div id="LISP" style="font-family: monospace; font-size: 1.5em;"></div>
       <br />
       Compiled (to x86 assembly, Intel Syntax):<br />
       <div id="assembly"></div>
@@ -373,11 +389,11 @@
       }
       function fasinp() {
         //-||- arkus sinus (po formuli arctan(x/sqrt(1-x*x)))
-        asm("fstp dword [result]");
-        asm("fld dword [result]");
+        fstp();
+        fld();
         asm("fld1");
-        asm("fld dword [result]");
-        asm("fld dword [result]");
+        fld();
+        fld();
         fmulp();
         fsubp();
         fsqrt();
@@ -386,13 +402,13 @@
       }
       function facosp() {
         // -||- arkus kosinus (po formuli pi/2-arcsin(x))
-        asm("fstp dword [result]");
+        fstp();
         asm("fldpi");
         asm("fld1");
         asm("fld1");
         faddp();
         fdivp();
-        asm("fld dword [result]");
+        fld();
         fasinp();
         fsubp();
       }
@@ -427,7 +443,7 @@
             "10" +
             (highlight ? "</span>" : "")
         );
-        asm("fild dword [result]");
+        fild();
         flnp();
         fdivp();
       }
@@ -447,8 +463,40 @@
         asm("fxch");
         asm("fprem");
         asm("fxch");
-        asm("fstp dword [result]");
+        fstp();
       }
+      function fcomip() {
+        //Usporedi dva broja na vrhu stoga i postavi CPU-ove zastavice da oznacuju rezultat usporedbe.
+        if (syntax == "fasm") asm("fcomip st1");
+        else if (syntax == "gas") asm("fcomip");
+        else throw "Invalid syntax name!";
+      }
+      function fstp() {
+        //Obrisi broj na vrhu stoga i stavi ga u "result".
+        if (syntax == "fasm") asm("fstp dword [result]");
+        else if (syntax == "gas") asm("fstp dword ptr [result]");
+        else throw "Invalid syntax name!";
+      }
+      function fld() {
+        //Stavi broj iz varijable "result" na vrh stoga.
+        if (syntax == "fasm") asm("fld dword [result]");
+        else if (syntax == "gas") asm("fld dword ptr [result]");
+        else throw "Invalid syntax name!";
+      }
+      function fild() {
+        //Pretpostavi da je u "result"-u cijeli broj, pretvori ga u decimalni i stavi na stog.
+        if (syntax == "fasm") asm("fild dword [result]");
+        else if (syntax == "gas") asm("fild dword ptr [result]");
+        else throw "Invalid syntax name!";
+      }
+      function fistp() {
+        //Pretvori broj na vrhu stoga u cijeli broj, spremi ga u "result" i obrisi sa stoga.
+        if (syntax == "fasm") asm("fistp dword [result]");
+        else if (syntax == "gas") asm("fistp dword ptr [result]");
+        else throw "Invalid syntax name!";
+      }
+      var syntax = "fasm";
+      var verboseMode = false;
       var varijable = new Object(); //Globalni objekt pomocu kojeg ce komunicirati strukture koje konstruira "Token", u C++-u bi to bio std::map<std::string,float>.
       var alerted; //Prikazuje se samo jedna greska u svakom pokusaju interpretiranja ili compiliranja.
       var highlight = typeof window != "undefined"; //Hocemo li sintaksno bojati Assembler (jer pokusaj da se to radi u Nashornu ili Rhinu, koji se pokrecu iz komandne linije, samo pravi probleme)?
@@ -667,9 +715,32 @@
             this.operands[1].compile(); //...zatim prevedi drugi operand...
             this.operands[0].compile(); //...te konacno prevedi uvijet.
             //Sada je uvijet na vrhu FPU stoga.
-            asm("fistp dword [result]"); //Prebaci taj uvijet u varijablu "rezultat".
+            if (verboseMode) {
+              var commentedLispExpression = syntax == "gas" ? "#" : ";";
+              if (syntaxHighlighting)
+                commentedLispExpression =
+                  '<span style="color:#777777">' +
+                  commentedLispExpression +
+                  "<\/span>";
+              var lispExpression = this.toLisp();
+              for (var i = 0; i < lispExpression.length; i++) {
+                var currentChar = lispExpression.charAt(i);
+                if (currentChar == "&") currentChar = "&amp;";
+                if (currentChar == "<") currentChar = "&lt;";
+                if (currentChar == ">") currentChar = "&gt;";
+                if (syntaxHighlighting)
+                  commentedLispExpression +=
+                    '<span style="color:#777777">' + currentChar + "<\/span>";
+                else commentedLispExpression += currentChar;
+              }
+              asm(commentedLispExpression);
+            }
+            fistp(); //Prebaci taj uvijet u varijablu "rezultat".
             asm("xor eax,eax"); //Obrisi sadrzaj CPU registra.
-            asm("cmp dword [result],eax"); //Usporedi rezultat sa sadrzajem tog registra (to jest, s nulom).
+            if (syntax == "fasm") asm("cmp dword [result],eax");
+            //Usporedi rezultat sa sadrzajem tog registra (to jest, s nulom).
+            else if (syntax == "gas") asm("cmp dword ptr [result],eax");
+            else throw "Invalid syntax name!";
             var prvi =
               (highlight ? '<span style="color:#777700">' : "") +
               "firstOperandOfTheTernaryOperatorIsZeroLabel" +
@@ -681,14 +752,19 @@
               Math.round(Math.random() * 1000000) +
               (highlight ? "<\/span>" : "");
             asm("jz " + prvi); //Ako prvi operand nije nula...
-            asm("fstp dword [result]");
-            asm("mov eax, dword [result]"); //Spremi drugi operand u CPU-ov registar i...
-            asm("fstp dword [result]"); //...obrisi treci operand sa FPU stoga, a zatim...
-            asm("mov dword [result],eax");
-            asm("fld dword [result]"); //...ponovno ucitaj drugi operand iz registra na stog.
+            fstp();
+            if (syntax == "fasm") asm("mov eax, dword [result]");
+            //Spremi drugi operand u CPU-ov registar i...
+            else if (syntax == "gas") asm("mov eax, dword ptr [result]");
+            else throw "Invalid syntax name!";
+            fstp(); //...obrisi treci operand sa FPU stoga, a zatim...
+            if (syntax == "fasm") asm("mov dword [result],eax");
+            else if (syntax == "gas") asm("mov dword ptr [result],eax");
+            else throw "Invalid syntax name!";
+            fld(); //...ponovno ucitaj drugi operand iz registra na stog.
             asm("jmp " + drugi);
             asm(prvi + ":"); //Inace, ako prvi operand jest nula...
-            asm("fstp dword [result]"); //Obrisi drugi operand sa stoga, a na stogu, naravno, zadrzi treci operand.
+            fstp(); //Obrisi drugi operand sa stoga, a na stogu, naravno, zadrzi treci operand.
             asm(drugi + ":");
             return;
           }
@@ -704,12 +780,34 @@
           }
           for (var i = 0; i < this.operands.length; i++)
             this.operands[i].compile();
+          if (verboseMode) {
+            var commentedLispExpression = syntax == "gas" ? "#" : ";";
+            if (syntaxHighlighting)
+              commentedLispExpression =
+                '<span style="color:#777777">' +
+                commentedLispExpression +
+                "<\/span>";
+            var lispExpression = this.toLisp();
+            for (var i = 0; i < lispExpression.length; i++) {
+              var currentChar = lispExpression.charAt(i);
+              if (currentChar == "&") currentChar = "&amp;";
+              if (currentChar == "<") currentChar = "&lt;";
+              if (currentChar == ">") currentChar = "&gt;";
+              if (syntaxHighlighting)
+                commentedLispExpression +=
+                  '<span style="color:#777777">' + currentChar + "<\/span>";
+              else commentedLispExpression += currentChar;
+            }
+            asm(commentedLispExpression);
+          }
           if (zamijeni) asm("fxch");
           if (this.text.charAt(0) >= "0" && this.text.charAt(0) <= "9") {
             //Broj
             if (typeof getIEEE754 != "function")
               asm(
-                "mov dword [result]," +
+                "mov dword" +
+                  (syntax == "gas" ? " ptr" : "") +
+                  " [result]," +
                   (highlight ? '<span style="color:#007700">' : "") +
                   this.text +
                   "f" +
@@ -717,15 +815,21 @@
               );
             else
               asm(
-                "mov dword [result]," +
+                "mov dword" +
+                  (syntax == "gas" ? " ptr" : "") +
+                  " [result]," +
                   getIEEE754(this.text * 1) +
                   (highlight
-                    ? ' <span style="color:#777777">;IEEE754 hex of ' +
+                    ? ' <span style="color:#777777">' +
+                      (syntax == "gas" ? "#" : ";") +
+                      "IEEE754 hex of " +
                       this.text +
                       "<\/span>"
-                    : " ;IEEE754 hex of " + this.text)
+                    : (syntax == "gas" ? "#" : ";") +
+                      " IEEE754 hex of " +
+                      this.text)
               );
-            asm("fld dword [result]");
+            fld();
           } else if (this.text == "+") faddp();
           else if (this.text == "-") fsubp();
           else if (this.text == "/") fdivp();
@@ -739,12 +843,14 @@
           else if (this.text == "ctg(") {
             ftanp();
             asm(
-              "mov dword [result]," +
+              "mov dword" +
+                (syntax == "gas" ? " ptr" : "") +
+                " [result]," +
                 (highlight ? '<span style="color:#007700">' : "") +
-                "-1f" +
+                (getIEEE754 ? getIEEE754(-1) : "-1f") +
                 (highlight ? "</span>" : "")
             );
-            asm("fld dword [result]");
+            fld();
             fpowp();
           } else if (this.text == "atan2(") fatan2();
           else if (this.text == "arctan(") fatanp();
@@ -754,10 +860,10 @@
             asm(
               "mov dword [result]," +
                 (highlight ? '<span style="color:#007700">' : "") +
-                "2f" +
+                (getIEEE754 ? getIEEE754(2) : "2f") +
                 (highlight ? "</span>" : "")
             );
-            asm("fld dword [result]");
+            fld();
             fdivp();
             asm("fxch");
             fsubp();
@@ -781,8 +887,8 @@
               "endOfTheEqualityOperatorLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
-            asm("fcomip st1");
-            asm("fstp dword [result]");
+            fcomip();
+            fstp();
             asm("jne " + prvi);
             asm("fld1");
             asm("jmp " + drugi);
@@ -792,7 +898,7 @@
           } else if (this.text == "<") {
             var prvi =
               (highlight ? '<span style="color:#777700">' : "") +
-              "secondOperandOfTheComparisonIsSmallerLabel" +
+              "secondOperandOfTheComparisonIsSmallerOrEqualLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
             var drugi =
@@ -800,8 +906,8 @@
               "endOfTheLessThanComparisonLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
-            asm("fcomip st1");
-            asm("fstp dword [result]");
+            fcomip();
+            fstp();
             asm("jna " + prvi);
             asm("fld1");
             asm("jmp " + drugi);
@@ -811,7 +917,7 @@
           } else if (this.text == ">") {
             var prvi =
               (highlight ? '<span style="color:#777700">' : "") +
-              "secondOperandOfTheComparisonIsGreaterLabel" +
+              "secondOperandOfTheComparisonIsGreaterOrEqualLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
             var drugi =
@@ -819,8 +925,8 @@
               "endOfTheGreaterThanComparisonLabel" +
               Math.round(Math.random() * 1000000) +
               (highlight ? "</span>" : "");
-            asm("fcomip st1");
-            asm("fstp dword [result]");
+            fcomip();
+            fstp();
             asm("jnb " + prvi);
             asm("fld1");
             asm("jmp " + drugi);
@@ -843,11 +949,15 @@
               alert(
                 "Compiler warning: Casting a non-Boolean number into Boolean, may cause undefined behaviour."
               );
-            asm("fistp dword [result]");
-            asm("mov eax,dword [result]");
-            asm("fistp dword [result]");
-            asm("and dword [result],eax");
-            asm("fild dword [result]");
+            fistp();
+            if (syntax == "fasm") asm("mov eax,dword [result]");
+            else if (syntax == "gas") asm("mov eax,dword ptr [result]");
+            else throw "Invalid syntax name!";
+            fistp();
+            if (syntax == "fasm") asm("and dword [result],eax");
+            else if (syntax == "gas") asm("and dword ptr [result],eax");
+            else throw "Invalid syntax name!";
+            fild();
           } else if (this.text == "|") {
             if (
               !boolean.includes(this.operands[0].text) ||
@@ -856,11 +966,15 @@
               alert(
                 "Compiler warning: Casting a non-Boolean number into Boolean, may cause undefined behaviour."
               );
-            asm("fistp dword [result]");
-            asm("mov eax,dword [result]");
-            asm("fistp dword [result]");
-            asm("or dword [result],eax");
-            asm("fild dword [result]");
+            fistp();
+            if (syntax == "fasm") asm("mov eax,dword [result]");
+            else if (syntax == "gas") asm("mov eax,dword ptr [result]");
+            else throw "Invalid syntax name!";
+            fistp();
+            if (syntax == "fasm") asm("or dword [result],eax");
+            else if (syntax == "gas") asm("or dword ptr [result],eax");
+            else throw "Invalid syntax name!";
+            fild();
           } else if (
             this.text.charAt(this.text.length - 1) == "(" ||
             this.text.charAt(this.text.length - 1) == "["
@@ -881,18 +995,32 @@
               );
             } else {
               //Hajdemo ovako jednostavno implementirati pokazivace u Duktapeu, kao u QBASIC-u :-)!
-              asm("fistp dword [result]");
-              asm("mov ebx, dword [result]");
+              fistp();
+              if (syntax == "fasm") asm("mov ebx, dword [result]");
+              else if (syntax == "gas") asm("mov ebx,dword ptr [result]");
+              else throw "Invalid syntax name!";
               asm(
-                "fld dword [" +
+                "fld dword" +
+                  (syntax == "gas" ? " ptr" : "") +
+                  " [" +
                   this.text.substr(0, this.text.length - 1) +
                   "+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive."
               );
             }
           } //Ako je this.text naziv neke varijable
           else {
+            if (mnemonike.includes(this.text) || registri.includes(this.text)) {
+              alert(
+                "Compiler error: Can't use the word \"" +
+                  this.text +
+                  '" as a variable name because it is a reserved keyword in x86 assembly.'
+              );
+              alerted = 1;
+              return;
+            }
             asm(
               "fld dword " +
+                (syntax == "gas" ? "ptr " : "") +
                 (highlight ? '<span style="color:#770000">' : "") +
                 "[" +
                 this.text +
@@ -1402,6 +1530,17 @@
       var assembler = "";
       function compile() {
         try {
+          if (document.getElementById("FASM").checked) syntax = "fasm";
+          else syntax = "gas";
+          verboseMode = document.getElementById("verbose").checked;
+          if (syntax == "gas" && typeof getIEEE754 != "function") {
+            alert(
+              "Generating GAS-compatible code requires a modern JavaScript " +
+                "interpreter which supports ArrayBuffer!"
+            );
+            alerted = 1;
+            return;
+          }
           alerted = 0;
           document.getElementById("diagramSpan").style.display = "none";
           interpreter.innerHTML = "null";
@@ -1416,11 +1555,13 @@
             tokenizeArth(document.getElementById("input").value)
           ).toLisp();
           assembler = document.getElementById("assembly").innerHTML = "";
+          if (syntax == "gas") asm(".intel_syntax noprefix");
           finit();
           parseArth(
             tokenizeArth(document.getElementById("input").value)
           ).compile();
-          asm("fstp dword [result]");
+          fstp();
+          if (syntax == "gas") asm(".att_syntax");
           if (highlight) syntaxHighlighting();
           document.getElementById("assembly").innerHTML = assembler;
         } catch (e) {
@@ -1460,6 +1601,22 @@
         assembler = assembler.replace(
           /:\s/g,
           '<span style="color:#333333">:</span> '
+        );
+        assembler = assembler.replace(
+          ".intel_syntax",
+          '<span style="color:#773300">.intel_syntax</span>'
+        );
+        assembler = assembler.replace(
+          ".att_syntax",
+          '<span style="color:#773300">.att_syntax</span>'
+        );
+        assembler = assembler.replace(
+          "noprefix",
+          '<span style="color:#337700">noprefix</span>'
+        );
+        assembler = assembler.replace(
+          /ptr/g,
+          '<span style="color:#337700">ptr</span>'
         );
       }
       function interpret() {
