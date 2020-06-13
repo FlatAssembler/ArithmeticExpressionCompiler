@@ -825,8 +825,8 @@
                       "IEEE754 hex of " +
                       this.text +
                       "<\/span>"
-                    : (syntax == "gas" ? "#" : ";") +
-                      " IEEE754 hex of " +
+                    : (syntax == "gas" ? " #" : " ;") +
+                      "IEEE754 hex of " +
                       this.text)
               );
             fld();
@@ -1004,7 +1004,9 @@
                   (syntax == "gas" ? " ptr" : "") +
                   " [" +
                   this.text.substr(0, this.text.length - 1) +
-                  "+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive."
+                  "+4*ebx]"+(syntax=="fasm"?
+" ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive."
+:"")
               );
             }
           } //Ako je this.text naziv neke varijable
