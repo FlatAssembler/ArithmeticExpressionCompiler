@@ -3,23 +3,35 @@ var hasElse = [];
 isAssembly = false;
 function compileString(str) {
   str = str.replace(/^\s*/, "");
+  var commentSign;
+  if (/^syntax\s*gas/i.test(str)) {
+    syntax = "gas";
+    return;
+  } else if (/^syntax\s*fasm/i.test(str)) {
+    syntax = "fasm";
+    return;
+  } else if (/^syntax\s/i.test(str))
+    throw "Driver error: Unrecognized syntax name!";
+  if (syntax == "fasm") commentSign = ";";
+  else if (syntax == "gas") commentSign = "#";
+  else throw 'Driver error: Unrecognized syntax name "' + syntax + '"!';
   if (/^AsmEnd/.test(str)) {
-    asm(";" + str);
-    asm(";Inline assembly ended.");
+    asm(commentSign + str);
+    asm(commentSign + "Inline assembly ended.");
     isAssembly = false;
     return;
   }
   if (/^AsmStart/.test(str)) {
     isAssembly = true;
-    asm(";" + str);
-    asm(";Inline assembly begins.");
+    asm(commentSign + str);
+    asm(commentSign + "Inline assembly begins.");
     return;
   }
   if (isAssembly) {
     asm(str);
     return;
   }
-  asm(";" + str);
+  asm(commentSign + str);
   if (!str || str[0] == ";") return;
   var isString = false;
   for (var i = 0; i < str.length; i++)
@@ -29,21 +41,28 @@ function compileString(str) {
       str = str.substr(0, i - 1);
       break;
     }
+  if (syntax == "gas") asm(".intel_syntax noprefix");
   asm("finit");
   if (str.indexOf("<=") + 1) {
     var constantName = str.substr(0, str.indexOf("<="));
     constantName = constantName.replace(/\s*$/, "");
     var constantValue = str.substr(str.indexOf("<=") + "<=".length);
     asm("jmp " + constantName + "$");
-    asm(constantName + " db " + constantValue);
+    if (syntax == "fasm") asm(constantName + " db " + constantValue);
+    else {
+      asm(constantName + ":");
+      asm(".ascii " + constantValue);
+    }
     asm(constantName + "$:");
   } else if (str.indexOf(":=") + 1) {
     var variableName = str.substr(0, str.indexOf(":="));
     variableName = variableName.replace(/\s*$/, "");
     var arth = str.substr(str.indexOf(":=") + ":=".length);
     parseArth(tokenizeArth(arth)).compile();
-    asm("fstp dword [result]");
-    asm("mov edx, dword [result]");
+    if (syntax == "fasm") asm("fstp dword [result]");
+    else asm("fstp dword ptr [result]");
+    if (syntax == "fasm") asm("mov edx, dword [result]");
+    else asm("mov edx, dword ptr [result]");
     if (variableName.indexOf("[") + 1 || variableName.indexOf("(") + 1) {
       var indexOfBracket =
         (variableName.indexOf("[") + 1 || variableName.indexOf("(") + 1) - 1;
@@ -54,15 +73,23 @@ function compileString(str) {
         variableName.length - indexOfBracket - 2
       );
       parseArth(tokenizeArth(subscript)).compile();
-      asm("fistp dword [result]");
-      asm("mov ebx, dword [result]");
-      asm("mov dword [" + arrayName + "+4*ebx],edx");
-    } else asm("mov dword [" + variableName + "],edx");
+      if (syntax == "fasm") asm("fistp dword [result]");
+      else asm("fistp dword ptr [result]");
+      if (syntax == "fasm") asm("mov ebx, dword [result]");
+      else asm("mov ebx, dword ptr [result]");
+      if (syntax == "fasm") asm("mov dword [" + arrayName + "+4*ebx],edx");
+      else asm("mov dword ptr [" + arrayName + "+4*ebx],edx");
+    } else {
+      if (syntax == "fasm") asm("mov dword [" + variableName + "],edx");
+      else asm("mov dword ptr [" + variableName + "],edx");
+    }
   } else if (/^If\s/.test(str)) {
     var arth = str.substr("If ".length);
     parseArth(tokenizeArth(arth)).compile();
-    asm("fistp dword [result]");
-    asm("mov eax, dword [result]");
+    if (syntax == "fasm") asm("fistp dword [result]");
+    else asm("fistp dword ptr [result]");
+    if (syntax == "fasm") asm("mov eax, dword [result]");
+    else asm("mov eax, dword ptr [result]");
     asm("test eax,eax");
     var label1 = "ElseLabel" + Math.floor(Math.random() * 1000000);
     var label2 = "EndIfLabel" + Math.floor(Math.random() * 1000000);
@@ -83,8 +110,10 @@ function compileString(str) {
     asm(labelOfElse + ":");
     var arth = str.substr("ElseIf ".length);
     parseArth(tokenizeArth(arth)).compile();
-    asm("fistp dword [result]");
-    asm("mov eax, dword [result]");
+    if (syntax == "fasm") asm("fistp dword [result]");
+    else asm("fistp dword ptr [result]");
+    if (syntax == "fasm") asm("mov eax, dword [result]");
+    else asm("mov eax, dword ptr [result]");
     asm("test eax,eax");
     var newLabelOfElse = "ElseLabel" + Math.floor(Math.random() * 1000000);
     stack.push(labelOfEndIf);
@@ -105,8 +134,10 @@ function compileString(str) {
     asm(label1 + ":");
     parseArth(tokenizeArth(arth)).compile();
     var label2 = "EndWhileLabel" + Math.floor(Math.random() * 1000000);
-    asm("fistp dword [result]");
-    asm("mov eax, dword [result]");
+    if (syntax == "fasm") asm("fistp dword [result]");
+    else asm("fistp dword ptr [result]");
+    if (syntax == "fasm") asm("mov eax, dword [result]");
+    else asm("mov eax, dword ptr [result]");
     asm("test eax,eax");
     asm("je " + label2);
     stack.push(label2);
@@ -117,6 +148,8 @@ function compileString(str) {
     asm(endWhileLabel + ":");
   } else {
     parseArth(tokenizeArth(str)).compile();
-    asm("fstp dword [result]");
+    if (syntax == "fasm") asm("fstp dword [result]");
+    else asm("fstp dword ptr [result]");
   }
+  if (syntax == "gas") asm(".att_syntax");
 }
