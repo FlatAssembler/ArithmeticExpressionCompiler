@@ -279,7 +279,7 @@
         <span style="font-family: Monospace;">ArrayBuffer</span>). Also, now
         there is a version that can be run in NodeJS, it can be downloaded
         <a
-          href="https://github.com/FlatAssembler/ArithmeticExpressionCompiler/releases/download/1.0/aec.js"
+          href="https://github.com/FlatAssembler/ArithmeticExpressionCompiler/releases/download/1.1/aec.js"
           >here</a
         >, maybe it comes useful to somebody.)</i
       >
@@ -564,10 +564,12 @@
           if (this.operands.length) {
             var ret = "(" + this.name + " ";
             for (var i = 0; i < this.operands.length; i++)
-              ret += this.operands[i].toLisp() + " ";
+              ret +=
+                this.operands[i].toLisp() +
+                (i == this.operands.length - 1 ? "" : " ");
             ret += ")";
-            return ret;
-          } else return this.text;
+            return ret.replace(/\)\s\)/g, "))");
+          } else return this.text.replace(/\)\s\)/g, "))");
         };
         ret.interpret = function () {
           if (alerted) return 0 / 0;
@@ -708,6 +710,29 @@
               );
           return varijable[this.text] * 1;
         };
+        ret.commentedLispExpression = function () {
+          var commentedLispExpression = syntax == "gas" ? "#" : ";";
+          if (syntaxHighlighting)
+            commentedLispExpression =
+              '<span style="color:#777777">' +
+              commentedLispExpression +
+              "<\/span>";
+          var lispExpression =
+            'Pushing "' + this.toLisp() + '" to the FPU stack...';
+          for (var i = 0; i < lispExpression.length; i++) {
+            var currentChar = lispExpression.charAt(i);
+            if (syntaxHighlighting) {
+              if (currentChar == "&") currentChar = "&amp;";
+              if (currentChar == "<") currentChar = "&lt;";
+              if (currentChar == ">") currentChar = "&gt;";
+            }
+            if (syntaxHighlighting)
+              commentedLispExpression +=
+                '<span style="color:#777777">' + currentChar + "<\/span>";
+            else commentedLispExpression += currentChar;
+          }
+          return commentedLispExpression;
+        };
         ret.compile = function () {
           if (this.text == " ") return;
           if (this.text == "+" && !this.operands.length)
@@ -720,26 +745,7 @@
             this.operands[1].compile(); //...zatim prevedi drugi operand...
             this.operands[0].compile(); //...te konacno prevedi uvijet.
             //Sada je uvijet na vrhu FPU stoga.
-            if (verboseMode) {
-              var commentedLispExpression = syntax == "gas" ? "#" : ";";
-              if (syntaxHighlighting)
-                commentedLispExpression =
-                  '<span style="color:#777777">' +
-                  commentedLispExpression +
-                  "<\/span>";
-              var lispExpression = this.toLisp();
-              for (var i = 0; i < lispExpression.length; i++) {
-                var currentChar = lispExpression.charAt(i);
-                if (currentChar == "&") currentChar = "&amp;";
-                if (currentChar == "<") currentChar = "&lt;";
-                if (currentChar == ">") currentChar = "&gt;";
-                if (syntaxHighlighting)
-                  commentedLispExpression +=
-                    '<span style="color:#777777">' + currentChar + "<\/span>";
-                else commentedLispExpression += currentChar;
-              }
-              asm(commentedLispExpression);
-            }
+            if (verboseMode) asm(this.commentedLispExpression());
             fistp(); //Prebaci taj uvijet u varijablu "rezultat".
             asm("xor eax,eax"); //Obrisi sadrzaj CPU registra.
             if (syntax == "fasm") asm("cmp dword [result],eax");
@@ -785,26 +791,7 @@
           }
           for (var i = 0; i < this.operands.length; i++)
             this.operands[i].compile();
-          if (verboseMode) {
-            var commentedLispExpression = syntax == "gas" ? "#" : ";";
-            if (syntaxHighlighting)
-              commentedLispExpression =
-                '<span style="color:#777777">' +
-                commentedLispExpression +
-                "<\/span>";
-            var lispExpression = this.toLisp();
-            for (var i = 0; i < lispExpression.length; i++) {
-              var currentChar = lispExpression.charAt(i);
-              if (currentChar == "&") currentChar = "&amp;";
-              if (currentChar == "<") currentChar = "&lt;";
-              if (currentChar == ">") currentChar = "&gt;";
-              if (syntaxHighlighting)
-                commentedLispExpression +=
-                  '<span style="color:#777777">' + currentChar + "<\/span>";
-              else commentedLispExpression += currentChar;
-            }
-            asm(commentedLispExpression);
-          }
+          if (verboseMode) asm(this.commentedLispExpression());
           if (zamijeni) asm("fxch");
           if (this.text.charAt(0) >= "0" && this.text.charAt(0) <= "9") {
             //Broj
@@ -1564,10 +1551,35 @@
           ).toLisp();
           assembler = document.getElementById("assembly").innerHTML = "";
           if (syntax == "gas") asm(".intel_syntax noprefix");
+          if (verboseMode) {
+            var stringToComment = "Initializing FPU...";
+            if (syntax == "gas") stringToComment = "#" + stringToComment;
+            else stringToComment = ";" + stringToComment;
+            var commentedString = "";
+            for (var i = 0; i < stringToComment.length; i++)
+              commentedString +=
+                '<span style="color:#777777">' +
+                stringToComment.charAt(i) +
+                "<\/span>";
+            asm(commentedString);
+          }
           finit();
           parseArth(
             tokenizeArth(document.getElementById("input").value)
           ).compile();
+          if (verboseMode) {
+            var stringToComment =
+              'Moving "st0" (top of the FPU stack) into "result"...';
+            if (syntax == "gas") stringToComment = "#" + stringToComment;
+            else stringToComment = ";" + stringToComment;
+            var commentedString = "";
+            for (var i = 0; i < stringToComment.length; i++)
+              commentedString +=
+                '<span style="color:#777777">' +
+                stringToComment.charAt(i) +
+                "<\/span>";
+            asm(commentedString);
+          }
           fstp();
           if (syntax == "gas") asm(".att_syntax");
           if (highlight) syntaxHighlighting();
