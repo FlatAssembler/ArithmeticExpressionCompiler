@@ -38,7 +38,7 @@ function compileString(str) {
     if (str[i] == '"' || str[i] == "'") isString = !isString;
     else if (str[i] == ";") {
       //Obrisi komentar, ako se slucajno nesto kao '<=' ili ':=' nalazi u komentaru, da ne smeta parseru.
-      str = str.substr(0, i - 1);
+      str = str.substr(0, i);
       break;
     }
   if (syntax == "gas") asm(".intel_syntax noprefix");
