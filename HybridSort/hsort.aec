@@ -1,4 +1,5 @@
 ;HybridSort algoritam - kombinacija QuickSort algoritma i MergeSort algoritma.
+VerboseMode ON ;Kaze ArithmeticExpressionCompileru da u asemblerski kod koji ispisuje stavi vise komentara.
 AsmStart
     ispisPoruka=1
     macro staviIntNaSistemskiStog x ;"x" treba biti pokazivac na 32-bitni decimalni broj ("float"), kojeg ce ova makro-naredba pretvoriti u 32-bitni cijeli broj ("int") i staviti na sistemski stog.
@@ -88,16 +89,11 @@ AsmEnd
 i:=2
 While i<7 | i=7 
     razvrstanostNa(i):=pow(abs(razvrstanost),i) ;"pow(x,y)" je u AEC-u samo sintaksni secer za "exp(ln(x)*y)", i to vraca NaN za x=0 ili x<0. Nema ocitog nacina da se "pow(x,y)" prevede na asemblerski.
-    If razvrstanost=0
-        razvrstanostNa(i):=0
-    EndIf
-    If mod(i,2)=1 & razvrstanost<0
-        razvrstanostNa(i):=-razvrstanostNa(i)
-    EndIf
+    razvrstanostNa(i):=(razvrstanost=0) ? 0 : (mod(i,2)=1 & razvrstanost<0) ? (-razvrstanostNa(i)) : razvrstanostNa(i) ;C-ov i JavaScriptin uvjetni operator nekad zna znatno skratiti kod, zato sam ga ugradio i u svoj jezik.
     i:=i+1
 EndWhile
 ;Formula koju je ispisao genetski algoritam za predvidanje koliko ce usporedbi QuickSort napraviti: https://github.com/FlatAssembler/ArithmeticExpressionCompiler/tree/master/QuickSort/Genetic_algorithm_for_deriving_the_formula
-polinomPodApsolutnom:=2.38854*razvrstanostNa(7)-0.284258*razvrstanostNa(6)-1.87104*razvrstanostNa(5)+0.372637*razvrstanostNa(4)+0.167242*razvrstanostNa(3)-0.0884977*razvrstanostNa(2)+0.315119*razvrstanost
+polinomPodApsolutnom:=2.38854*razvrstanostNa(7) - 0.284258*razvrstanostNa(6) - 1.87104*razvrstanostNa(5) + 0.372637*razvrstanostNa(4) + 0.167242*razvrstanostNa(3) - 0.0884977*razvrstanostNa(2) + 0.315119*razvrstanost
 eNaKoju:=(ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(polinomPodApsolutnom)
 kolikoUsporedbiOcekujemoOdQuickSorta:=exp(eNaKoju)
 kolikoUsporedbiOcekujemoOdMergeSorta:=2*n*ln(n)/ln(2)
@@ -125,7 +121,7 @@ If razvrstanost=1
             invoke printf,nizJeVecRazvrstan
         end if
     AsmEnd
-ElseIf razvrstanost=(-1) ;Da, parser od AEC-a jos nije savrsen i javlja gresku za "razvrstanost=-1".
+ElseIf razvrstanost=-1
     AsmStart
         if ispisPoruka=1
             jmp nizJeObrnutoRazvrstan$

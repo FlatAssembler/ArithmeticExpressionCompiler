@@ -50,51 +50,86 @@ end if
 ;AsmEnd
 ;Inline assembly ended.
 ;i:=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;brojac:=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [brojac],edx
 ;vrhStoga:=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [vrhStoga],edx
 ;While i<n
+;Initializing the FPU stack...
 finit
-WhileLabel788379:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel962776:
+;Evaluating the expression after the "While" keyword
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(< i n)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel253373
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel311622
 fld1
-jmp endOfTheLessThanComparisonLabel393840
-secondOperandOfTheComparisonIsSmallerOrEqualLabel253373:
+jmp endOfTheLessThanComparisonLabel169310
+secondOperandOfTheComparisonIsSmallerOrEqualLabel311622:
 fldz
-endOfTheLessThanComparisonLabel393840:
+endOfTheLessThanComparisonLabel169310:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel261181
+;Branching based on whether it is 0...
+je EndWhileLabel476163
 ;pokazivac:=4*i ;"float" ima 4 bajta.
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "4" to the FPU stack...
 mov dword [result],0x40800000 ;IEEE754 hex of 4
 fld dword [result]
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(* 4 i)" to the FPU stack...
 fmulp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [pokazivac],edx
 ;AsmStart
 ;Inline assembly begins.
@@ -108,18 +143,28 @@ call [scanf]
 ;AsmEnd
 ;Inline assembly ended.
 ;i:=i+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel788379
-EndWhileLabel261181:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel962776
+EndWhileLabel476163:
 ;AsmStart
 ;Inline assembly begins.
 call [clock] ;"clock" na Windowsima vraca broj milisekundi otkad se program pokrenuo, zadnja 32 bita vraca u procesorski registar "eax".
@@ -127,107 +172,176 @@ mov [procesorskoVrijeme],eax
 ;AsmEnd
 ;Inline assembly ended.
 ;razvrstanost:=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [razvrstanost],edx
 ;i:=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;While i<n-1
+;Initializing the FPU stack...
 finit
-WhileLabel727885:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel412314:
+;Evaluating the expression after the "While" keyword
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(- n 1)" to the FPU stack...
 fsubp
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(< (- n 1) i)" to the FPU stack...
 fxch
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel483621
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel761044
 fld1
-jmp endOfTheLessThanComparisonLabel293918
-secondOperandOfTheComparisonIsSmallerOrEqualLabel483621:
+jmp endOfTheLessThanComparisonLabel603141
+secondOperandOfTheComparisonIsSmallerOrEqualLabel761044:
 fldz
-endOfTheLessThanComparisonLabel293918:
+endOfTheLessThanComparisonLabel603141:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel152694
+;Branching based on whether it is 0...
+je EndWhileLabel303476
 ;razvrstanost:=razvrstanost+(original(i)<original(i+1))
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Pushing "(original (+ i 1))" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(original i)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "(< (original (+ i 1)) (original i))" to the FPU stack...
 fxch
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel823005
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel293791
 fld1
-jmp endOfTheLessThanComparisonLabel640662
-secondOperandOfTheComparisonIsSmallerOrEqualLabel823005:
+jmp endOfTheLessThanComparisonLabel424096
+secondOperandOfTheComparisonIsSmallerOrEqualLabel293791:
 fldz
-endOfTheLessThanComparisonLabel640662:
+endOfTheLessThanComparisonLabel424096:
+;Pushing "razvrstanost" to the FPU stack...
 fld dword [razvrstanost]
+;Pushing "(+ (< (original (+ i 1)) (original i)) razvrstanost)" to the FPU stack...
 fxch
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [razvrstanost],edx
 ;i:=i+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;brojac:=brojac+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "brojac" to the FPU stack...
 fld dword [brojac]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ brojac 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [brojac],edx
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel727885
-EndWhileLabel152694:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel412314
+EndWhileLabel303476:
 ;razvrstanost:=razvrstanost/((n-1)/2)-1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(- n 1)" to the FPU stack...
 fsubp
+;Pushing "2" to the FPU stack...
 mov dword [result],0x40000000 ;IEEE754 hex of 2
 fld dword [result]
+;Pushing "(/ (- n 1) 2)" to the FPU stack...
 fdivp
+;Pushing "razvrstanost" to the FPU stack...
 fld dword [razvrstanost]
+;Pushing "(/ (/ (- n 1) 2) razvrstanost)" to the FPU stack...
 fxch
 fdivp
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(- (/ (/ (- n 1) 2) razvrstanost) 1)" to the FPU stack...
 fsubp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [razvrstanost],edx
 ;AsmStart
 ;Inline assembly begins.
@@ -243,51 +357,77 @@ end if
 ;AsmEnd
 ;Inline assembly ended.
 ;i:=2
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "2" to the FPU stack...
 mov dword [result],0x40000000 ;IEEE754 hex of 2
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;While i<7 | i=7 
+;Initializing the FPU stack...
 finit
-WhileLabel503331:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel785478:
+;Evaluating the expression after the "While" keyword
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "7" to the FPU stack...
 mov dword [result],0x40e00000 ;IEEE754 hex of 7
 fld dword [result]
+;Pushing "(< i 7)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel399364
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel119994
 fld1
-jmp endOfTheLessThanComparisonLabel711165
-secondOperandOfTheComparisonIsSmallerOrEqualLabel399364:
+jmp endOfTheLessThanComparisonLabel469288
+secondOperandOfTheComparisonIsSmallerOrEqualLabel119994:
 fldz
-endOfTheLessThanComparisonLabel711165:
+endOfTheLessThanComparisonLabel469288:
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "7" to the FPU stack...
 mov dword [result],0x40e00000 ;IEEE754 hex of 7
 fld dword [result]
+;Pushing "(= i 7)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel190426
+jne operandsOfTheEqualityOperatorAreNotEqualLabel973904
 fld1
-jmp endOfTheEqualityOperatorLabel199655
-operandsOfTheEqualityOperatorAreNotEqualLabel190426:
+jmp endOfTheEqualityOperatorLabel380161
+operandsOfTheEqualityOperatorAreNotEqualLabel973904:
 fldz
-endOfTheEqualityOperatorLabel199655:
+endOfTheEqualityOperatorLabel380161:
+;Pushing "(| (< i 7) (= i 7))" to the FPU stack...
 fistp dword [result]
 mov eax,dword [result]
 fistp dword [result]
 or dword [result],eax
 fild dword [result]
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel174218
+;Branching based on whether it is 0...
+je EndWhileLabel52630
 ;razvrstanostNa(i):=pow(abs(razvrstanost),i) ;"pow(x,y)" je u AEC-u samo sintaksni secer za "exp(ln(x)*y)", i to vraca NaN za x=0 ili x<0. Nema ocitog nacina da se "pow(x,y)" prevede na asemblerski.
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "razvrstanost" to the FPU stack...
 fld dword [razvrstanost]
+;Pushing "(abs razvrstanost)" to the FPU stack...
 fabs
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(pow (abs razvrstanost) i)" to the FPU stack...
 fxch
 fld1
 fxch
@@ -306,242 +446,357 @@ fprem
 f2xm1
 faddp
 fmulp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [razvrstanostNa+4*ebx],edx
-;If razvrstanost=0
+;razvrstanostNa(i):=(razvrstanost=0) ? 0 : (mod(i,2)=1 & razvrstanost<0) ? (-razvrstanostNa(i)) : razvrstanostNa(i) ;C-ov i JavaScriptin uvjetni operator nekad zna znatno skratiti kod, zato sam ga ugradio i u svoj jezik.
+;Initializing the FPU stack...
 finit
-fld dword [razvrstanost]
-mov dword [result],0x0 ;IEEE754 hex of 0
-fld dword [result]
-fcomip st1
-fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel305671
-fld1
-jmp endOfTheEqualityOperatorLabel10635
-operandsOfTheEqualityOperatorAreNotEqualLabel305671:
-fldz
-endOfTheEqualityOperatorLabel10635:
-fistp dword [result]
-mov eax, dword [result]
-test eax,eax
-jz ElseLabel157983
-;razvrstanostNa(i):=0
-finit
-mov dword [result],0x0 ;IEEE754 hex of 0
-fld dword [result]
-fstp dword [result]
-mov edx, dword [result]
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(razvrstanostNa i)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
-mov dword [razvrstanostNa+4*ebx],edx
-;EndIf
-finit
-ElseLabel157983:
-EndIfLabel182822:
-;If mod(i,2)=1 & razvrstanost<0
-finit
+fld dword [razvrstanostNa+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(razvrstanostNa i)" to the FPU stack...
+fistp dword [result]
+mov ebx, dword [result]
+fld dword [razvrstanostNa+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "0" to the FPU stack...
+mov dword [result],0x0 ;IEEE754 hex of 0
+fld dword [result]
+;Pushing "(- (razvrstanostNa i) 0)" to the FPU stack...
+fxch
+fsubp
+;Pushing "i" to the FPU stack...
+fld dword [i]
+;Pushing "2" to the FPU stack...
 mov dword [result],0x40000000 ;IEEE754 hex of 2
 fld dword [result]
+;Pushing "(mod i 2)" to the FPU stack...
 fxch
 fprem
 fxch
 fstp dword [result]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(= (mod i 2) 1)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel543508
+jne operandsOfTheEqualityOperatorAreNotEqualLabel733916
 fld1
-jmp endOfTheEqualityOperatorLabel124408
-operandsOfTheEqualityOperatorAreNotEqualLabel543508:
+jmp endOfTheEqualityOperatorLabel545419
+operandsOfTheEqualityOperatorAreNotEqualLabel733916:
 fldz
-endOfTheEqualityOperatorLabel124408:
+endOfTheEqualityOperatorLabel545419:
+;Pushing "razvrstanost" to the FPU stack...
 fld dword [razvrstanost]
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Pushing "(< razvrstanost 0)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel750366
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel47192
 fld1
-jmp endOfTheLessThanComparisonLabel789441
-secondOperandOfTheComparisonIsSmallerOrEqualLabel750366:
+jmp endOfTheLessThanComparisonLabel808556
+secondOperandOfTheComparisonIsSmallerOrEqualLabel47192:
 fldz
-endOfTheLessThanComparisonLabel789441:
+endOfTheLessThanComparisonLabel808556:
+;Pushing "(& (= (mod i 2) 1) (< razvrstanost 0))" to the FPU stack...
 fistp dword [result]
 mov eax,dword [result]
 fistp dword [result]
 and dword [result],eax
 fild dword [result]
+;Pushing "(?: (& (= (mod i 2) 1) (< razvrstanost 0)) (- (razvrstanostNa i) 0) (razvrstanostNa i))" to the FPU stack...
 fistp dword [result]
+xor eax,eax
+cmp dword [result],eax
+jz firstOperandOfTheTernaryOperatorIsZeroLabel174691
+fstp dword [result]
 mov eax, dword [result]
-test eax,eax
-jz ElseLabel194854
-;razvrstanostNa(i):=-razvrstanostNa(i)
-finit
-fld dword [i]
-fistp dword [result]
-mov ebx, dword [result]
-fld dword [razvrstanostNa+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+fstp dword [result]
+mov dword [result],eax
+fld dword [result]
+jmp endOfTheTernaryOperatorLabel18227
+firstOperandOfTheTernaryOperatorIsZeroLabel174691:
+fstp dword [result]
+endOfTheTernaryOperatorLabel18227:
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
-fxch
-fsubp
+;Pushing "razvrstanost" to the FPU stack...
+fld dword [razvrstanost]
+;Pushing "0" to the FPU stack...
+mov dword [result],0x0 ;IEEE754 hex of 0
+fld dword [result]
+;Pushing "(= razvrstanost 0)" to the FPU stack...
+fcomip st1
+fstp dword [result]
+jne operandsOfTheEqualityOperatorAreNotEqualLabel994729
+fld1
+jmp endOfTheEqualityOperatorLabel148748
+operandsOfTheEqualityOperatorAreNotEqualLabel994729:
+fldz
+endOfTheEqualityOperatorLabel148748:
+;Pushing "(?: (= razvrstanost 0) 0 (?: (& (= (mod i 2) 1) (< razvrstanost 0)) (- (razvrstanostNa i) 0) (razvrstanostNa i)))" to the FPU stack...
+fistp dword [result]
+xor eax,eax
+cmp dword [result],eax
+jz firstOperandOfTheTernaryOperatorIsZeroLabel852695
+fstp dword [result]
+mov eax, dword [result]
+fstp dword [result]
+mov dword [result],eax
+fld dword [result]
+jmp endOfTheTernaryOperatorLabel946264
+firstOperandOfTheTernaryOperatorIsZeroLabel852695:
+fstp dword [result]
+endOfTheTernaryOperatorLabel946264:
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [razvrstanostNa+4*ebx],edx
-;EndIf
-finit
-ElseLabel194854:
-EndIfLabel57899:
 ;i:=i+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel503331
-EndWhileLabel174218:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel785478
+EndWhileLabel52630:
 ;;Formula koju je ispisao genetski algoritam za predvidanje koliko ce usporedbi QuickSort napraviti: https://github.com/FlatAssembler/ArithmeticExpressionCompiler/tree/master/QuickSort/Genetic_algorithm_for_deriving_the_formula
-;polinomPodApsolutnom:=2.38854*razvrstanostNa(7)-0.284258*razvrstanostNa(6)-1.87104*razvrstanostNa(5)+0.372637*razvrstanostNa(4)+0.167242*razvrstanostNa(3)-0.0884977*razvrstanostNa(2)+0.315119*razvrstanost
+;The entire line is a comment, moving on...
+;polinomPodApsolutnom:=2.38854*razvrstanostNa(7) - 0.284258*razvrstanostNa(6) - 1.87104*razvrstanostNa(5) + 0.372637*razvrstanostNa(4) + 0.167242*razvrstanostNa(3) - 0.0884977*razvrstanostNa(2) + 0.315119*razvrstanost
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "7" to the FPU stack...
 mov dword [result],0x40e00000 ;IEEE754 hex of 7
 fld dword [result]
+;Pushing "(razvrstanostNa 7)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [razvrstanostNa+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "2.38854" to the FPU stack...
 mov dword [result],0x4018ddd7 ;IEEE754 hex of 2.38854
 fld dword [result]
+;Pushing "(* (razvrstanostNa 7) 2.38854)" to the FPU stack...
 fxch
 fmulp
+;Pushing "6" to the FPU stack...
 mov dword [result],0x40c00000 ;IEEE754 hex of 6
 fld dword [result]
+;Pushing "(razvrstanostNa 6)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [razvrstanostNa+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "0.284258" to the FPU stack...
 mov dword [result],0x3e918a44 ;IEEE754 hex of 0.284258
 fld dword [result]
+;Pushing "(* (razvrstanostNa 6) 0.284258)" to the FPU stack...
 fxch
 fmulp
+;Pushing "(- (* (razvrstanostNa 7) 2.38854) (* (razvrstanostNa 6) 0.284258))" to the FPU stack...
 fsubp
+;Pushing "5" to the FPU stack...
 mov dword [result],0x40a00000 ;IEEE754 hex of 5
 fld dword [result]
+;Pushing "(razvrstanostNa 5)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [razvrstanostNa+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "1.87104" to the FPU stack...
 mov dword [result],0x3fef7e3d ;IEEE754 hex of 1.87104
 fld dword [result]
+;Pushing "(* (razvrstanostNa 5) 1.87104)" to the FPU stack...
 fxch
 fmulp
+;Pushing "(- (- (* (razvrstanostNa 7) 2.38854) (* (razvrstanostNa 6) 0.284258)) (* (razvrstanostNa 5) 1.87104))" to the FPU stack...
 fsubp
+;Pushing "4" to the FPU stack...
 mov dword [result],0x40800000 ;IEEE754 hex of 4
 fld dword [result]
+;Pushing "(razvrstanostNa 4)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [razvrstanostNa+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "0.372637" to the FPU stack...
 mov dword [result],0x3ebeca47 ;IEEE754 hex of 0.372637
 fld dword [result]
+;Pushing "(* (razvrstanostNa 4) 0.372637)" to the FPU stack...
 fxch
 fmulp
+;Pushing "(+ (- (- (* (razvrstanostNa 7) 2.38854) (* (razvrstanostNa 6) 0.284258)) (* (razvrstanostNa 5) 1.87104)) (* (razvrstanostNa 4) 0.372637))" to the FPU stack...
 faddp
+;Pushing "3" to the FPU stack...
 mov dword [result],0x40400000 ;IEEE754 hex of 3
 fld dword [result]
+;Pushing "(razvrstanostNa 3)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [razvrstanostNa+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "0.167242" to the FPU stack...
 mov dword [result],0x3e2b417d ;IEEE754 hex of 0.167242
 fld dword [result]
+;Pushing "(* (razvrstanostNa 3) 0.167242)" to the FPU stack...
 fxch
 fmulp
+;Pushing "(+ (+ (- (- (* (razvrstanostNa 7) 2.38854) (* (razvrstanostNa 6) 0.284258)) (* (razvrstanostNa 5) 1.87104)) (* (razvrstanostNa 4) 0.372637)) (* (razvrstanostNa 3) 0.167242))" to the FPU stack...
 faddp
+;Pushing "2" to the FPU stack...
 mov dword [result],0x40000000 ;IEEE754 hex of 2
 fld dword [result]
+;Pushing "(razvrstanostNa 2)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [razvrstanostNa+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "0.0884977" to the FPU stack...
 mov dword [result],0x3db53e48 ;IEEE754 hex of 0.0884977
 fld dword [result]
+;Pushing "(* (razvrstanostNa 2) 0.0884977)" to the FPU stack...
 fxch
 fmulp
+;Pushing "(- (+ (+ (- (- (* (razvrstanostNa 7) 2.38854) (* (razvrstanostNa 6) 0.284258)) (* (razvrstanostNa 5) 1.87104)) (* (razvrstanostNa 4) 0.372637)) (* (razvrstanostNa 3) 0.167242)) (* (razvrstanostNa 2) 0.0884977))" to the FPU stack...
 fsubp
+;Pushing "0.315119" to the FPU stack...
 mov dword [result],0x3ea15747 ;IEEE754 hex of 0.315119
 fld dword [result]
+;Pushing "razvrstanost" to the FPU stack...
 fld dword [razvrstanost]
+;Pushing "(* 0.315119 razvrstanost)" to the FPU stack...
 fmulp
+;Pushing "(+ (- (+ (+ (- (- (* (razvrstanostNa 7) 2.38854) (* (razvrstanostNa 6) 0.284258)) (* (razvrstanostNa 5) 1.87104)) (* (razvrstanostNa 4) 0.372637)) (* (razvrstanostNa 3) 0.167242)) (* (razvrstanostNa 2) 0.0884977)) (* 0.315119 razvrstanost))" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [polinomPodApsolutnom],edx
 ;eNaKoju:=(ln(n)+ln(ln(n)))*1.05+(ln(n)-ln(ln(n)))*0.83*abs(polinomPodApsolutnom)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(ln n)" to the FPU stack...
 fld1
 fxch
 fyl2x
 fldl2e
 fdivp
+;Pushing "(ln (ln n))" to the FPU stack...
 fld1
 fxch
 fyl2x
 fldl2e
 fdivp
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(ln n)" to the FPU stack...
 fld1
 fxch
 fyl2x
 fldl2e
 fdivp
+;Pushing "(- (ln (ln n)) (ln n))" to the FPU stack...
 fxch
 fsubp
+;Pushing "0.83" to the FPU stack...
 mov dword [result],0x3f547ae1 ;IEEE754 hex of 0.83
 fld dword [result]
+;Pushing "(* (- (ln (ln n)) (ln n)) 0.83)" to the FPU stack...
 fmulp
+;Pushing "polinomPodApsolutnom" to the FPU stack...
 fld dword [polinomPodApsolutnom]
+;Pushing "(abs polinomPodApsolutnom)" to the FPU stack...
 fabs
+;Pushing "(* (* (- (ln (ln n)) (ln n)) 0.83) (abs polinomPodApsolutnom))" to the FPU stack...
 fmulp
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(ln n)" to the FPU stack...
 fld1
 fxch
 fyl2x
 fldl2e
 fdivp
+;Pushing "(ln (ln n))" to the FPU stack...
 fld1
 fxch
 fyl2x
 fldl2e
 fdivp
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(ln n)" to the FPU stack...
 fld1
 fxch
 fyl2x
 fldl2e
 fdivp
+;Pushing "(+ (ln (ln n)) (ln n))" to the FPU stack...
 fxch
 faddp
+;Pushing "1.05" to the FPU stack...
 mov dword [result],0x3f866666 ;IEEE754 hex of 1.05
 fld dword [result]
+;Pushing "(* (+ (ln (ln n)) (ln n)) 1.05)" to the FPU stack...
 fmulp
+;Pushing "(+ (* (* (- (ln (ln n)) (ln n)) 0.83) (abs polinomPodApsolutnom)) (* (+ (ln (ln n)) (ln n)) 1.05))" to the FPU stack...
 fxch
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [eNaKoju],edx
 ;kolikoUsporedbiOcekujemoOdQuickSorta:=exp(eNaKoju)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "eNaKoju" to the FPU stack...
 fld dword [eNaKoju]
+;Pushing "(exp eNaKoju)" to the FPU stack...
 fldl2e
 fmulp
 fld1
@@ -553,32 +808,48 @@ fprem
 f2xm1
 faddp
 fmulp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [kolikoUsporedbiOcekujemoOdQuickSorta],edx
 ;kolikoUsporedbiOcekujemoOdMergeSorta:=2*n*ln(n)/ln(2)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "2" to the FPU stack...
 mov dword [result],0x40000000 ;IEEE754 hex of 2
 fld dword [result]
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(* 2 n)" to the FPU stack...
 fmulp
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(ln n)" to the FPU stack...
 fld1
 fxch
 fyl2x
 fldl2e
 fdivp
+;Pushing "(* (* 2 n) (ln n))" to the FPU stack...
 fmulp
+;Pushing "2" to the FPU stack...
 mov dword [result],0x40000000 ;IEEE754 hex of 2
 fld dword [result]
+;Pushing "(ln 2)" to the FPU stack...
 fld1
 fxch
 fyl2x
 fldl2e
 fdivp
+;Pushing "(/ (* (* 2 n) (ln n)) (ln 2))" to the FPU stack...
 fdivp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [kolikoUsporedbiOcekujemoOdMergeSorta],edx
 ;AsmStart
 ;Inline assembly begins.
@@ -596,36 +867,56 @@ end if
 ;AsmEnd
 ;Inline assembly ended.
 ;najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=1 ;Da, kada prijedemo MAX_SAFE_INTEGER za "float", ne pokusavamo vise dodavati jedinicu.
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac],edx
 ;pomocniBrojac:=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [pomocniBrojac],edx
 ;If razvrstanost=1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: if-statement.
+;Calculating the expression...
+;Pushing "razvrstanost" to the FPU stack...
 fld dword [razvrstanost]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(= razvrstanost 1)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel623122
+jne operandsOfTheEqualityOperatorAreNotEqualLabel926977
 fld1
-jmp endOfTheEqualityOperatorLabel375436
-operandsOfTheEqualityOperatorAreNotEqualLabel623122:
+jmp endOfTheEqualityOperatorLabel280157
+operandsOfTheEqualityOperatorAreNotEqualLabel926977:
 fldz
-endOfTheEqualityOperatorLabel375436:
+endOfTheEqualityOperatorLabel280157:
+;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel767299
+;Branching based on whether the expression is 0...
+jz ElseLabel461052
 ;AsmStart
 ;Inline assembly begins.
 if ispisPoruka=1
@@ -636,29 +927,41 @@ invoke printf,nizJeVecRazvrstan
 end if
 ;AsmEnd
 ;Inline assembly ended.
-;ElseIf razvrstanost=(-1) ;Da, parser od AEC-a jos nije savrsen i javlja gresku za "razvrstanost=-1".
+;ElseIf razvrstanost=-1
+;Initializing the FPU stack...
 finit
-jmp EndIfLabel206308
-ElseLabel767299:
+;Type of the directive is: ElseIf-statement.
+;If the expression in the If-statement evaluates to 1...
+jmp EndIfLabel657981
+;If it evaluates to 0...
+ElseLabel461052:
+;Evaluating the expression after the ElseIf keyword...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(- 0 1)" to the FPU stack...
 fsubp
+;Pushing "razvrstanost" to the FPU stack...
 fld dword [razvrstanost]
+;Pushing "(= (- 0 1) razvrstanost)" to the FPU stack...
 fxch
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel971513
+jne operandsOfTheEqualityOperatorAreNotEqualLabel429027
 fld1
-jmp endOfTheEqualityOperatorLabel464549
-operandsOfTheEqualityOperatorAreNotEqualLabel971513:
+jmp endOfTheEqualityOperatorLabel939331
+operandsOfTheEqualityOperatorAreNotEqualLabel429027:
 fldz
-endOfTheEqualityOperatorLabel464549:
+endOfTheEqualityOperatorLabel939331:
+;Comparing that expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel332854
+;Branching based on whether it was 0...
+jz ElseLabel757365
 ;AsmStart
 ;Inline assembly begins.
 if ispisPoruka=1
@@ -670,135 +973,227 @@ end if
 ;AsmEnd
 ;Inline assembly ended.
 ;i:=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;While i<n
+;Initializing the FPU stack...
 finit
-WhileLabel331690:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel779673:
+;Evaluating the expression after the "While" keyword
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(< i n)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel569087
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel956934
 fld1
-jmp endOfTheLessThanComparisonLabel258523
-secondOperandOfTheComparisonIsSmallerOrEqualLabel569087:
+jmp endOfTheLessThanComparisonLabel897648
+secondOperandOfTheComparisonIsSmallerOrEqualLabel956934:
 fldz
-endOfTheLessThanComparisonLabel258523:
+endOfTheLessThanComparisonLabel897648:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel239982
+;Branching based on whether it is 0...
+je EndWhileLabel799702
 ;pomocni(i):=original(n-i-1)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(- n i)" to the FPU stack...
 fsubp
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(- (- n i) 1)" to the FPU stack...
 fsubp
+;Pushing "(original (- (- n i) 1))" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [pomocni+4*ebx],edx
 ;i:=i+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;brojac:=brojac+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "brojac" to the FPU stack...
 fld dword [brojac]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ brojac 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [brojac],edx
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel331690
-EndWhileLabel239982:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel779673
+EndWhileLabel799702:
 ;i:=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;While i<n
+;Initializing the FPU stack...
 finit
-WhileLabel971591:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel616991:
+;Evaluating the expression after the "While" keyword
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(< i n)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel925322
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel85256
 fld1
-jmp endOfTheLessThanComparisonLabel807401
-secondOperandOfTheComparisonIsSmallerOrEqualLabel925322:
+jmp endOfTheLessThanComparisonLabel30267
+secondOperandOfTheComparisonIsSmallerOrEqualLabel85256:
 fldz
-endOfTheLessThanComparisonLabel807401:
+endOfTheLessThanComparisonLabel30267:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel452867
+;Branching based on whether it is 0...
+je EndWhileLabel732626
 ;original(i):=pomocni(i)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(pomocni i)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [pomocni+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [original+4*ebx],edx
 ;i:=i+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel971591
-EndWhileLabel452867:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel616991
+EndWhileLabel732626:
 ;ElseIf kolikoUsporedbiOcekujemoOdQuickSorta<kolikoUsporedbiOcekujemoOdMergeSorta
+;Initializing the FPU stack...
 finit
-jmp EndIfLabel206308
-ElseLabel332854:
+;Type of the directive is: ElseIf-statement.
+;If the expression in the If-statement evaluates to 1...
+jmp EndIfLabel657981
+;If it evaluates to 0...
+ElseLabel757365:
+;Evaluating the expression after the ElseIf keyword...
+;Pushing "kolikoUsporedbiOcekujemoOdQuickSorta" to the FPU stack...
 fld dword [kolikoUsporedbiOcekujemoOdQuickSorta]
+;Pushing "kolikoUsporedbiOcekujemoOdMergeSorta" to the FPU stack...
 fld dword [kolikoUsporedbiOcekujemoOdMergeSorta]
+;Pushing "(< kolikoUsporedbiOcekujemoOdQuickSorta kolikoUsporedbiOcekujemoOdMergeSorta)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel954525
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel313722
 fld1
-jmp endOfTheLessThanComparisonLabel687733
-secondOperandOfTheComparisonIsSmallerOrEqualLabel954525:
+jmp endOfTheLessThanComparisonLabel709710
+secondOperandOfTheComparisonIsSmallerOrEqualLabel313722:
 fldz
-endOfTheLessThanComparisonLabel687733:
+endOfTheLessThanComparisonLabel709710:
+;Comparing that expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel604593
+;Branching based on whether it was 0...
+jz ElseLabel328999
 ;AsmStart
 ;Inline assembly begins.
 if ispisPoruka=1
@@ -810,530 +1205,914 @@ end if
 ;AsmEnd
 ;Inline assembly ended.
 ;vrhStoga:=vrhStoga+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ vrhStoga 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [vrhStoga],edx
 ;stogSDonjimGranicama(vrhStoga):=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSDonjimGranicama+4*ebx],edx
 ;stogSGornjimGranicama(vrhStoga):=n
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSGornjimGranicama+4*ebx],edx
 ;While vrhStoga>0
+;Initializing the FPU stack...
 finit
-WhileLabel777190:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel734919:
+;Evaluating the expression after the "While" keyword
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Pushing "(> vrhStoga 0)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel38636
+jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel737331
 fld1
-jmp endOfTheGreaterThanComparisonLabel257824
-secondOperandOfTheComparisonIsGreaterOrEqualLabel38636:
+jmp endOfTheGreaterThanComparisonLabel644728
+secondOperandOfTheComparisonIsGreaterOrEqualLabel737331:
 fldz
-endOfTheGreaterThanComparisonLabel257824:
+endOfTheGreaterThanComparisonLabel644728:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel873713
+;Branching based on whether it is 0...
+je EndWhileLabel760861
 ;gornjaGranica:=stogSGornjimGranicama(vrhStoga)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "(stogSGornjimGranicama vrhStoga)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [stogSGornjimGranicama+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [gornjaGranica],edx
 ;donjaGranica:=stogSDonjimGranicama(vrhStoga)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "(stogSDonjimGranicama vrhStoga)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [stogSDonjimGranicama+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [donjaGranica],edx
 ;vrhStoga:=vrhStoga-1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(- vrhStoga 1)" to the FPU stack...
 fsubp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [vrhStoga],edx
 ;gdjeJePivot:=donjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [gdjeJePivot],edx
 ;i:=donjaGranica+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ donjaGranica 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;While i<gornjaGranica
+;Initializing the FPU stack...
 finit
-WhileLabel451746:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel729742:
+;Evaluating the expression after the "While" keyword
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Pushing "(< i gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel333009
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel224253
 fld1
-jmp endOfTheLessThanComparisonLabel329750
-secondOperandOfTheComparisonIsSmallerOrEqualLabel333009:
+jmp endOfTheLessThanComparisonLabel97025
+secondOperandOfTheComparisonIsSmallerOrEqualLabel224253:
 fldz
-endOfTheLessThanComparisonLabel329750:
+endOfTheLessThanComparisonLabel97025:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel906277
+;Branching based on whether it is 0...
+je EndWhileLabel247765
 ;If original(i)<original(donjaGranica)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: if-statement.
+;Calculating the expression...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(original i)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Pushing "(original donjaGranica)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "(< (original i) (original donjaGranica))" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel118178
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel294124
 fld1
-jmp endOfTheLessThanComparisonLabel379491
-secondOperandOfTheComparisonIsSmallerOrEqualLabel118178:
+jmp endOfTheLessThanComparisonLabel690301
+secondOperandOfTheComparisonIsSmallerOrEqualLabel294124:
 fldz
-endOfTheLessThanComparisonLabel379491:
+endOfTheLessThanComparisonLabel690301:
+;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel679737
+;Branching based on whether the expression is 0...
+jz ElseLabel925932
 ;gdjeJePivot:=gdjeJePivot+1 ;Gdje ce doci element koji je sada prvi ("pivot").
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "gdjeJePivot" to the FPU stack...
 fld dword [gdjeJePivot]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ gdjeJePivot 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [gdjeJePivot],edx
 ;EndIf
+;Initializing the FPU stack...
 finit
-ElseLabel679737:
-EndIfLabel443768:
+;Type of the directive is: EndIf-statement.
+ElseLabel925932:
+EndIfLabel295606:
 ;i:=i++ ;"++" je u AEC-u jednostavno sintaksni secer za "+1".
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel451746
-EndWhileLabel906277:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel729742
+EndWhileLabel247765:
 ;staviManje:=donjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [staviManje],edx
 ;staviVece:=gdjeJePivot+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "gdjeJePivot" to the FPU stack...
 fld dword [gdjeJePivot]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ gdjeJePivot 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [staviVece],edx
 ;pomocni(gdjeJePivot):=original(donjaGranica)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Pushing "(original donjaGranica)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "gdjeJePivot" to the FPU stack...
 fld dword [gdjeJePivot]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [pomocni+4*ebx],edx
 ;i:=donjaGranica+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ donjaGranica 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;While i<gornjaGranica ;Preuredi niz original(donjaGranica..gornjaGranica-1) tako da svi elementi koji su manji od onoga koji je bio prvi dodu prije njega.
+;Initializing the FPU stack...
 finit
-WhileLabel594401:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel340428:
+;Evaluating the expression after the "While" keyword
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Pushing "(< i gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel375743
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel621114
 fld1
-jmp endOfTheLessThanComparisonLabel35860
-secondOperandOfTheComparisonIsSmallerOrEqualLabel375743:
+jmp endOfTheLessThanComparisonLabel377191
+secondOperandOfTheComparisonIsSmallerOrEqualLabel621114:
 fldz
-endOfTheLessThanComparisonLabel35860:
+endOfTheLessThanComparisonLabel377191:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel497495
+;Branching based on whether it is 0...
+je EndWhileLabel765809
 ;If original(i)<original(donjaGranica)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: if-statement.
+;Calculating the expression...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(original i)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Pushing "(original donjaGranica)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "(< (original i) (original donjaGranica))" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel523134
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel877584
 fld1
-jmp endOfTheLessThanComparisonLabel944930
-secondOperandOfTheComparisonIsSmallerOrEqualLabel523134:
+jmp endOfTheLessThanComparisonLabel172534
+secondOperandOfTheComparisonIsSmallerOrEqualLabel877584:
 fldz
-endOfTheLessThanComparisonLabel944930:
+endOfTheLessThanComparisonLabel172534:
+;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel707063
+;Branching based on whether the expression is 0...
+jz ElseLabel625209
 ;pomocni(staviManje):=original(i)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(original i)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "staviManje" to the FPU stack...
 fld dword [staviManje]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [pomocni+4*ebx],edx
 ;staviManje:=staviManje+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "staviManje" to the FPU stack...
 fld dword [staviManje]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ staviManje 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [staviManje],edx
 ;Else
+;Initializing the FPU stack...
 finit
-jmp EndIfLabel860662
-ElseLabel707063:
+;Type of the directive: Else-statement.
+jmp EndIfLabel71186
+ElseLabel625209:
 ;pomocni(staviVece):=original(i)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(original i)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "staviVece" to the FPU stack...
 fld dword [staviVece]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [pomocni+4*ebx],edx
 ;staviVece:=staviVece+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "staviVece" to the FPU stack...
 fld dword [staviVece]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ staviVece 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [staviVece],edx
 ;EndIf
+;Initializing the FPU stack...
 finit
-EndIfLabel860662:
+;Type of the directive is: EndIf-statement.
+EndIfLabel71186:
 ;pomocniBrojac:=pomocniBrojac+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "pomocniBrojac" to the FPU stack...
 fld dword [pomocniBrojac]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ pomocniBrojac 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [pomocniBrojac],edx
 ;If pomocniBrojac=najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac
+;Initializing the FPU stack...
 finit
+;Type of the directive is: if-statement.
+;Calculating the expression...
+;Pushing "pomocniBrojac" to the FPU stack...
 fld dword [pomocniBrojac]
+;Pushing "najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac" to the FPU stack...
 fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
+;Pushing "(= pomocniBrojac najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel290514
+jne operandsOfTheEqualityOperatorAreNotEqualLabel965916
 fld1
-jmp endOfTheEqualityOperatorLabel728400
-operandsOfTheEqualityOperatorAreNotEqualLabel290514:
+jmp endOfTheEqualityOperatorLabel269313
+operandsOfTheEqualityOperatorAreNotEqualLabel965916:
 fldz
-endOfTheEqualityOperatorLabel728400:
+endOfTheEqualityOperatorLabel269313:
+;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel132924
+;Branching based on whether the expression is 0...
+jz ElseLabel890089
 ;brojac:=brojac+pomocniBrojac
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "brojac" to the FPU stack...
 fld dword [brojac]
+;Pushing "pomocniBrojac" to the FPU stack...
 fld dword [pomocniBrojac]
+;Pushing "(+ brojac pomocniBrojac)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [brojac],edx
 ;pomocniBrojac:=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [pomocniBrojac],edx
 ;EndIf
+;Initializing the FPU stack...
 finit
-ElseLabel132924:
-EndIfLabel676829:
+;Type of the directive is: EndIf-statement.
+ElseLabel890089:
+EndIfLabel336627:
 ;i:=i+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel594401
-EndWhileLabel497495:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel340428
+EndWhileLabel765809:
 ;i:=donjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;While i<gornjaGranica
+;Initializing the FPU stack...
 finit
-WhileLabel345798:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel333106:
+;Evaluating the expression after the "While" keyword
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Pushing "(< i gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel679092
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel655826
 fld1
-jmp endOfTheLessThanComparisonLabel82944
-secondOperandOfTheComparisonIsSmallerOrEqualLabel679092:
+jmp endOfTheLessThanComparisonLabel493138
+secondOperandOfTheComparisonIsSmallerOrEqualLabel655826:
 fldz
-endOfTheLessThanComparisonLabel82944:
+endOfTheLessThanComparisonLabel493138:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel46806
+;Branching based on whether it is 0...
+je EndWhileLabel237155
 ;original(i):=pomocni(i)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(pomocni i)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [pomocni+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [original+4*ebx],edx
 ;i:=i+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel345798
-EndWhileLabel46806:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel333106
+EndWhileLabel237155:
 ;;Razdvoji niz original(donjaGranica..gornjaGranica-1) na nizove original(donjaGranica..gdjeJePivot-1) i original(gdjeJePivot+1..gornjaGranica-1).
+;The entire line is a comment, moving on...
 ;;Znamo gdje je pivot, pa njega ne trebamo ukljuciti ni u jedan od tih nizova.
+;The entire line is a comment, moving on...
 ;;I ne trebamo na stog stavljati naputke o razvrstavanju nizova velicine 0 ili 1.
+;The entire line is a comment, moving on...
 ;If gdjeJePivot<gornjaGranica-1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: if-statement.
+;Calculating the expression...
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(- gornjaGranica 1)" to the FPU stack...
 fsubp
+;Pushing "gdjeJePivot" to the FPU stack...
 fld dword [gdjeJePivot]
+;Pushing "(< (- gornjaGranica 1) gdjeJePivot)" to the FPU stack...
 fxch
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel861879
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel806212
 fld1
-jmp endOfTheLessThanComparisonLabel538340
-secondOperandOfTheComparisonIsSmallerOrEqualLabel861879:
+jmp endOfTheLessThanComparisonLabel977770
+secondOperandOfTheComparisonIsSmallerOrEqualLabel806212:
 fldz
-endOfTheLessThanComparisonLabel538340:
+endOfTheLessThanComparisonLabel977770:
+;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel938976
+;Branching based on whether the expression is 0...
+jz ElseLabel171730
 ;vrhStoga:=vrhStoga+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ vrhStoga 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [vrhStoga],edx
 ;stogSDonjimGranicama(vrhStoga):=gdjeJePivot+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "gdjeJePivot" to the FPU stack...
 fld dword [gdjeJePivot]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ gdjeJePivot 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSDonjimGranicama+4*ebx],edx
 ;stogSGornjimGranicama(vrhStoga):=gornjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSGornjimGranicama+4*ebx],edx
 ;EndIf
+;Initializing the FPU stack...
 finit
-ElseLabel938976:
-EndIfLabel834907:
+;Type of the directive is: EndIf-statement.
+ElseLabel171730:
+EndIfLabel621322:
 ;If gdjeJePivot>donjaGranica+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: if-statement.
+;Calculating the expression...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ donjaGranica 1)" to the FPU stack...
 faddp
+;Pushing "gdjeJePivot" to the FPU stack...
 fld dword [gdjeJePivot]
+;Pushing "(> (+ donjaGranica 1) gdjeJePivot)" to the FPU stack...
 fxch
 fcomip st1
 fstp dword [result]
-jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel884394
+jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel615832
 fld1
-jmp endOfTheGreaterThanComparisonLabel538850
-secondOperandOfTheComparisonIsGreaterOrEqualLabel884394:
+jmp endOfTheGreaterThanComparisonLabel706644
+secondOperandOfTheComparisonIsGreaterOrEqualLabel615832:
 fldz
-endOfTheGreaterThanComparisonLabel538850:
+endOfTheGreaterThanComparisonLabel706644:
+;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel239114
+;Branching based on whether the expression is 0...
+jz ElseLabel880612
 ;vrhStoga:=vrhStoga+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ vrhStoga 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [vrhStoga],edx
 ;stogSDonjimGranicama(vrhStoga):=donjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSDonjimGranicama+4*ebx],edx
 ;stogSGornjimGranicama(vrhStoga):=gdjeJePivot
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "gdjeJePivot" to the FPU stack...
 fld dword [gdjeJePivot]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSGornjimGranicama+4*ebx],edx
 ;EndIf
+;Initializing the FPU stack...
 finit
-ElseLabel239114:
-EndIfLabel634657:
+;Type of the directive is: EndIf-statement.
+ElseLabel880612:
+EndIfLabel700765:
 ;testZaPreljev:=brojac+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim. Izgubio sam hrpu vremena da to shvatim.
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "brojac" to the FPU stack...
 fld dword [brojac]
+;Pushing "najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac" to the FPU stack...
 fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
+;Pushing "(+ brojac najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [testZaPreljev],edx
 ;If not(testZaPreljev>brojac)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: if-statement.
+;Calculating the expression...
+;Pushing "testZaPreljev" to the FPU stack...
 fld dword [testZaPreljev]
+;Pushing "brojac" to the FPU stack...
 fld dword [brojac]
+;Pushing "(> testZaPreljev brojac)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel619911
+jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel259950
 fld1
-jmp endOfTheGreaterThanComparisonLabel413787
-secondOperandOfTheComparisonIsGreaterOrEqualLabel619911:
+jmp endOfTheGreaterThanComparisonLabel149967
+secondOperandOfTheComparisonIsGreaterOrEqualLabel259950:
 fldz
-endOfTheGreaterThanComparisonLabel413787:
+endOfTheGreaterThanComparisonLabel149967:
+;Pushing "(not (> testZaPreljev brojac))" to the FPU stack...
 fld1
 fxch
 fsubp
+;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel694350
+;Branching based on whether the expression is 0...
+jz ElseLabel161882
 ;najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac*2
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac" to the FPU stack...
 fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
+;Pushing "2" to the FPU stack...
 mov dword [result],0x40000000 ;IEEE754 hex of 2
 fld dword [result]
+;Pushing "(* najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac 2)" to the FPU stack...
 fmulp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac],edx
 ;AsmStart
 ;Inline assembly begins.
@@ -1354,17 +2133,23 @@ end if
 ;AsmEnd
 ;Inline assembly ended.
 ;EndIf
+;Initializing the FPU stack...
 finit
-ElseLabel694350:
-EndIfLabel760915:
+;Type of the directive is: EndIf-statement.
+ElseLabel161882:
+EndIfLabel751317:
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel777190
-EndWhileLabel873713:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel734919
+EndWhileLabel760861:
 ;Else
+;Initializing the FPU stack...
 finit
-jmp EndIfLabel206308
-ElseLabel604593:
+;Type of the directive: Else-statement.
+jmp EndIfLabel657981
+ElseLabel328999:
 ;AsmStart
 ;Inline assembly begins.
 if ispisPoruka=1
@@ -1376,500 +2161,873 @@ end if
 ;AsmEnd
 ;Inline assembly ended.
 ;vrhStoga:=vrhStoga+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ vrhStoga 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [vrhStoga],edx
 ;stogSDonjimGranicama(vrhStoga):=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSDonjimGranicama+4*ebx],edx
 ;stogSGornjimGranicama(vrhStoga):=n
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSGornjimGranicama+4*ebx],edx
 ;stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=razdvajati
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "razdvajati" to the FPU stack...
 fld dword [razdvajati]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove+4*ebx],edx
 ;While vrhStoga>0
+;Initializing the FPU stack...
 finit
-WhileLabel357125:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel23154:
+;Evaluating the expression after the "While" keyword
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Pushing "(> vrhStoga 0)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel706476
+jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel528065
 fld1
-jmp endOfTheGreaterThanComparisonLabel192657
-secondOperandOfTheComparisonIsGreaterOrEqualLabel706476:
+jmp endOfTheGreaterThanComparisonLabel486249
+secondOperandOfTheComparisonIsGreaterOrEqualLabel528065:
 fldz
-endOfTheGreaterThanComparisonLabel192657:
+endOfTheGreaterThanComparisonLabel486249:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel730434
+;Branching based on whether it is 0...
+je EndWhileLabel415636
 ;gornjaGranica:=stogSGornjimGranicama(vrhStoga)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "(stogSGornjimGranicama vrhStoga)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [stogSGornjimGranicama+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [gornjaGranica],edx
 ;donjaGranica:=stogSDonjimGranicama(vrhStoga)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "(stogSDonjimGranicama vrhStoga)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [stogSDonjimGranicama+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [donjaGranica],edx
 ;trebaLiSpajatiIliRazdvajati:=stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "(stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove vrhStoga)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [trebaLiSpajatiIliRazdvajati],edx
 ;vrhStoga:=vrhStoga-1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(- vrhStoga 1)" to the FPU stack...
 fsubp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [vrhStoga],edx
 ;sredinaNiza:=(donjaGranica+gornjaGranica)/2
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Pushing "(+ donjaGranica gornjaGranica)" to the FPU stack...
 faddp
+;Pushing "2" to the FPU stack...
 mov dword [result],0x40000000 ;IEEE754 hex of 2
 fld dword [result]
+;Pushing "(/ (+ donjaGranica gornjaGranica) 2)" to the FPU stack...
 fdivp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [sredinaNiza],edx
 ;sredinaNiza:=sredinaNiza-mod(sredinaNiza,1)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "sredinaNiza" to the FPU stack...
 fld dword [sredinaNiza]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(mod sredinaNiza 1)" to the FPU stack...
 fxch
 fprem
 fxch
 fstp dword [result]
+;Pushing "sredinaNiza" to the FPU stack...
 fld dword [sredinaNiza]
+;Pushing "(- (mod sredinaNiza 1) sredinaNiza)" to the FPU stack...
 fxch
 fsubp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [sredinaNiza],edx
 ;If trebaLiSpajatiIliRazdvajati=razdvajati ;Razdvoji niz original(donjaGranica..gornjaGranica-1) na original(donjaGranica..sredinaNiza-1) i original(sredinaNiza..gornjaGranica-1).
+;Initializing the FPU stack...
 finit
+;Type of the directive is: if-statement.
+;Calculating the expression...
+;Pushing "trebaLiSpajatiIliRazdvajati" to the FPU stack...
 fld dword [trebaLiSpajatiIliRazdvajati]
+;Pushing "razdvajati" to the FPU stack...
 fld dword [razdvajati]
+;Pushing "(= trebaLiSpajatiIliRazdvajati razdvajati)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel53974
+jne operandsOfTheEqualityOperatorAreNotEqualLabel287232
 fld1
-jmp endOfTheEqualityOperatorLabel507661
-operandsOfTheEqualityOperatorAreNotEqualLabel53974:
+jmp endOfTheEqualityOperatorLabel186189
+operandsOfTheEqualityOperatorAreNotEqualLabel287232:
 fldz
-endOfTheEqualityOperatorLabel507661:
+endOfTheEqualityOperatorLabel186189:
+;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel553840
+;Branching based on whether the expression is 0...
+jz ElseLabel593884
 ;If gornjaGranica-donjaGranica>1 ;Niz velicine 0 ili 1 vec je poredan i ne radimo nista dalje.
+;Initializing the FPU stack...
 finit
+;Type of the directive is: if-statement.
+;Calculating the expression...
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Pushing "(- gornjaGranica donjaGranica)" to the FPU stack...
 fsubp
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(> (- gornjaGranica donjaGranica) 1)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel752334
+jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel163998
 fld1
-jmp endOfTheGreaterThanComparisonLabel897003
-secondOperandOfTheComparisonIsGreaterOrEqualLabel752334:
+jmp endOfTheGreaterThanComparisonLabel434900
+secondOperandOfTheComparisonIsGreaterOrEqualLabel163998:
 fldz
-endOfTheGreaterThanComparisonLabel897003:
+endOfTheGreaterThanComparisonLabel434900:
+;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel34757
+;Branching based on whether the expression is 0...
+jz ElseLabel338335
 ;vrhStoga:=vrhStoga+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ vrhStoga 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [vrhStoga],edx
 ;stogSDonjimGranicama(vrhStoga):=donjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSDonjimGranicama+4*ebx],edx
 ;stogSGornjimGranicama(vrhStoga):=gornjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSGornjimGranicama+4*ebx],edx
 ;stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=spajati
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "spajati" to the FPU stack...
 fld dword [spajati]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove+4*ebx],edx
 ;;Stavljamo naputak za spajanje nizova prvog na stog kako bi on onda bio zadnji izvaden iz njega.
+;The entire line is a comment, moving on...
 ;vrhStoga:=vrhStoga+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ vrhStoga 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [vrhStoga],edx
 ;stogSDonjimGranicama(vrhStoga):=donjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSDonjimGranicama+4*ebx],edx
 ;stogSGornjimGranicama(vrhStoga):=sredinaNiza
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "sredinaNiza" to the FPU stack...
 fld dword [sredinaNiza]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSGornjimGranicama+4*ebx],edx
 ;stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=razdvajati
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "razdvajati" to the FPU stack...
 fld dword [razdvajati]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove+4*ebx],edx
 ;vrhStoga:=vrhStoga+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ vrhStoga 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [vrhStoga],edx
 ;stogSDonjimGranicama(vrhStoga):=sredinaNiza
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "sredinaNiza" to the FPU stack...
 fld dword [sredinaNiza]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSDonjimGranicama+4*ebx],edx
 ;stogSGornjimGranicama(vrhStoga):=gornjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSGornjimGranicama+4*ebx],edx
 ;stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove(vrhStoga):=razdvajati
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "razdvajati" to the FPU stack...
 fld dword [razdvajati]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove+4*ebx],edx
 ;EndIf
+;Initializing the FPU stack...
 finit
-ElseLabel34757:
-EndIfLabel598687:
+;Type of the directive is: EndIf-statement.
+ElseLabel338335:
+EndIfLabel213494:
 ;Else ;Spoji vec poredane nizove original(donjaGranica..sredinaNiza-1) i original(sredinaNiza..gornjaGranica-1) u novi poredani niz original(donjaGranica..gornjaGranica-1).
+;Initializing the FPU stack...
 finit
-jmp EndIfLabel761036
-ElseLabel553840:
+;Type of the directive: Else-statement.
+jmp EndIfLabel260327
+ElseLabel593884:
 ;i:=donjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;gdjeSmoUPrvomNizu:=donjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [gdjeSmoUPrvomNizu],edx
 ;gdjeSmoUDrugomNizu:=sredinaNiza
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "sredinaNiza" to the FPU stack...
 fld dword [sredinaNiza]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [gdjeSmoUDrugomNizu],edx
 ;While i<gornjaGranica
+;Initializing the FPU stack...
 finit
-WhileLabel225351:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel117864:
+;Evaluating the expression after the "While" keyword
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Pushing "(< i gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel906541
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel561090
 fld1
-jmp endOfTheLessThanComparisonLabel161536
-secondOperandOfTheComparisonIsSmallerOrEqualLabel906541:
+jmp endOfTheLessThanComparisonLabel853298
+secondOperandOfTheComparisonIsSmallerOrEqualLabel561090:
 fldz
-endOfTheLessThanComparisonLabel161536:
+endOfTheLessThanComparisonLabel853298:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel901289
+;Branching based on whether it is 0...
+je EndWhileLabel556675
 ;If (gdjeSmoUPrvomNizu=sredinaNiza | original(gdjeSmoUDrugomNizu)<original(gdjeSmoUPrvomNizu)) & gdjeSmoUDrugomNizu<gornjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: if-statement.
+;Calculating the expression...
+;Pushing "gdjeSmoUDrugomNizu" to the FPU stack...
 fld dword [gdjeSmoUDrugomNizu]
+;Pushing "(original gdjeSmoUDrugomNizu)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "gdjeSmoUPrvomNizu" to the FPU stack...
 fld dword [gdjeSmoUPrvomNizu]
+;Pushing "(original gdjeSmoUPrvomNizu)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Pushing "(< (original gdjeSmoUDrugomNizu) (original gdjeSmoUPrvomNizu))" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel393160
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel31559
 fld1
-jmp endOfTheLessThanComparisonLabel3643
-secondOperandOfTheComparisonIsSmallerOrEqualLabel393160:
+jmp endOfTheLessThanComparisonLabel351003
+secondOperandOfTheComparisonIsSmallerOrEqualLabel31559:
 fldz
-endOfTheLessThanComparisonLabel3643:
+endOfTheLessThanComparisonLabel351003:
+;Pushing "gdjeSmoUPrvomNizu" to the FPU stack...
 fld dword [gdjeSmoUPrvomNizu]
+;Pushing "sredinaNiza" to the FPU stack...
 fld dword [sredinaNiza]
+;Pushing "(= gdjeSmoUPrvomNizu sredinaNiza)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel478177
+jne operandsOfTheEqualityOperatorAreNotEqualLabel741601
 fld1
-jmp endOfTheEqualityOperatorLabel351093
-operandsOfTheEqualityOperatorAreNotEqualLabel478177:
+jmp endOfTheEqualityOperatorLabel392261
+operandsOfTheEqualityOperatorAreNotEqualLabel741601:
 fldz
-endOfTheEqualityOperatorLabel351093:
+endOfTheEqualityOperatorLabel392261:
+;Pushing "(| (< (original gdjeSmoUDrugomNizu) (original gdjeSmoUPrvomNizu)) (= gdjeSmoUPrvomNizu sredinaNiza))" to the FPU stack...
 fxch
 fistp dword [result]
 mov eax,dword [result]
 fistp dword [result]
 or dword [result],eax
 fild dword [result]
+;Pushing "gdjeSmoUDrugomNizu" to the FPU stack...
 fld dword [gdjeSmoUDrugomNizu]
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Pushing "(< gdjeSmoUDrugomNizu gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel86309
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel26870
 fld1
-jmp endOfTheLessThanComparisonLabel785564
-secondOperandOfTheComparisonIsSmallerOrEqualLabel86309:
+jmp endOfTheLessThanComparisonLabel83911
+secondOperandOfTheComparisonIsSmallerOrEqualLabel26870:
 fldz
-endOfTheLessThanComparisonLabel785564:
+endOfTheLessThanComparisonLabel83911:
+;Pushing "(& (| (< (original gdjeSmoUDrugomNizu) (original gdjeSmoUPrvomNizu)) (= gdjeSmoUPrvomNizu sredinaNiza)) (< gdjeSmoUDrugomNizu gornjaGranica))" to the FPU stack...
 fistp dword [result]
 mov eax,dword [result]
 fistp dword [result]
 and dword [result],eax
 fild dword [result]
+;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-jz ElseLabel717533
+;Branching based on whether the expression is 0...
+jz ElseLabel466514
 ;pomocni(i):=original(gdjeSmoUDrugomNizu)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "gdjeSmoUDrugomNizu" to the FPU stack...
 fld dword [gdjeSmoUDrugomNizu]
+;Pushing "(original gdjeSmoUDrugomNizu)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [pomocni+4*ebx],edx
 ;gdjeSmoUDrugomNizu:=gdjeSmoUDrugomNizu+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "gdjeSmoUDrugomNizu" to the FPU stack...
 fld dword [gdjeSmoUDrugomNizu]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ gdjeSmoUDrugomNizu 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [gdjeSmoUDrugomNizu],edx
 ;Else
+;Initializing the FPU stack...
 finit
-jmp EndIfLabel292611
-ElseLabel717533:
+;Type of the directive: Else-statement.
+jmp EndIfLabel910578
+ElseLabel466514:
 ;pomocni(i):=original(gdjeSmoUPrvomNizu)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "gdjeSmoUPrvomNizu" to the FPU stack...
 fld dword [gdjeSmoUPrvomNizu]
+;Pushing "(original gdjeSmoUPrvomNizu)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [pomocni+4*ebx],edx
 ;gdjeSmoUPrvomNizu:=gdjeSmoUPrvomNizu+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "gdjeSmoUPrvomNizu" to the FPU stack...
 fld dword [gdjeSmoUPrvomNizu]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ gdjeSmoUPrvomNizu 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [gdjeSmoUPrvomNizu],edx
 ;EndIf
+;Initializing the FPU stack...
 finit
-EndIfLabel292611:
+;Type of the directive is: EndIf-statement.
+EndIfLabel910578:
 ;i:=i+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;brojac:=brojac+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "brojac" to the FPU stack...
 fld dword [brojac]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ brojac 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [brojac],edx
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel225351
-EndWhileLabel901289:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel117864
+EndWhileLabel556675:
 ;i:=donjaGranica
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "donjaGranica" to the FPU stack...
 fld dword [donjaGranica]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;While i<gornjaGranica
+;Initializing the FPU stack...
 finit
-WhileLabel991238:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel518821:
+;Evaluating the expression after the "While" keyword
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "gornjaGranica" to the FPU stack...
 fld dword [gornjaGranica]
+;Pushing "(< i gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel230179
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel347893
 fld1
-jmp endOfTheLessThanComparisonLabel49589
-secondOperandOfTheComparisonIsSmallerOrEqualLabel230179:
+jmp endOfTheLessThanComparisonLabel634308
+secondOperandOfTheComparisonIsSmallerOrEqualLabel347893:
 fldz
-endOfTheLessThanComparisonLabel49589:
+endOfTheLessThanComparisonLabel634308:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel476704
+;Branching based on whether it is 0...
+je EndWhileLabel532631
 ;original(i):=pomocni(i)
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(pomocni i)" to the FPU stack...
 fistp dword [result]
 mov ebx, dword [result]
 fld dword [pomocni+4*ebx] ;In case the program is supposed to be 16-bit, simply replace 'ebx' with 'bx'. In case it's 64-bit, replace the 'mov' in the last directive with 'movsx' and 'ebx' with 'rbx' in both this and the last directive.
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Calculating the l-value...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Moving the pointer from "st0" to "ebx".
 fistp dword [result]
 mov ebx, dword [result]
+;Storing the r-value (now in "edx") where "ebx" points to.
 mov dword [original+4*ebx],edx
 ;brojac:=brojac+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "brojac" to the FPU stack...
 fld dword [brojac]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ brojac 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [brojac],edx
 ;i:=i+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel991238
-EndWhileLabel476704:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel518821
+EndWhileLabel532631:
 ;EndIf
+;Initializing the FPU stack...
 finit
-EndIfLabel761036:
+;Type of the directive is: EndIf-statement.
+EndIfLabel260327:
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel357125
-EndWhileLabel730434:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel23154
+EndWhileLabel415636:
 ;EndIf
+;Initializing the FPU stack...
 finit
-EndIfLabel206308:
+;Type of the directive is: EndIf-statement.
+EndIfLabel657981:
 ;AsmStart
 ;Inline assembly begins.
 call [clock]
@@ -1885,37 +3043,60 @@ end if
 ;AsmEnd
 ;Inline assembly ended.
 ;i:=0
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;While i<n
+;Initializing the FPU stack...
 finit
-WhileLabel645962:
+;Type of the directive: beginning of the while-loop
+;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
+WhileLabel267100:
+;Evaluating the expression after the "While" keyword
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(< i n)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel856372
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel675169
 fld1
-jmp endOfTheLessThanComparisonLabel702695
-secondOperandOfTheComparisonIsSmallerOrEqualLabel856372:
+jmp endOfTheLessThanComparisonLabel435891
+secondOperandOfTheComparisonIsSmallerOrEqualLabel675169:
 fldz
-endOfTheLessThanComparisonLabel702695:
+endOfTheLessThanComparisonLabel435891:
+;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
-je EndWhileLabel700394
+;Branching based on whether it is 0...
+je EndWhileLabel497812
 ;pokazivac:=4*i
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "4" to the FPU stack...
 mov dword [result],0x40800000 ;IEEE754 hex of 4
 fld dword [result]
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "(* 4 i)" to the FPU stack...
 fmulp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [pokazivac],edx
 ;AsmStart
 ;Inline assembly begins.
@@ -1930,18 +3111,28 @@ call [printf]
 ;AsmEnd
 ;Inline assembly ended.
 ;i:=i+1
+;Initializing the FPU stack...
 finit
+;Type of the directive is: assignment.
+;Calculating the rvalue...
+;Pushing "i" to the FPU stack...
 fld dword [i]
+;Pushing "1" to the FPU stack...
 mov dword [result],0x3f800000 ;IEEE754 hex of 1
 fld dword [result]
+;Pushing "(+ i 1)" to the FPU stack...
 faddp
+;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
+;Storing the r-value (now in "edx") into the variable.
 mov dword [i],edx
 ;EndWhile
+;Initializing the FPU stack...
 finit
-jmp WhileLabel645962
-EndWhileLabel700394:
+;Type of the directive: end of the while-loop.
+jmp WhileLabel267100
+EndWhileLabel497812:
 ;AsmStart
 ;Inline assembly begins.
 if ispisPoruka=1
@@ -1951,24 +3142,34 @@ call [printf]
 ;AsmEnd
 ;Inline assembly ended.
 ;n*ln(n)/ln(2) ;Ovo ce se spremiti u "result", pomocnu varijablu koju koristi compiler za AEC.
+;Initializing the FPU stack...
 finit
+;Type of the statement: unrecognized, passing it unchanged to "compiler.js".
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(ln n)" to the FPU stack...
 fld1
 fxch
 fyl2x
 fldl2e
 fdivp
+;Pushing "n" to the FPU stack...
 fld dword [n]
+;Pushing "(* (ln n) n)" to the FPU stack...
 fxch
 fmulp
+;Pushing "2" to the FPU stack...
 mov dword [result],0x40000000 ;IEEE754 hex of 2
 fld dword [result]
+;Pushing "(ln 2)" to the FPU stack...
 fld1
 fxch
 fyl2x
 fldl2e
 fdivp
+;Pushing "(/ (* (ln n) n) (ln 2))" to the FPU stack...
 fdivp
+;Storing the just-computed expression into "result"...
 fstp dword [result]
 ;AsmStart
 ;Inline assembly begins.
@@ -2047,3 +3248,4 @@ import msvcrt,printf,'printf',system,'system',exit,'exit',scanf,'scanf',clock,'c
 ;AsmEnd
 ;Inline assembly ended.
 ;
+;The entire line is a comment, moving on...
