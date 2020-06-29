@@ -93,7 +93,7 @@ mov dword [vrhStoga],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel962776:
+WhileLabel137460:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "i" to the FPU stack...
 fld dword [i]
@@ -102,18 +102,18 @@ fld dword [n]
 ;Pushing "(< i n)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel311622
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel832863
 fld1
-jmp endOfTheLessThanComparisonLabel169310
-secondOperandOfTheComparisonIsSmallerOrEqualLabel311622:
+jmp endOfTheLessThanComparisonLabel324976
+secondOperandOfTheComparisonIsSmallerOrEqualLabel832863:
 fldz
-endOfTheLessThanComparisonLabel169310:
+endOfTheLessThanComparisonLabel324976:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel476163
+je EndWhileLabel940155
 ;pokazivac:=4*i ;"float" ima 4 bajta.
 ;Initializing the FPU stack...
 finit
@@ -140,6 +140,7 @@ add ebx,[pokazivac]
 staviPokazivacNaSistemskiStog ebx
 staviStringNaSistemskiStog znakZaFloat
 call [scanf]
+add esp,4+4 ;Pocisti sistemski stog nakon "scanf" (asemblerski jezik to ne radi automatski, kao sto rade visi jezici).
 ;AsmEnd
 ;Inline assembly ended.
 ;i:=i+1
@@ -163,8 +164,8 @@ mov dword [i],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel962776
-EndWhileLabel476163:
+jmp WhileLabel137460
+EndWhileLabel940155:
 ;AsmStart
 ;Inline assembly begins.
 call [clock] ;"clock" na Windowsima vraca broj milisekundi otkad se program pokrenuo, zadnja 32 bita vraca u procesorski registar "eax".
@@ -202,7 +203,7 @@ mov dword [i],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel412314:
+WhileLabel809169:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "n" to the FPU stack...
 fld dword [n]
@@ -217,18 +218,18 @@ fld dword [i]
 fxch
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel761044
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel408928
 fld1
-jmp endOfTheLessThanComparisonLabel603141
-secondOperandOfTheComparisonIsSmallerOrEqualLabel761044:
+jmp endOfTheLessThanComparisonLabel134556
+secondOperandOfTheComparisonIsSmallerOrEqualLabel408928:
 fldz
-endOfTheLessThanComparisonLabel603141:
+endOfTheLessThanComparisonLabel134556:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel303476
+je EndWhileLabel911730
 ;razvrstanost:=razvrstanost+(original(i)<original(i+1))
 ;Initializing the FPU stack...
 finit
@@ -255,12 +256,12 @@ fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply
 fxch
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel293791
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel347781
 fld1
-jmp endOfTheLessThanComparisonLabel424096
-secondOperandOfTheComparisonIsSmallerOrEqualLabel293791:
+jmp endOfTheLessThanComparisonLabel218782
+secondOperandOfTheComparisonIsSmallerOrEqualLabel347781:
 fldz
-endOfTheLessThanComparisonLabel424096:
+endOfTheLessThanComparisonLabel218782:
 ;Pushing "razvrstanost" to the FPU stack...
 fld dword [razvrstanost]
 ;Pushing "(+ (< (original (+ i 1)) (original i)) razvrstanost)" to the FPU stack...
@@ -309,8 +310,8 @@ mov dword [brojac],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel412314
-EndWhileLabel303476:
+jmp WhileLabel809169
+EndWhileLabel911730:
 ;razvrstanost:=razvrstanost/((n-1)/2)-1
 ;Initializing the FPU stack...
 finit
@@ -374,7 +375,7 @@ mov dword [i],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel785478:
+WhileLabel217171:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "i" to the FPU stack...
 fld dword [i]
@@ -384,12 +385,12 @@ fld dword [result]
 ;Pushing "(< i 7)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel119994
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel190664
 fld1
-jmp endOfTheLessThanComparisonLabel469288
-secondOperandOfTheComparisonIsSmallerOrEqualLabel119994:
+jmp endOfTheLessThanComparisonLabel351401
+secondOperandOfTheComparisonIsSmallerOrEqualLabel190664:
 fldz
-endOfTheLessThanComparisonLabel469288:
+endOfTheLessThanComparisonLabel351401:
 ;Pushing "i" to the FPU stack...
 fld dword [i]
 ;Pushing "7" to the FPU stack...
@@ -398,12 +399,12 @@ fld dword [result]
 ;Pushing "(= i 7)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel973904
+jne operandsOfTheEqualityOperatorAreNotEqualLabel819825
 fld1
-jmp endOfTheEqualityOperatorLabel380161
-operandsOfTheEqualityOperatorAreNotEqualLabel973904:
+jmp endOfTheEqualityOperatorLabel990898
+operandsOfTheEqualityOperatorAreNotEqualLabel819825:
 fldz
-endOfTheEqualityOperatorLabel380161:
+endOfTheEqualityOperatorLabel990898:
 ;Pushing "(| (< i 7) (= i 7))" to the FPU stack...
 fistp dword [result]
 mov eax,dword [result]
@@ -415,7 +416,7 @@ fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel52630
+je EndWhileLabel440474
 ;razvrstanostNa(i):=pow(abs(razvrstanost),i) ;"pow(x,y)" je u AEC-u samo sintaksni secer za "exp(ln(x)*y)", i to vraca NaN za x=0 ili x<0. Nema ocitog nacina da se "pow(x,y)" prevede na asemblerski.
 ;Initializing the FPU stack...
 finit
@@ -496,12 +497,12 @@ fld dword [result]
 ;Pushing "(= (mod i 2) 1)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel733916
+jne operandsOfTheEqualityOperatorAreNotEqualLabel987742
 fld1
-jmp endOfTheEqualityOperatorLabel545419
-operandsOfTheEqualityOperatorAreNotEqualLabel733916:
+jmp endOfTheEqualityOperatorLabel809569
+operandsOfTheEqualityOperatorAreNotEqualLabel987742:
 fldz
-endOfTheEqualityOperatorLabel545419:
+endOfTheEqualityOperatorLabel809569:
 ;Pushing "razvrstanost" to the FPU stack...
 fld dword [razvrstanost]
 ;Pushing "0" to the FPU stack...
@@ -510,12 +511,12 @@ fld dword [result]
 ;Pushing "(< razvrstanost 0)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel47192
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel106619
 fld1
-jmp endOfTheLessThanComparisonLabel808556
-secondOperandOfTheComparisonIsSmallerOrEqualLabel47192:
+jmp endOfTheLessThanComparisonLabel737098
+secondOperandOfTheComparisonIsSmallerOrEqualLabel106619:
 fldz
-endOfTheLessThanComparisonLabel808556:
+endOfTheLessThanComparisonLabel737098:
 ;Pushing "(& (= (mod i 2) 1) (< razvrstanost 0))" to the FPU stack...
 fistp dword [result]
 mov eax,dword [result]
@@ -526,16 +527,16 @@ fild dword [result]
 fistp dword [result]
 xor eax,eax
 cmp dword [result],eax
-jz firstOperandOfTheTernaryOperatorIsZeroLabel174691
+jz firstOperandOfTheTernaryOperatorIsZeroLabel925145
 fstp dword [result]
 mov eax, dword [result]
 fstp dword [result]
 mov dword [result],eax
 fld dword [result]
-jmp endOfTheTernaryOperatorLabel18227
-firstOperandOfTheTernaryOperatorIsZeroLabel174691:
+jmp endOfTheTernaryOperatorLabel735349
+firstOperandOfTheTernaryOperatorIsZeroLabel925145:
 fstp dword [result]
-endOfTheTernaryOperatorLabel18227:
+endOfTheTernaryOperatorLabel735349:
 ;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
 fld dword [result]
@@ -547,26 +548,26 @@ fld dword [result]
 ;Pushing "(= razvrstanost 0)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel994729
+jne operandsOfTheEqualityOperatorAreNotEqualLabel911304
 fld1
-jmp endOfTheEqualityOperatorLabel148748
-operandsOfTheEqualityOperatorAreNotEqualLabel994729:
+jmp endOfTheEqualityOperatorLabel91681
+operandsOfTheEqualityOperatorAreNotEqualLabel911304:
 fldz
-endOfTheEqualityOperatorLabel148748:
+endOfTheEqualityOperatorLabel91681:
 ;Pushing "(?: (= razvrstanost 0) 0 (?: (& (= (mod i 2) 1) (< razvrstanost 0)) (- (razvrstanostNa i) 0) (razvrstanostNa i)))" to the FPU stack...
 fistp dword [result]
 xor eax,eax
 cmp dword [result],eax
-jz firstOperandOfTheTernaryOperatorIsZeroLabel852695
+jz firstOperandOfTheTernaryOperatorIsZeroLabel148143
 fstp dword [result]
 mov eax, dword [result]
 fstp dword [result]
 mov dword [result],eax
 fld dword [result]
-jmp endOfTheTernaryOperatorLabel946264
-firstOperandOfTheTernaryOperatorIsZeroLabel852695:
+jmp endOfTheTernaryOperatorLabel496204
+firstOperandOfTheTernaryOperatorIsZeroLabel148143:
 fstp dword [result]
-endOfTheTernaryOperatorLabel946264:
+endOfTheTernaryOperatorLabel496204:
 ;Storing the top of the FPU stack into "edx".
 fstp dword [result]
 mov edx, dword [result]
@@ -599,8 +600,8 @@ mov dword [i],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel785478
-EndWhileLabel52630:
+jmp WhileLabel217171
+EndWhileLabel440474:
 ;;Formula koju je ispisao genetski algoritam za predvidanje koliko ce usporedbi QuickSort napraviti: https://github.com/FlatAssembler/ArithmeticExpressionCompiler/tree/master/QuickSort/Genetic_algorithm_for_deriving_the_formula
 ;The entire line is a comment, moving on...
 ;polinomPodApsolutnom:=2.38854*razvrstanostNa(7) - 0.284258*razvrstanostNa(6) - 1.87104*razvrstanostNa(5) + 0.372637*razvrstanostNa(4) + 0.167242*razvrstanostNa(3) - 0.0884977*razvrstanostNa(2) + 0.315119*razvrstanost
@@ -905,18 +906,18 @@ fld dword [result]
 ;Pushing "(= razvrstanost 1)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel926977
+jne operandsOfTheEqualityOperatorAreNotEqualLabel103519
 fld1
-jmp endOfTheEqualityOperatorLabel280157
-operandsOfTheEqualityOperatorAreNotEqualLabel926977:
+jmp endOfTheEqualityOperatorLabel304091
+operandsOfTheEqualityOperatorAreNotEqualLabel103519:
 fldz
-endOfTheEqualityOperatorLabel280157:
+endOfTheEqualityOperatorLabel304091:
 ;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether the expression is 0...
-jz ElseLabel461052
+jz ElseLabel553584
 ;AsmStart
 ;Inline assembly begins.
 if ispisPoruka=1
@@ -932,9 +933,9 @@ end if
 finit
 ;Type of the directive is: ElseIf-statement.
 ;If the expression in the If-statement evaluates to 1...
-jmp EndIfLabel657981
+jmp EndIfLabel107813
 ;If it evaluates to 0...
-ElseLabel461052:
+ElseLabel553584:
 ;Evaluating the expression after the ElseIf keyword...
 ;Pushing "0" to the FPU stack...
 mov dword [result],0x0 ;IEEE754 hex of 0
@@ -950,18 +951,18 @@ fld dword [razvrstanost]
 fxch
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel429027
+jne operandsOfTheEqualityOperatorAreNotEqualLabel832096
 fld1
-jmp endOfTheEqualityOperatorLabel939331
-operandsOfTheEqualityOperatorAreNotEqualLabel429027:
+jmp endOfTheEqualityOperatorLabel914675
+operandsOfTheEqualityOperatorAreNotEqualLabel832096:
 fldz
-endOfTheEqualityOperatorLabel939331:
+endOfTheEqualityOperatorLabel914675:
 ;Comparing that expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it was 0...
-jz ElseLabel757365
+jz ElseLabel953981
 ;AsmStart
 ;Inline assembly begins.
 if ispisPoruka=1
@@ -990,7 +991,7 @@ mov dword [i],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel779673:
+WhileLabel264636:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "i" to the FPU stack...
 fld dword [i]
@@ -999,18 +1000,18 @@ fld dword [n]
 ;Pushing "(< i n)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel956934
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel962307
 fld1
-jmp endOfTheLessThanComparisonLabel897648
-secondOperandOfTheComparisonIsSmallerOrEqualLabel956934:
+jmp endOfTheLessThanComparisonLabel580748
+secondOperandOfTheComparisonIsSmallerOrEqualLabel962307:
 fldz
-endOfTheLessThanComparisonLabel897648:
+endOfTheLessThanComparisonLabel580748:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel799702
+je EndWhileLabel672641
 ;pomocni(i):=original(n-i-1)
 ;Initializing the FPU stack...
 finit
@@ -1080,8 +1081,8 @@ mov dword [brojac],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel779673
-EndWhileLabel799702:
+jmp WhileLabel264636
+EndWhileLabel672641:
 ;i:=0
 ;Initializing the FPU stack...
 finit
@@ -1100,7 +1101,7 @@ mov dword [i],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel616991:
+WhileLabel620441:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "i" to the FPU stack...
 fld dword [i]
@@ -1109,18 +1110,18 @@ fld dword [n]
 ;Pushing "(< i n)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel85256
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel353729
 fld1
-jmp endOfTheLessThanComparisonLabel30267
-secondOperandOfTheComparisonIsSmallerOrEqualLabel85256:
+jmp endOfTheLessThanComparisonLabel476869
+secondOperandOfTheComparisonIsSmallerOrEqualLabel353729:
 fldz
-endOfTheLessThanComparisonLabel30267:
+endOfTheLessThanComparisonLabel476869:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel732626
+je EndWhileLabel411260
 ;original(i):=pomocni(i)
 ;Initializing the FPU stack...
 finit
@@ -1164,16 +1165,16 @@ mov dword [i],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel616991
-EndWhileLabel732626:
+jmp WhileLabel620441
+EndWhileLabel411260:
 ;ElseIf kolikoUsporedbiOcekujemoOdQuickSorta<kolikoUsporedbiOcekujemoOdMergeSorta
 ;Initializing the FPU stack...
 finit
 ;Type of the directive is: ElseIf-statement.
 ;If the expression in the If-statement evaluates to 1...
-jmp EndIfLabel657981
+jmp EndIfLabel107813
 ;If it evaluates to 0...
-ElseLabel757365:
+ElseLabel953981:
 ;Evaluating the expression after the ElseIf keyword...
 ;Pushing "kolikoUsporedbiOcekujemoOdQuickSorta" to the FPU stack...
 fld dword [kolikoUsporedbiOcekujemoOdQuickSorta]
@@ -1182,18 +1183,18 @@ fld dword [kolikoUsporedbiOcekujemoOdMergeSorta]
 ;Pushing "(< kolikoUsporedbiOcekujemoOdQuickSorta kolikoUsporedbiOcekujemoOdMergeSorta)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel313722
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel648815
 fld1
-jmp endOfTheLessThanComparisonLabel709710
-secondOperandOfTheComparisonIsSmallerOrEqualLabel313722:
+jmp endOfTheLessThanComparisonLabel84723
+secondOperandOfTheComparisonIsSmallerOrEqualLabel648815:
 fldz
-endOfTheLessThanComparisonLabel709710:
+endOfTheLessThanComparisonLabel84723:
 ;Comparing that expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it was 0...
-jz ElseLabel328999
+jz ElseLabel739335
 ;AsmStart
 ;Inline assembly begins.
 if ispisPoruka=1
@@ -1263,7 +1264,7 @@ mov dword [stogSGornjimGranicama+4*ebx],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel734919:
+WhileLabel388282:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
@@ -1273,18 +1274,18 @@ fld dword [result]
 ;Pushing "(> vrhStoga 0)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel737331
+jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel182773
 fld1
-jmp endOfTheGreaterThanComparisonLabel644728
-secondOperandOfTheComparisonIsGreaterOrEqualLabel737331:
+jmp endOfTheGreaterThanComparisonLabel52454
+secondOperandOfTheComparisonIsGreaterOrEqualLabel182773:
 fldz
-endOfTheGreaterThanComparisonLabel644728:
+endOfTheGreaterThanComparisonLabel52454:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel760861
+je EndWhileLabel684592
 ;gornjaGranica:=stogSGornjimGranicama(vrhStoga)
 ;Initializing the FPU stack...
 finit
@@ -1368,7 +1369,7 @@ mov dword [i],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel729742:
+WhileLabel605647:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "i" to the FPU stack...
 fld dword [i]
@@ -1377,18 +1378,18 @@ fld dword [gornjaGranica]
 ;Pushing "(< i gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel224253
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel240855
 fld1
-jmp endOfTheLessThanComparisonLabel97025
-secondOperandOfTheComparisonIsSmallerOrEqualLabel224253:
+jmp endOfTheLessThanComparisonLabel525998
+secondOperandOfTheComparisonIsSmallerOrEqualLabel240855:
 fldz
-endOfTheLessThanComparisonLabel97025:
+endOfTheLessThanComparisonLabel525998:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel247765
+je EndWhileLabel723587
 ;If original(i)<original(donjaGranica)
 ;Initializing the FPU stack...
 finit
@@ -1409,18 +1410,18 @@ fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply
 ;Pushing "(< (original i) (original donjaGranica))" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel294124
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel887890
 fld1
-jmp endOfTheLessThanComparisonLabel690301
-secondOperandOfTheComparisonIsSmallerOrEqualLabel294124:
+jmp endOfTheLessThanComparisonLabel571849
+secondOperandOfTheComparisonIsSmallerOrEqualLabel887890:
 fldz
-endOfTheLessThanComparisonLabel690301:
+endOfTheLessThanComparisonLabel571849:
 ;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether the expression is 0...
-jz ElseLabel925932
+jz ElseLabel866589
 ;gdjeJePivot:=gdjeJePivot+1 ;Gdje ce doci element koji je sada prvi ("pivot").
 ;Initializing the FPU stack...
 finit
@@ -1442,8 +1443,8 @@ mov dword [gdjeJePivot],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive is: EndIf-statement.
-ElseLabel925932:
-EndIfLabel295606:
+ElseLabel866589:
+EndIfLabel559663:
 ;i:=i++ ;"++" je u AEC-u jednostavno sintaksni secer za "+1".
 ;Initializing the FPU stack...
 finit
@@ -1465,8 +1466,8 @@ mov dword [i],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel729742
-EndWhileLabel247765:
+jmp WhileLabel605647
+EndWhileLabel723587:
 ;staviManje:=donjaGranica
 ;Initializing the FPU stack...
 finit
@@ -1540,7 +1541,7 @@ mov dword [i],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel340428:
+WhileLabel339259:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "i" to the FPU stack...
 fld dword [i]
@@ -1549,18 +1550,18 @@ fld dword [gornjaGranica]
 ;Pushing "(< i gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel621114
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel984179
 fld1
-jmp endOfTheLessThanComparisonLabel377191
-secondOperandOfTheComparisonIsSmallerOrEqualLabel621114:
+jmp endOfTheLessThanComparisonLabel838866
+secondOperandOfTheComparisonIsSmallerOrEqualLabel984179:
 fldz
-endOfTheLessThanComparisonLabel377191:
+endOfTheLessThanComparisonLabel838866:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel765809
+je EndWhileLabel90861
 ;If original(i)<original(donjaGranica)
 ;Initializing the FPU stack...
 finit
@@ -1581,18 +1582,18 @@ fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply
 ;Pushing "(< (original i) (original donjaGranica))" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel877584
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel87001
 fld1
-jmp endOfTheLessThanComparisonLabel172534
-secondOperandOfTheComparisonIsSmallerOrEqualLabel877584:
+jmp endOfTheLessThanComparisonLabel730435
+secondOperandOfTheComparisonIsSmallerOrEqualLabel87001:
 fldz
-endOfTheLessThanComparisonLabel172534:
+endOfTheLessThanComparisonLabel730435:
 ;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether the expression is 0...
-jz ElseLabel625209
+jz ElseLabel329654
 ;pomocni(staviManje):=original(i)
 ;Initializing the FPU stack...
 finit
@@ -1636,8 +1637,8 @@ mov dword [staviManje],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: Else-statement.
-jmp EndIfLabel71186
-ElseLabel625209:
+jmp EndIfLabel959181
+ElseLabel329654:
 ;pomocni(staviVece):=original(i)
 ;Initializing the FPU stack...
 finit
@@ -1681,7 +1682,7 @@ mov dword [staviVece],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive is: EndIf-statement.
-EndIfLabel71186:
+EndIfLabel959181:
 ;pomocniBrojac:=pomocniBrojac+1
 ;Initializing the FPU stack...
 finit
@@ -1711,18 +1712,18 @@ fld dword [najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac]
 ;Pushing "(= pomocniBrojac najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel965916
+jne operandsOfTheEqualityOperatorAreNotEqualLabel198664
 fld1
-jmp endOfTheEqualityOperatorLabel269313
-operandsOfTheEqualityOperatorAreNotEqualLabel965916:
+jmp endOfTheEqualityOperatorLabel776397
+operandsOfTheEqualityOperatorAreNotEqualLabel198664:
 fldz
-endOfTheEqualityOperatorLabel269313:
+endOfTheEqualityOperatorLabel776397:
 ;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether the expression is 0...
-jz ElseLabel890089
+jz ElseLabel655419
 ;brojac:=brojac+pomocniBrojac
 ;Initializing the FPU stack...
 finit
@@ -1756,8 +1757,8 @@ mov dword [pomocniBrojac],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive is: EndIf-statement.
-ElseLabel890089:
-EndIfLabel336627:
+ElseLabel655419:
+EndIfLabel448604:
 ;i:=i+1
 ;Initializing the FPU stack...
 finit
@@ -1779,8 +1780,8 @@ mov dword [i],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel340428
-EndWhileLabel765809:
+jmp WhileLabel339259
+EndWhileLabel90861:
 ;i:=donjaGranica
 ;Initializing the FPU stack...
 finit
@@ -1798,7 +1799,7 @@ mov dword [i],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel333106:
+WhileLabel851131:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "i" to the FPU stack...
 fld dword [i]
@@ -1807,18 +1808,18 @@ fld dword [gornjaGranica]
 ;Pushing "(< i gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel655826
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel365716
 fld1
-jmp endOfTheLessThanComparisonLabel493138
-secondOperandOfTheComparisonIsSmallerOrEqualLabel655826:
+jmp endOfTheLessThanComparisonLabel439988
+secondOperandOfTheComparisonIsSmallerOrEqualLabel365716:
 fldz
-endOfTheLessThanComparisonLabel493138:
+endOfTheLessThanComparisonLabel439988:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel237155
+je EndWhileLabel392047
 ;original(i):=pomocni(i)
 ;Initializing the FPU stack...
 finit
@@ -1862,8 +1863,8 @@ mov dword [i],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel333106
-EndWhileLabel237155:
+jmp WhileLabel851131
+EndWhileLabel392047:
 ;;Razdvoji niz original(donjaGranica..gornjaGranica-1) na nizove original(donjaGranica..gdjeJePivot-1) i original(gdjeJePivot+1..gornjaGranica-1).
 ;The entire line is a comment, moving on...
 ;;Znamo gdje je pivot, pa njega ne trebamo ukljuciti ni u jedan od tih nizova.
@@ -1888,18 +1889,18 @@ fld dword [gdjeJePivot]
 fxch
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel806212
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel51854
 fld1
-jmp endOfTheLessThanComparisonLabel977770
-secondOperandOfTheComparisonIsSmallerOrEqualLabel806212:
+jmp endOfTheLessThanComparisonLabel656930
+secondOperandOfTheComparisonIsSmallerOrEqualLabel51854:
 fldz
-endOfTheLessThanComparisonLabel977770:
+endOfTheLessThanComparisonLabel656930:
 ;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether the expression is 0...
-jz ElseLabel171730
+jz ElseLabel632559
 ;vrhStoga:=vrhStoga+1
 ;Initializing the FPU stack...
 finit
@@ -1962,8 +1963,8 @@ mov dword [stogSGornjimGranicama+4*ebx],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive is: EndIf-statement.
-ElseLabel171730:
-EndIfLabel621322:
+ElseLabel632559:
+EndIfLabel690357:
 ;If gdjeJePivot>donjaGranica+1
 ;Initializing the FPU stack...
 finit
@@ -1982,18 +1983,18 @@ fld dword [gdjeJePivot]
 fxch
 fcomip st1
 fstp dword [result]
-jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel615832
+jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel178924
 fld1
-jmp endOfTheGreaterThanComparisonLabel706644
-secondOperandOfTheComparisonIsGreaterOrEqualLabel615832:
+jmp endOfTheGreaterThanComparisonLabel139137
+secondOperandOfTheComparisonIsGreaterOrEqualLabel178924:
 fldz
-endOfTheGreaterThanComparisonLabel706644:
+endOfTheGreaterThanComparisonLabel139137:
 ;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether the expression is 0...
-jz ElseLabel880612
+jz ElseLabel823723
 ;vrhStoga:=vrhStoga+1
 ;Initializing the FPU stack...
 finit
@@ -2051,8 +2052,8 @@ mov dword [stogSGornjimGranicama+4*ebx],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive is: EndIf-statement.
-ElseLabel880612:
-EndIfLabel700765:
+ElseLabel823723:
+EndIfLabel847028:
 ;testZaPreljev:=brojac+najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac ;Potrebna je posebna varijabla za to jer FPU interno radi s 80-bitnim brojevima, a CPU s 32-bitnim. Izgubio sam hrpu vremena da to shvatim.
 ;Initializing the FPU stack...
 finit
@@ -2081,12 +2082,12 @@ fld dword [brojac]
 ;Pushing "(> testZaPreljev brojac)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel259950
+jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel848246
 fld1
-jmp endOfTheGreaterThanComparisonLabel149967
-secondOperandOfTheComparisonIsGreaterOrEqualLabel259950:
+jmp endOfTheGreaterThanComparisonLabel346822
+secondOperandOfTheComparisonIsGreaterOrEqualLabel848246:
 fldz
-endOfTheGreaterThanComparisonLabel149967:
+endOfTheGreaterThanComparisonLabel346822:
 ;Pushing "(not (> testZaPreljev brojac))" to the FPU stack...
 fld1
 fxch
@@ -2096,7 +2097,7 @@ fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether the expression is 0...
-jz ElseLabel161882
+jz ElseLabel448386
 ;najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac:=najmanjiCijeliBrojKojiSeMozeDodatiNaBrojac*2
 ;Initializing the FPU stack...
 finit
@@ -2136,20 +2137,20 @@ end if
 ;Initializing the FPU stack...
 finit
 ;Type of the directive is: EndIf-statement.
-ElseLabel161882:
-EndIfLabel751317:
+ElseLabel448386:
+EndIfLabel432685:
 ;EndWhile
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel734919
-EndWhileLabel760861:
+jmp WhileLabel388282
+EndWhileLabel684592:
 ;Else
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: Else-statement.
-jmp EndIfLabel657981
-ElseLabel328999:
+jmp EndIfLabel107813
+ElseLabel739335:
 ;AsmStart
 ;Inline assembly begins.
 if ispisPoruka=1
@@ -2237,7 +2238,7 @@ mov dword [stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove+4*ebx],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel23154:
+WhileLabel727830:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "vrhStoga" to the FPU stack...
 fld dword [vrhStoga]
@@ -2247,18 +2248,18 @@ fld dword [result]
 ;Pushing "(> vrhStoga 0)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel528065
+jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel294224
 fld1
-jmp endOfTheGreaterThanComparisonLabel486249
-secondOperandOfTheComparisonIsGreaterOrEqualLabel528065:
+jmp endOfTheGreaterThanComparisonLabel672299
+secondOperandOfTheComparisonIsGreaterOrEqualLabel294224:
 fldz
-endOfTheGreaterThanComparisonLabel486249:
+endOfTheGreaterThanComparisonLabel672299:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel415636
+je EndWhileLabel514323
 ;gornjaGranica:=stogSGornjimGranicama(vrhStoga)
 ;Initializing the FPU stack...
 finit
@@ -2382,18 +2383,18 @@ fld dword [razdvajati]
 ;Pushing "(= trebaLiSpajatiIliRazdvajati razdvajati)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel287232
+jne operandsOfTheEqualityOperatorAreNotEqualLabel118618
 fld1
-jmp endOfTheEqualityOperatorLabel186189
-operandsOfTheEqualityOperatorAreNotEqualLabel287232:
+jmp endOfTheEqualityOperatorLabel131994
+operandsOfTheEqualityOperatorAreNotEqualLabel118618:
 fldz
-endOfTheEqualityOperatorLabel186189:
+endOfTheEqualityOperatorLabel131994:
 ;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether the expression is 0...
-jz ElseLabel593884
+jz ElseLabel129280
 ;If gornjaGranica-donjaGranica>1 ;Niz velicine 0 ili 1 vec je poredan i ne radimo nista dalje.
 ;Initializing the FPU stack...
 finit
@@ -2411,18 +2412,18 @@ fld dword [result]
 ;Pushing "(> (- gornjaGranica donjaGranica) 1)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel163998
+jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel143778
 fld1
-jmp endOfTheGreaterThanComparisonLabel434900
-secondOperandOfTheComparisonIsGreaterOrEqualLabel163998:
+jmp endOfTheGreaterThanComparisonLabel372868
+secondOperandOfTheComparisonIsGreaterOrEqualLabel143778:
 fldz
-endOfTheGreaterThanComparisonLabel434900:
+endOfTheGreaterThanComparisonLabel372868:
 ;Comparing the just-calculated expression with 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether the expression is 0...
-jz ElseLabel338335
+jz ElseLabel422922
 ;vrhStoga:=vrhStoga+1
 ;Initializing the FPU stack...
 finit
@@ -2642,14 +2643,14 @@ mov dword [stogSPodacimaTrebaLiPetljaRazdvajatiIliSpajatiNizove+4*ebx],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive is: EndIf-statement.
-ElseLabel338335:
-EndIfLabel213494:
+ElseLabel422922:
+EndIfLabel510647:
 ;Else ;Spoji vec poredane nizove original(donjaGranica..sredinaNiza-1) i original(sredinaNiza..gornjaGranica-1) u novi poredani niz original(donjaGranica..gornjaGranica-1).
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: Else-statement.
-jmp EndIfLabel260327
-ElseLabel593884:
+jmp EndIfLabel744549
+ElseLabel129280:
 ;i:=donjaGranica
 ;Initializing the FPU stack...
 finit
@@ -2691,7 +2692,7 @@ mov dword [gdjeSmoUDrugomNizu],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel117864:
+WhileLabel401323:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "i" to the FPU stack...
 fld dword [i]
@@ -2700,18 +2701,18 @@ fld dword [gornjaGranica]
 ;Pushing "(< i gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel561090
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel60533
 fld1
-jmp endOfTheLessThanComparisonLabel853298
-secondOperandOfTheComparisonIsSmallerOrEqualLabel561090:
+jmp endOfTheLessThanComparisonLabel931334
+secondOperandOfTheComparisonIsSmallerOrEqualLabel60533:
 fldz
-endOfTheLessThanComparisonLabel853298:
+endOfTheLessThanComparisonLabel931334:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel556675
+je EndWhileLabel375054
 ;If (gdjeSmoUPrvomNizu=sredinaNiza | original(gdjeSmoUDrugomNizu)<original(gdjeSmoUPrvomNizu)) & gdjeSmoUDrugomNizu<gornjaGranica
 ;Initializing the FPU stack...
 finit
@@ -2732,12 +2733,12 @@ fld dword [original+4*ebx] ;In case the program is supposed to be 16-bit, simply
 ;Pushing "(< (original gdjeSmoUDrugomNizu) (original gdjeSmoUPrvomNizu))" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel31559
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel639622
 fld1
-jmp endOfTheLessThanComparisonLabel351003
-secondOperandOfTheComparisonIsSmallerOrEqualLabel31559:
+jmp endOfTheLessThanComparisonLabel805449
+secondOperandOfTheComparisonIsSmallerOrEqualLabel639622:
 fldz
-endOfTheLessThanComparisonLabel351003:
+endOfTheLessThanComparisonLabel805449:
 ;Pushing "gdjeSmoUPrvomNizu" to the FPU stack...
 fld dword [gdjeSmoUPrvomNizu]
 ;Pushing "sredinaNiza" to the FPU stack...
@@ -2745,12 +2746,12 @@ fld dword [sredinaNiza]
 ;Pushing "(= gdjeSmoUPrvomNizu sredinaNiza)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel741601
+jne operandsOfTheEqualityOperatorAreNotEqualLabel933985
 fld1
-jmp endOfTheEqualityOperatorLabel392261
-operandsOfTheEqualityOperatorAreNotEqualLabel741601:
+jmp endOfTheEqualityOperatorLabel64472
+operandsOfTheEqualityOperatorAreNotEqualLabel933985:
 fldz
-endOfTheEqualityOperatorLabel392261:
+endOfTheEqualityOperatorLabel64472:
 ;Pushing "(| (< (original gdjeSmoUDrugomNizu) (original gdjeSmoUPrvomNizu)) (= gdjeSmoUPrvomNizu sredinaNiza))" to the FPU stack...
 fxch
 fistp dword [result]
@@ -2765,12 +2766,12 @@ fld dword [gornjaGranica]
 ;Pushing "(< gdjeSmoUDrugomNizu gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel26870
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel728584
 fld1
-jmp endOfTheLessThanComparisonLabel83911
-secondOperandOfTheComparisonIsSmallerOrEqualLabel26870:
+jmp endOfTheLessThanComparisonLabel699384
+secondOperandOfTheComparisonIsSmallerOrEqualLabel728584:
 fldz
-endOfTheLessThanComparisonLabel83911:
+endOfTheLessThanComparisonLabel699384:
 ;Pushing "(& (| (< (original gdjeSmoUDrugomNizu) (original gdjeSmoUPrvomNizu)) (= gdjeSmoUPrvomNizu sredinaNiza)) (< gdjeSmoUDrugomNizu gornjaGranica))" to the FPU stack...
 fistp dword [result]
 mov eax,dword [result]
@@ -2782,7 +2783,7 @@ fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether the expression is 0...
-jz ElseLabel466514
+jz ElseLabel737163
 ;pomocni(i):=original(gdjeSmoUDrugomNizu)
 ;Initializing the FPU stack...
 finit
@@ -2826,8 +2827,8 @@ mov dword [gdjeSmoUDrugomNizu],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: Else-statement.
-jmp EndIfLabel910578
-ElseLabel466514:
+jmp EndIfLabel891178
+ElseLabel737163:
 ;pomocni(i):=original(gdjeSmoUPrvomNizu)
 ;Initializing the FPU stack...
 finit
@@ -2871,7 +2872,7 @@ mov dword [gdjeSmoUPrvomNizu],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive is: EndIf-statement.
-EndIfLabel910578:
+EndIfLabel891178:
 ;i:=i+1
 ;Initializing the FPU stack...
 finit
@@ -2910,8 +2911,8 @@ mov dword [brojac],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel117864
-EndWhileLabel556675:
+jmp WhileLabel401323
+EndWhileLabel375054:
 ;i:=donjaGranica
 ;Initializing the FPU stack...
 finit
@@ -2929,7 +2930,7 @@ mov dword [i],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel518821:
+WhileLabel894341:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "i" to the FPU stack...
 fld dword [i]
@@ -2938,18 +2939,18 @@ fld dword [gornjaGranica]
 ;Pushing "(< i gornjaGranica)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel347893
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel658500
 fld1
-jmp endOfTheLessThanComparisonLabel634308
-secondOperandOfTheComparisonIsSmallerOrEqualLabel347893:
+jmp endOfTheLessThanComparisonLabel179329
+secondOperandOfTheComparisonIsSmallerOrEqualLabel658500:
 fldz
-endOfTheLessThanComparisonLabel634308:
+endOfTheLessThanComparisonLabel179329:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel532631
+je EndWhileLabel447293
 ;original(i):=pomocni(i)
 ;Initializing the FPU stack...
 finit
@@ -3010,24 +3011,24 @@ mov dword [i],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel518821
-EndWhileLabel532631:
+jmp WhileLabel894341
+EndWhileLabel447293:
 ;EndIf
 ;Initializing the FPU stack...
 finit
 ;Type of the directive is: EndIf-statement.
-EndIfLabel260327:
+EndIfLabel744549:
 ;EndWhile
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel23154
-EndWhileLabel415636:
+jmp WhileLabel727830
+EndWhileLabel514323:
 ;EndIf
 ;Initializing the FPU stack...
 finit
 ;Type of the directive is: EndIf-statement.
-EndIfLabel657981:
+EndIfLabel107813:
 ;AsmStart
 ;Inline assembly begins.
 call [clock]
@@ -3060,7 +3061,7 @@ mov dword [i],edx
 finit
 ;Type of the directive: beginning of the while-loop
 ;Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel267100:
+WhileLabel127647:
 ;Evaluating the expression after the "While" keyword
 ;Pushing "i" to the FPU stack...
 fld dword [i]
@@ -3069,18 +3070,18 @@ fld dword [n]
 ;Pushing "(< i n)" to the FPU stack...
 fcomip st1
 fstp dword [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel675169
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel556947
 fld1
-jmp endOfTheLessThanComparisonLabel435891
-secondOperandOfTheComparisonIsSmallerOrEqualLabel675169:
+jmp endOfTheLessThanComparisonLabel722768
+secondOperandOfTheComparisonIsSmallerOrEqualLabel556947:
 fldz
-endOfTheLessThanComparisonLabel435891:
+endOfTheLessThanComparisonLabel722768:
 ;Comparing the expression to 0...
 fistp dword [result]
 mov eax, dword [result]
 test eax,eax
 ;Branching based on whether it is 0...
-je EndWhileLabel497812
+je EndWhileLabel130536
 ;pokazivac:=4*i
 ;Initializing the FPU stack...
 finit
@@ -3105,7 +3106,7 @@ fld dword [pokazivac]
 fistp dword [pokazivac]
 add ebx,[pokazivac]
 fld dword [ebx]
-fstp qword [esp]
+fstp qword [esp] ;"printf" za "%f" ocekuje "double", ili, u asemblerskoj terminologiji, "qword".
 staviStringNaSistemskiStog znakZaFloatPlusNoviRedPlusNulZnak
 call [printf]
 ;AsmEnd
@@ -3131,8 +3132,8 @@ mov dword [i],edx
 ;Initializing the FPU stack...
 finit
 ;Type of the directive: end of the while-loop.
-jmp WhileLabel267100
-EndWhileLabel497812:
+jmp WhileLabel127647
+EndWhileLabel130536:
 ;AsmStart
 ;Inline assembly begins.
 if ispisPoruka=1

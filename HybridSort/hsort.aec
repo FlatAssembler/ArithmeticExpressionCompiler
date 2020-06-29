@@ -60,6 +60,7 @@ While i<n
         staviPokazivacNaSistemskiStog ebx
         staviStringNaSistemskiStog znakZaFloat
         call [scanf]
+        add esp,4+4 ;Pocisti sistemski stog nakon "scanf" (asemblerski jezik to ne radi automatski, kao sto rade visi jezici).
     AsmEnd
     i:=i+1
 EndWhile
@@ -304,7 +305,7 @@ While i<n
         fistp dword [pokazivac]
         add ebx,[pokazivac]
         fld dword [ebx]
-        fstp qword [esp]
+        fstp qword [esp] ;"printf" za "%f" ocekuje "double", ili, u asemblerskoj terminologiji, "qword".
         staviStringNaSistemskiStog znakZaFloatPlusNoviRedPlusNulZnak
         call [printf]
     AsmEnd
