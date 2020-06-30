@@ -1,0 +1,58 @@
+syntax GAS ;We are, of course, targeting GNU Assembler here, rather than FlatAssembler, to be compatible with GCC.
+verboseMode on ;Tells ArithmeticExpressionCompiler to output more comments into the assembly code it produces (fibonacci.s).
+AsmStart
+    .global fibonacci #We need to tell the linker that "fibonacci" is the name of a function, and not some random label.
+    fibonacci:
+AsmEnd
+If not(mod(n,1)=0) ;If 'n' is not a integer, round it to the nearest integer.
+    n := n + ( mod(n,1) > 1/2 ? mod(n,1) : (-mod(n,1)))
+EndIf
+If n<2 ;The 1st Fibonacci number is 1, and the 0th one is 0.
+    returnValue := n > -1 ? n : 0/0 ;0/0 is NaN (indicating error), because negative Fibonacci numbers don't exist
+    AsmStart
+        .intel_syntax noprefix
+        ret #Far return (to the other section, that is, to the C++ program). The way to do a same-section return depends on whether we are in a 32-bit Assembler or a 64-bit Assembler, while the far return is the same (at least in the "intel_syntax mode").
+        .att_syntax
+    AsmEnd
+ElseIf not(memoisation[n]=0) ;Has that Fibonacci number already been calculated?
+    returnValue:=memoisation[n]
+    AsmStart
+        .intel_syntax noprefix
+        ret
+        .att_syntax
+    AsmEnd
+EndIf
+;And now comes the part where we are tricking ArithmeticExpressionCompiler into supporting recursion...
+topOfTheStackWithLocalVariables := topOfTheStackWithLocalVariables + 2 ;Allocate space on the stack for 2 local variables ('n', the argument passed to the function, and the temporary result).
+temporaryResult := 0 ;The sum of fib(n-1) and fib(n-2) will be stored here, first 0 then fib(n-1) then fib(n-1)+fib(n-2).
+stackWithLocalVariables[topOfTheStackWithLocalVariables - 1] := temporaryResult ;Save the local variables onto the stack, for the recursive calls will corrupt them (as they are actually global variables, because ArithmeticExpressionCompiler doesn't support local ones).
+stackWithLocalVariables[topOfTheStackWithLocalVariables] := n
+n:=n-1
+AsmStart
+    .intel_syntax noprefix
+    call fibonacci
+    .att_syntax
+AsmEnd
+temporaryResult := stackWithLocalVariables[topOfTheStackWithLocalVariables - 1]
+temporaryResult := temporaryResult + returnValue ;"returnValue" is supposed to contain fib(n-1).
+;And we repeat what we did the last time, now with n-2 instead of n-1...
+stackWithLocalVariables[topOfTheStackWithLocalVariables - 1] := temporaryResult
+n := stackWithLocalVariables[topOfTheStackWithLocalVariables]
+n := n - 2
+AsmStart
+    .intel_syntax noprefix
+    call fibonacci
+    .att_syntax
+AsmEnd
+temporaryResult := stackWithLocalVariables[topOfTheStackWithLocalVariables - 1]
+temporaryResult := temporaryResult + returnValue
+stackWithLocalVariables[topOfTheStackWithLocalVariables - 1] := temporaryResult
+n := stackWithLocalVariables [topOfTheStackWithLocalVariables]
+returnValue := temporaryResult
+memoisation[n] := returnValue
+topOfTheStackWithLocalVariables := topOfTheStackWithLocalVariables - 2
+AsmStart
+    .intel_syntax noprefix
+    ret
+    .att_syntax
+AsmEnd
