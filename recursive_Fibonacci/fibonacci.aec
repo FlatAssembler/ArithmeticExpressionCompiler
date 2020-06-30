@@ -5,7 +5,7 @@ AsmStart
     fibonacci:
 AsmEnd
 If not(mod(n,1)=0) ;If 'n' is not a integer, round it to the nearest integer.
-    n := n + ( mod(n,1) > 1/2 ? mod(n,1) : (-mod(n,1)))
+    n := n + ( mod(n,1) > 1/2 ? 1-mod(n,1) : (-mod(n,1)))
 EndIf
 If n<2 ;The 1st Fibonacci number is 1, and the 0th one is 0.
     returnValue := n > -1 ? n : 0/0 ;0/0 is NaN (indicating error), because negative Fibonacci numbers don't exist
