@@ -29,10 +29,11 @@ int main() {
   std::cout << "Enter n:" << std::endl;
   std::cin >> n;
   topOfTheStackWithLocalVariables = -1;
-  std::fill(&memoisation[0], &memoisation[int(n)],
-            0); // This is way more easily done in C++ than in AEC here, because
-                // the AEC subprogram doesn't know if it's being called by C++
-                // or recursively by itself.
+  if (n >= 2)
+    std::fill(&memoisation[0], &memoisation[int(n)],
+              0); // This is way more easily done in C++ than in AEC here,
+                  // because the AEC subprogram doesn't know if it's being
+                  // called by C++ or recursively by itself.
   fibonacci();
   if (std::isnan(returnValue)) {
     std::cerr << "The AEC program returned an invalid decimal number."
