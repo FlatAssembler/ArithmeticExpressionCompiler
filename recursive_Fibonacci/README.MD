@@ -1,0 +1,1 @@
+This is a simple example of how to implement recursive algorithms in the ArithmeticExpressionCompiler language (or, for that sake, any compiled language which doesn't support recursion) using inline assembly.
