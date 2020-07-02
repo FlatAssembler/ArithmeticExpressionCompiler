@@ -1,0 +1,138 @@
+Syntax GAS ;Neka ArithmeticExpressionCompiler ispisuje asemblerski kod kompatibilan s GNU Assemblerom, da bude kompatibilan s GCC-om. Po defaultu ispisuje kod kompatibilan s FlatAssemblerom (a FlatAssembler na Linuxu ne radi bas najbolje).
+verboseMode ON ;Neka ArithmeticExpressionCompiler ispisuje vise komentara u asemblerski kod koji ispisuje (da bude laksi za citanje i debuggiranje).
+AsmStart ;Neka GNU Assembler obavijesti linkera da je "hybrid_sort" naziv potprograma...
+    .global hybrid_sort
+    hybrid_sort:
+AsmEnd
+If gornja_granica-donja_granica<2 ;Ako je niz duljine manje od 2 (0 ili 1), znaci da je vec poredan, pa prekidamo izvodenje ovog potprograma.
+    AsmStart ;Kako radimo izvan sekcija, mozemo jednostavno prekinuti izvodenje potprograma asemblerskom naredbom "ret" (inace bismo, da radimo u sekcijama, morali znati vrti li se program na 32-bitnom ili 64-bitnom Linuxu).
+        ret
+    AsmEnd 
+EndIf
+razvrstanost:=0
+i:=donja_granica
+While i < gornja_granica - 1
+    razvrstanost:=razvrstanost+(originalni_niz[i]<originalni_niz[i+1])
+    i:=i+1
+EndWhile
+razvrstanost:=razvrstanost/((gornja_granica-donja_granica-1)/2)-1
+i:=2
+While i<7 | i=7 
+    razvrstanost_na_potenciju[i] := pow(abs(razvrstanost), i) ;"pow(x,y)" je u AEC-u samo sintaksni secer za "exp(ln(x)*y)", i to vraca NaN za x=0 ili x<0. Nema ocitog nacina da se "pow(x,y)" prevede na asemblerski.
+    razvrstanost_na_potenciju[i] := (razvrstanost=0) ? 0 : (mod(i,2)=1 & razvrstanost<0) ? (-razvrstanost_na_potenciju[i]) : razvrstanost_na_potenciju[i] ;C-ov i JavaScriptin uvjetni operator nekad zna znatno skratiti kod, zato sam ga ugradio i u svoj jezik.
+    i:=i+1
+EndWhile
+;Formula koju je ispisao genetski algoritam za predvidanje koliko ce usporedbi QuickSort napraviti: https://github.com/FlatAssembler/ArithmeticExpressionCompiler/tree/master/QuickSort/Genetic_algorithm_for_deriving_the_formula
+polinom_pod_apsolutnom := 2.38854*razvrstanost_na_potenciju[7] - 0.284258*razvrstanost_na_potenciju[6] - 1.87104*razvrstanost_na_potenciju[5] + 0.372637*razvrstanost_na_potenciju[4] + 0.167242*razvrstanost_na_potenciju[3] - 0.0884977*razvrstanost_na_potenciju[2] + 0.315119*razvrstanost
+Eulerov_broj_na_koju_potenciju := (ln(gornja_granica - donja_granica) + ln(ln(gornja_granica - donja_granica))) * 1.05 + (ln(gornja_granica - donja_granica) - ln(ln(gornja_granica - donja_granica)) - ln(2)) * 0.9163 * abs(polinom_pod_apsolutnom)
+koliko_usporedbi_ocekujemo_od_QuickSorta := exp(Eulerov_broj_na_koju_potenciju)
+koliko_usporedbi_ocekujemo_od_MergeSorta := 2 * (gornja_granica - donja_granica) * ln(gornja_granica - donja_granica) / ln(2)
+If razvrstanost=1 ;Ako je niz vec poredan.
+    broj_vec_poredanih_podniza := broj_vec_poredanih_podniza + 1
+    AsmStart
+        ret
+    AsmEnd
+ElseIf razvrstanost = -1 ;Ako je niz obrnuto poredan...
+    broj_obrnuto_poredanih_podniza := broj_obrnuto_poredanih_podniza + 1
+    i:=donja_granica
+    j:=gornja_granica-1
+    While i<gornja_granica
+        pomocni_niz[i] := originalni_niz[j]
+        j := j - 1
+        i := i + 1
+    EndWhile
+    i := donja_granica
+    While i < gornja_granica
+        originalni_niz[i] := pomocni_niz[i]
+        i := i + 1
+    EndWhile
+    AsmStart
+        ret
+    AsmEnd
+ElseIf koliko_usporedbi_ocekujemo_od_MergeSorta < koliko_usporedbi_ocekujemo_od_QuickSorta ;MergeSort algoritam (priblizno poredani podnizovi, za koje je MergeSort efikasniji od QuickSorta)...
+    broj_pokretanja_MergeSorta := broj_pokretanja_MergeSorta + 1
+    sredina_niza:=(gornja_granica+donja_granica)/2
+    sredina_niza:=sredina_niza-mod(sredina_niza,1)
+    vrh_stoga:=vrh_stoga+1 ;Zauzmi mjesta na stogu za rekurziju. Ne koristimo sistemski stog, kao sto koristi C++, nego koristimo vise globalnih polja kao stogove. Da koristimo sistemski stog, morali bismo znati pokrecemo li se na 32-bitnom Linuxu ili 64-bitnom Linuxu, jer oni nisu kompatibilni u tom pogledu.
+    stog_s_donjim_granicama[vrh_stoga]:=donja_granica
+    stog_s_gornjim_granicama[vrh_stoga]:=gornja_granica
+    stog_sa_sredinama_niza[vrh_stoga]:=sredina_niza
+    gornja_granica:=sredina_niza
+    AsmStart
+        call hybrid_sort
+    AsmEnd
+    donja_granica:=stog_s_donjim_granicama[vrh_stoga] ;Sad je rekurzija gotovo sigurno izmijenila sve globalne varijable koje nam trebaju ("donja_granica", "gornja_granica" i "sredina_niza"), ali zato imamo njihove stare vrijednosti na stogovima.
+    gornja_granica:=stog_s_gornjim_granicama[vrh_stoga]
+    sredina_niza:=stog_sa_sredinama_niza[vrh_stoga]
+    donja_granica:=sredina_niza
+    AsmStart
+        call hybrid_sort
+    AsmEnd
+    donja_granica:=stog_s_donjim_granicama[vrh_stoga]
+    gornja_granica:=stog_s_gornjim_granicama[vrh_stoga]
+    sredina_niza:=stog_sa_sredinama_niza[vrh_stoga]
+    ;Spajanje nizova originalni_niz[donja_granica..sredina_niza] i originalni_niz[sredina_niza..gornja_granica] u jedan niz...
+    i:=donja_granica
+    gdje_smo_u_prvom_nizu:=donja_granica
+    gdje_smo_u_drugom_nizu:=sredina_niza
+    While i<gornja_granica
+        If (gdje_smo_u_prvom_nizu=sredina_niza | originalni_niz[gdje_smo_u_drugom_nizu]<originalni_niz[gdje_smo_u_prvom_nizu]) & gdje_smo_u_drugom_nizu<gornja_granica
+            pomocni_niz[i]:=originalni_niz[gdje_smo_u_drugom_nizu]
+            gdje_smo_u_drugom_nizu:=gdje_smo_u_drugom_nizu+1
+        Else
+            pomocni_niz[i]:=originalni_niz[gdje_smo_u_prvom_nizu]
+            gdje_smo_u_prvom_nizu:=gdje_smo_u_prvom_nizu+1
+        EndIf
+        i:=i+1
+    EndWhile
+    i:=donja_granica
+    While i<gornja_granica
+        originalni_niz[i]:=pomocni_niz[i]
+        i:=i+1
+    EndWhile
+    vrh_stoga:=vrh_stoga-1 ;Oslobodi mjesto na stogovima.
+    AsmStart
+        ret
+    AsmEnd
+Else ;QuickSort algoritam (nasumicno ispremjestani podnizovi)...
+    broj_pokretanja_QuickSorta := broj_pokretanja_QuickSorta + 1
+    ;Daljnji kod je priblizno prepisan s https://www.geeksforgeeks.org/quick-sort/
+    pivot := originalni_niz[gornja_granica - 1]
+    i := donja_granica - 1
+    j := donja_granica
+    While j < gornja_granica - 1
+        If originalni_niz[j] < pivot
+            i := i + 1
+            pomocna_varijabla_za_zamijenu := originalni_niz[i]
+            originalni_niz[i] := originalni_niz [j]
+            originalni_niz[j] := pomocna_varijabla_za_zamijenu
+        EndIf
+        j:=j+1
+    EndWhile
+    pomocna_varijabla_za_zamijenu := originalni_niz[i + 1]
+    originalni_niz[i + 1] := originalni_niz[gornja_granica - 1]
+    originalni_niz[gornja_granica - 1] := pomocna_varijabla_za_zamijenu
+    gdje_je_pivot := i + 1
+    vrh_stoga := vrh_stoga + 1 ;Zauzmi mjesta na stogu za rekurziju (ne koristimo sistemski stog, kao sto koristi C++, nego koristimo vise globalnih polja kao stogove).
+    stog_s_donjim_granicama[vrh_stoga] := donja_granica
+    stog_s_gornjim_granicama[vrh_stoga] := gornja_granica
+    stog_sa_sredinama_niza[vrh_stoga] := gdje_je_pivot
+    gornja_granica := gdje_je_pivot
+    AsmStart
+        call hybrid_sort
+    AsmEnd
+    donja_granica := stog_s_donjim_granicama[vrh_stoga]
+    gornja_granica := stog_s_gornjim_granicama[vrh_stoga]
+    gdje_je_pivot := stog_sa_sredinama_niza[vrh_stoga]
+    donja_granica := gdje_je_pivot
+    AsmStart
+        call hybrid_sort
+    AsmEnd
+    vrh_stoga := vrh_stoga - 1 ;Oslobodi mjesto na stogovima.
+    AsmStart
+        ret
+    AsmEnd
+EndIf
+AsmStart ;Ovdje tok programa ne smije doci. Ako dode, pozovi debugger.
+    call abort
+AsmEnd
