@@ -1,0 +1,496 @@
+{\rtf1\ansi\deff3\adeflang1025
+{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\froman\fprq2\fcharset2 Symbol;}{\f2\fswiss\fprq2\fcharset0 Arial;}{\f3\froman\fprq2\fcharset0 Liberation Serif{\*\falt Times New Roman};}{\f4\fswiss\fprq2\fcharset0 Liberation Sans{\*\falt Arial};}{\f5\fnil\fprq0\fcharset0 monospace;}{\f6\fmodern\fprq1\fcharset128 Courier New;}{\f7\fnil\fprq2\fcharset0 Tahoma;}{\f8\fnil\fprq0\fcharset0 Lohit Marathi;}{\f9\fnil\fprq2\fcharset0 Lohit Marathi;}}
+{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;\red160\green32\blue240;\red46\green139\blue87;\red106\green90\blue205;\red165\green42\blue42;}
+{\stylesheet{\s0\snext0\dbch\af5\dbch\af5\langfe2052\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf1\loch\f5\fs24\lang1033 Normal;}
+{\*\cs15\snext15 Footnote Characters;}
+{\*\cs16\snext16 Endnote Characters;}
+{\*\cs17\snext17\langfe255\alang255\cf9\lang255\ul\ulc0 Hyperlink;}
+{\*\cs18\snext18\langfe255\alang255\cf13\lang255\ul\ulc0 FollowedHyperlink;}
+{\s19\sbasedon0\snext20\dbch\af7\dbch\af9\afs28\sb240\sa120\keepn\cf1\loch\f4\fs28 Heading;}
+{\s20\sbasedon0\snext20\dbch\af5\dbch\af5\sl276\slmult1\sb0\sa140\cf1\loch\f5 Text Body;}
+{\s21\sbasedon20\snext21\dbch\af5\dbch\af8\sl276\slmult1\sb0\sa140\cf1\loch\f5 List;}
+{\s22\sbasedon0\snext22\dbch\af5\dbch\af8\afs24\ai\sb120\sa120\noline\cf1\loch\f5\fs24\i Caption;}
+{\s23\sbasedon0\snext23\dbch\af5\dbch\af8\noline\cf1\loch\f5 Index;}
+{\s24\sbasedon0\snext24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20 Preformatted Text;}
+{\s25\sbasedon0\snext25\dbch\af5\dbch\af5\li567\ri0\lin567\rin0\fi0\cf1\loch\f5 List Contents;}
+}{\*\generator LibreOffice/6.4.4.2$Linux_X86_64 LibreOffice_project/3d775be2011f3886db32dfd395a6a6d1ca2630ff}{\info{\title ~/Documents/RecursiveHybridSort/performance_tester.cpp.html}{\creatim\yr0\mo0\dy0\hr0\min0}{\revtim\yr2020\mo7\dy2\hr21\min21}{\printim\yr0\mo0\dy0\hr0\min0}}{\*\userprops{\propname }\proptype30{\staticval }{\propname colorscheme}\proptype30{\staticval default}{\propname plugin-version}\proptype30{\staticval vim8.1_v2}{\propname settings}\proptype30{\staticval number_lines,use_css,pre_wrap,no_foldcolumn,expand_tabs,line_ids,prevent_copy=,use_input_for_pc=fallback}{\propname syntax}\proptype30{\staticval cpp}}\deftab709
+\hyphauto1\viewscale200
+{\*\pgdsctbl
+{\pgdsc0\pgdscuse451\pgwsxn11906\pghsxn16838\marglsxn1134\margrsxn1134\margtsxn1134\margbsxn1134\pgdscnxt0 Default Style;}
+{\pgdsc1\pgdscuse451\pgndec\pgwsxn11906\pghsxn16838\marglsxn1134\margrsxn567\margtsxn567\margbsxn567\pgdscnxt1 HTML;}}
+\formshade{\*\pgdscno1}\paperh16838\paperw11906\margl1134\margr567\margt567\margb567\sectd\sbknone\sectunlocked1\pgndec\pgwsxn11906\pghsxn16838\marglsxn1134\margrsxn567\margtsxn567\margbsxn567\ftnbj\ftnstart1\ftnrstcont\ftnnar\aenddoc\aftnrstcont\aftnstart1\aftnnrlc
+{\*\ftnsep\chftnsep}\pgndec\pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart vimCodeElement}{\*\bkmkstart L1}{\*\bkmkend vimCodeElement}{\*\bkmkend L1}\rtlch\afs24\hich\af6 \ltrch\cbpat8\cbpat8\cf20\fs24\loch\f6
+ }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+1 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+/*}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L2}{\*\bkmkend L2}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6
+ }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+2 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+ * Dakle, ovo ce biti omotac oko "hybrid_sort.aec" napisan u C++-u.}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L3}{\*\bkmkend L3}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6
+ }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+3 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+ * "hybrid_sort.aec" sam po sebi nije program koji se moze pokrenuti,}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L4}{\*\bkmkend L4}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6
+ }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+4 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+ * i zato cemo od C++ compilera (u ovom slucaju, GCC-a) traziti da}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L5}{\*\bkmkend L5}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6
+ }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+5 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+ * napravi program unutar kojeg ce se "hybrid_sort.aec" moze pokrenuti,}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L6}{\*\bkmkend L6}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6
+ }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+6 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+ * i, po mogucnosti, koji ce olaksati da ga testiramo. Drugim rijecima,}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L7}{\*\bkmkend L7}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6
+ }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+7 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+ * ovo je program s kojim se "hybrid_sort.aec" moze staticki linkirati.}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L8}{\*\bkmkend L8}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6
+ }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+8 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+ * */}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L9}{\*\bkmkend L9}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6
+ }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+9 }{\rtlch\afs24\hich\af6 \ltrch\cf17\fs24\loch\f6\loch
+#include }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+<algorithm>}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L10}{\*\bkmkend L10}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+10 }{\rtlch\afs24\hich\af6 \ltrch\cf17\fs24\loch\f6\loch
+#include }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+<chrono>}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L11}{\*\bkmkend L11}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+11 }{\rtlch\afs24\hich\af6 \ltrch\cf17\fs24\loch\f6\loch
+#include }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+<cmath>}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L12}{\*\bkmkend L12}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+12 }{\rtlch\afs24\hich\af6 \ltrch\cf17\fs24\loch\f6\loch
+#include }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+<cstdlib>}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L13}{\*\bkmkend L13}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+13 }{\rtlch\afs24\hich\af6 \ltrch\cf17\fs24\loch\f6\loch
+#include }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+<iostream>}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L14}{\*\bkmkend L14}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+14 }{\rtlch\afs24\hich\af6 \ltrch\cf17\fs24\loch\f6\loch
+#include }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+<iterator>}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L15}{\*\bkmkend L15}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+15 }
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L16}{\*\bkmkend L16}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+16 }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+extern}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+"C"}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ \{ }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// Za GNU Linker (koji se dobije uz Linux i koristi ga GCC), AEC}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L17}{\*\bkmkend L17}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+17 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// jezik je dijalekt C-a, a moj compiler je C compiler.}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L18}{\*\bkmkend L18}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+18 }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+float}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ result, originalni_niz[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+16}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+], kopija_originalnog_niza[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+16}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+],}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L19}{\*\bkmkend L19}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+19 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    pomocni_niz[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+16}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+], i, gdje_smo_u_prvom_nizu, gdje_smo_u_drugom_nizu,}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L20}{\*\bkmkend L20}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+20 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    gornja_granica, donja_granica, sredina_niza,}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L21}{\*\bkmkend L21}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+21 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    stog_sa_sredinama_niza[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+10}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+], stog_s_donjim_granicama[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+10}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+],}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L22}{\*\bkmkend L22}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+22 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    stog_s_gornjim_granicama[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+10}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+], vrh_stoga, pomocna_varijabla_za_zamijenu,}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L23}{\*\bkmkend L23}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+23 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    gdje_je_pivot, j, pivot, koliko_usporedbi_ocekujemo_od_QuickSorta,}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L24}{\*\bkmkend L24}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+24 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    koliko_usporedbi_ocekujemo_od_MergeSorta, razvrstanost,}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L25}{\*\bkmkend L25}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+25 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    Eulerov_broj_na_koju_potenciju, polinom_pod_apsolutnom,}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L26}{\*\bkmkend L26}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+26 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    razvrstanost_na_potenciju[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+8}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+],}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L27}{\*\bkmkend L27}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+27 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    broj_vec_poredanih_podniza = }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+, broj_obrnuto_poredanih_podniza = }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+,}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L28}{\*\bkmkend L28}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+28 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    broj_pokretanja_MergeSorta = }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+,}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L29}{\*\bkmkend L29}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+29 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    broj_pokretanja_QuickSorta =}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L30}{\*\bkmkend L30}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+30 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+        }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+; }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// GNU Linker omogucuje da se varijable ne deklariraju ne samo u}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L31}{\*\bkmkend L31}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+31 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+           }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// razlicitim datotekama, nego i u razlicitim jezicima. Znaci, ne}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L32}{\*\bkmkend L32}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+32 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+           }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// moram traziti kako se, recimo, na 64-bitnom Linuxu deklariraju}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L33}{\*\bkmkend L33}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+33 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+           }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// globalne varijable na asemblerskom jeziku, jer GCC to vec zna.}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L34}{\*\bkmkend L34}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+34 }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+void}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ hybrid_sort(); }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+//".global hybrid_sort" iz "hybrid_sort.aec". U C++-u ga}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L35}{\*\bkmkend L35}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+35 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// morate deklarirati da biste ga mogli koristiti. C++ nije}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L36}{\*\bkmkend L36}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+36 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// kao JavaScript ili AEC u tom pogledu, C++ pokusava pronaci}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L37}{\*\bkmkend L37}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+37 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// krivo natipkana imena varijabli i funkcija vec za vrijeme}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L38}{\*\bkmkend L38}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+38 }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// compiliranja.}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L39}{\*\bkmkend L39}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+39 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+\}}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L40}{\*\bkmkend L40}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+40 }
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L41}{\*\bkmkend L41}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+41 }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+const}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+int}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ n = }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+16}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L42}{\*\bkmkend L42}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+42 }
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L43}{\*\bkmkend L43}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+43 }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+int}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ main() \{}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L44}{\*\bkmkend L44}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+44 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+  std::cout << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+"sortedness}{\rtlch\afs24\hich\af6 \ltrch\cf19\fs24\loch\f6\loch
+\\t}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+c++ std::sort}{\rtlch\afs24\hich\af6 \ltrch\cf19\fs24\loch\f6\loch
+\\t}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+AEC hybrid_sort}{\rtlch\afs24\hich\af6 \ltrch\cf19\fs24\loch\f6\loch
+\\n}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+"}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L45}{\*\bkmkend L45}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+45 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+  }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\b\loch\f6\loch
+for}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ (}{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+int}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ i = }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+; i < n; i++)}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L46}{\*\bkmkend L46}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+46 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    originalni_niz[i] = i;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L47}{\*\bkmkend L47}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+47 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+  }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\b\loch\f6\loch
+for}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ (}{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+int}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ i = }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+; i <= n; i += }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+9}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+) \{}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L48}{\*\bkmkend L48}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+48 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    std::sort(&originalni_niz[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+], &originalni_niz[n]);}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L49}{\*\bkmkend L49}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+49 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\b\loch\f6\loch
+if}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ (i < }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+15}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+)}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L50}{\*\bkmkend L50}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+50 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+      std::reverse(&originalni_niz[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+], &originalni_niz[n]);}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L51}{\*\bkmkend L51}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+51 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+int}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ broj_ispremjestanja = abs(i - (}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+15}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+)) * }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1.5}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L52}{\*\bkmkend L52}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+52 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\b\loch\f6\loch
+for}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ (}{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+int}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ j = }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+; j < broj_ispremjestanja; j++)}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L53}{\*\bkmkend L53}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+53 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+      std::iter_swap(&originalni_niz[std::rand() % n],}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L54}{\*\bkmkend L54}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+54 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+                     &originalni_niz[std::rand() % n]);}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L55}{\*\bkmkend L55}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+55 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\b\loch\f6\loch
+if}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ (!(rand() % }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+100}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+))}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L56}{\*\bkmkend L56}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+56 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+      std::random_shuffle(}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L57}{\*\bkmkend L57}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+57 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+          &originalni_niz[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+],}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L58}{\*\bkmkend L58}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+58 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+          &originalni_niz[n]); }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// Ponekad namjesti da poredanost bude nula.}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L59}{\*\bkmkend L59}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+59 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\b\loch\f6\loch
+if}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ (!(rand() % }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+100}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+))}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L60}{\*\bkmkend L60}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+60 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+      std::sort(&originalni_niz[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+], &originalni_niz[n],}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L61}{\*\bkmkend L61}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+61 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+                [](}{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+float}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ a, }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+float}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ b) -> }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+bool}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ \{}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L62}{\*\bkmkend L62}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+62 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+                  }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\b\loch\f6\loch
+return}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ a > b;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L63}{\*\bkmkend L63}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+63 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+                \}); }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// Ponekad namjesti da poredanost bude 1. Za to sam koristio}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L64}{\*\bkmkend L64}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+64 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+                    }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// C++-ove lambda funkcije. Njih GCC podrzava jos od 2007, a}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L65}{\*\bkmkend L65}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+65 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+                    }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// komercijalni compileri jos od ranije. Nadam se da netko}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L66}{\*\bkmkend L66}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+66 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+                    }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// nece pokusati ukucati ovo u neki arhaican compiler.}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L67}{\*\bkmkend L67}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+67 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+float}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ poredanost = }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L68}{\*\bkmkend L68}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+68 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\b\loch\f6\loch
+for}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ (}{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+int}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ j = }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+; j < n - }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+; j++)}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L69}{\*\bkmkend L69}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+69 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+      poredanost += originalni_niz[j] < originalni_niz[j - }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+];}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L70}{\*\bkmkend L70}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+70 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    poredanost = poredanost / ((n - }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+) / }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+2}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+) - }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L71}{\*\bkmkend L71}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+71 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    std::copy_n(&originalni_niz[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+], n, &kopija_originalnog_niza[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+]);}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L72}{\*\bkmkend L72}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+72 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    gornja_granica = n;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L73}{\*\bkmkend L73}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+73 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    donja_granica = }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L74}{\*\bkmkend L74}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+74 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    vrh_stoga = -}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L75}{\*\bkmkend L75}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+75 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+auto}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ prvoVrijeme = std::chrono::high_resolution_clock::now();}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L76}{\*\bkmkend L76}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+76 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    hybrid_sort();}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L77}{\*\bkmkend L77}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+77 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+auto}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ drugoVrijeme = std::chrono::high_resolution_clock::now();}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L78}{\*\bkmkend L78}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+78 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    std::sort(&kopija_originalnog_niza[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+], &kopija_originalnog_niza[n]);}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L79}{\*\bkmkend L79}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+79 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    }{\rtlch\afs24\hich\af6 \ltrch\cf18\fs24\b\loch\f6\loch
+auto}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ treceVrijeme = std::chrono::high_resolution_clock::now();}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L80}{\*\bkmkend L80}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+80 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\b\loch\f6\loch
+if}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ (!std::equal(&originalni_niz[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+], &originalni_niz[n],}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L81}{\*\bkmkend L81}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+81 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+                    &kopija_originalnog_niza[}{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+])) \{}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L82}{\*\bkmkend L82}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+82 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+      std::cerr << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+"C++-ov std::sort nije dobio isti rezultat za i="}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ << i << }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+'!'}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L83}{\*\bkmkend L83}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+83 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+                << std::endl;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L84}{\*\bkmkend L84}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+84 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+      }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\b\loch\f6\loch
+return}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+1}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+; }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// Javi operativnom sustavu da je doslo do pogreske.}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L85}{\*\bkmkend L85}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+85 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    \}}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L86}{\*\bkmkend L86}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+86 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+    std::cout << poredanost << }{\rtlch\afs24\hich\af6 \ltrch\cf19\fs24\loch\f6\loch
+'\\t'}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L87}{\*\bkmkend L87}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+87 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+              << log((treceVrijeme - drugoVrijeme).count()) << }{\rtlch\afs24\hich\af6 \ltrch\cf19\fs24\loch\f6\loch
+'\\t'}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L88}{\*\bkmkend L88}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+88 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+              << log((drugoVrijeme - prvoVrijeme).count()) << }{\rtlch\afs24\hich\af6 \ltrch\cf19\fs24\loch\f6\loch
+'\\n'}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+;}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L89}{\*\bkmkend L89}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+89 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+  \}}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L90}{\*\bkmkend L90}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+90 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+  std::flush(std::cout); }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// Obrisi meduspremnik prije no sto zavrsis program.}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\ltrpar{{\*\bkmkstart L91}{\*\bkmkend L91}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+91 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+  }{\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\b\loch\f6\loch
+return}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+ }{\rtlch\afs24\hich\af6 \ltrch\cf5\fs24\loch\f6\loch
+0}{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+; }{\rtlch\afs24\hich\af6 \ltrch\cf2\fs24\loch\f6\loch
+// Javi operativnom sustavu da je program uspjesno zavrsen.}
+\par \pard\plain \s24\dbch\af5\dbch\af5\afs20\sb0\sa0\cbpat8\cf1\loch\f5\fs20\ql\sb0\sa283\ltrpar{{\*\bkmkstart L92}{\*\bkmkend L92}\rtlch\afs24\hich\af6 \ltrch\cf20\fs24\loch\f6\loch
+92 }{\rtlch\afs24\hich\af6 \ltrch\fs24\loch\f6\loch
+\}}
+\par }

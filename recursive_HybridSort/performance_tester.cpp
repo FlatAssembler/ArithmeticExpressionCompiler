@@ -27,8 +27,10 @@ float result, originalni_niz[1 << 16], kopija_originalnog_niza[1 << 16],
     broj_vec_poredanih_podniza = 0, broj_obrnuto_poredanih_podniza = 0,
     broj_pokretanja_MergeSorta = 0,
     broj_pokretanja_QuickSorta =
-        0; // GNU linker omogucuje da se varijable ne deklariraju ne samo u
-           // razlicitim datotekama, nego i u razlicitim jezicima.
+        0; // GNU Linker omogucuje da se varijable ne deklariraju ne samo u
+           // razlicitim datotekama, nego i u razlicitim jezicima. Znaci, ne
+           // moram traziti kako se, recimo, na 64-bitnom Linuxu deklariraju
+           // globalne varijable na asemblerskom jeziku, jer GCC to vec zna.
 void hybrid_sort(); //".global hybrid_sort" iz "hybrid_sort.aec". U C++-u ga
 // morate deklarirati da biste ga mogli koristiti. C++ nije
 // kao JavaScript ili AEC u tom pogledu, C++ pokusava pronaci
