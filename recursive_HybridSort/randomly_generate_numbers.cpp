@@ -1,3 +1,11 @@
+/*
+ * Dakle, ovo ce biti omotac oko "hybrid_sort.aec" napisan u C++-u.
+ * "hybrid_sort.aec" sam po sebi nije program koji se moze pokrenuti,
+ * i zato cemo od C++ compilera (u ovom slucaju, GCC-a) traziti da
+ * napravi program unutar kojeg ce se "hybrid_sort.aec" moci pokrenuti,
+ * i, po mogucnosti, koji ce olaksati da ga testiramo. Drugim rijecima,
+ * ovo je program s kojim se "hybrid_sort.aec" moze staticki linkirati.
+ * */
 #include <algorithm>
 #include <chrono>
 #include <iostream>

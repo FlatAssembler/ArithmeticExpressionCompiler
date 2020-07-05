@@ -1,3 +1,11 @@
+/*
+ * Dakle, ovo ce biti omotac oko "hybrid_sort.aec" napisan u C++-u.
+ * "hybrid_sort.aec" sam po sebi nije program koji se moze pokrenuti,
+ * i zato cemo od C++ compilera (u ovom slucaju, GCC-a) traziti da
+ * napravi program unutar kojeg ce se "hybrid_sort.aec" moci pokrenuti,
+ * i, po mogucnosti, koji ce olaksati da ga testiramo. Drugim rijecima,
+ * ovo je program s kojim se "hybrid_sort.aec" moze staticki linkirati.
+ * */
 #include <algorithm>
 #include <chrono>
 #include <iostream>
@@ -20,10 +28,10 @@ float result, originalni_niz[32768], kopija_originalnog_niza[32768],
         0; // GNU linker omogucuje da se varijable ne deklariraju ne samo u
            // razlicitim datotekama, nego i u razlicitim jezicima.
 void hybrid_sort(); //".global hybrid_sort" iz "hybrid_sort.aec". U C++-u ga
-                    //morate deklarirati da biste ga mogli koristiti. C++ nije
-                    //kao JavaScript ili AEC u tom pogledu, C++ pokusava pronaci
-                    //krivo natipkana imena varijabli i funkcija vec za vrijeme
-                    //compiliranja.
+                    // morate deklarirati da biste ga mogli koristiti. C++ nije
+                    // kao JavaScript ili AEC u tom pogledu, C++ pokusava
+                    // pronaci krivo natipkana imena varijabli i funkcija vec za
+                    // vrijeme compiliranja.
 }
 
 int main() {
@@ -48,11 +56,12 @@ int main() {
       << broj_pokretanja_MergeSorta
       << " priblizno poredanih podnizova (pogodnih za MergeSort)\n i "
       << broj_pokretanja_QuickSorta
-      << " nasumicno ispremjestanih podnizova.\nPokrecem C++-ov std::sort..."
+      << " nasumicno ispremjestanih podnizova."
       << std::endl;
-  std::cout << "On tvrdi da je sortirani niz:" << std::endl;
+  std::cout << "On tvrdi, dakle, da je sortirani niz:" << std::endl;
   std::copy_n(&originalni_niz[0], n,
               std::ostream_iterator<float>(std::cout, "\n"));
+  std::cout << "Pokrecem C++-ov std::sort." << std::endl;
   auto treceVrijeme = std::chrono::high_resolution_clock::now();
   std::sort(&kopija_originalnog_niza[0], &kopija_originalnog_niza[n]);
   auto cetvrtoVrijeme = std::chrono::high_resolution_clock::now();
