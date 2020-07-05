@@ -8,12 +8,14 @@
  * */
 #include <algorithm>
 #include <chrono>
+#include <fstream>
 #include <iostream>
 #include <iterator>
 #include <random>
 
-extern "C" { // Za GNU Linker (koji se dobije uz Linux i koristi ga GCC), AEC
-             // jezik je dijalekt C-a, a moj compiler je C compiler.
+namespace AEC { // Da se razlikuju AEC-ove varijable od C++-ovih.
+extern "C" {    // Za GNU Linker (koji se dobije uz Linux i koristi ga GCC), AEC
+                // jezik je dijalekt C-a, a moj compiler je C compiler.
 float result, originalni_niz[1 << 16], kopija_originalnog_niza[1 << 16],
     pomocni_niz[1 << 16], i, gdje_smo_u_prvom_nizu, gdje_smo_u_drugom_nizu,
     gornja_granica, donja_granica, sredina_niza,
@@ -34,6 +36,7 @@ void hybrid_sort(); //".global hybrid_sort" iz "hybrid_sort.aec". U C++-u ga
                     // pronaci krivo natipkana imena varijabli i funkcija vec za
                     // vrijeme compiliranja.
 }
+} // namespace AEC
 
 int main() {
   std::cout << "Unesite koliko zelite da generirani niz bude dugacak."
@@ -52,37 +55,54 @@ int main() {
   std::cout << "Generiram niz od " << n << " nasumicnih decimalnih brojeva..."
             << std::endl;
   std::generate_n(
-      &originalni_niz[0], n,
+      &AEC::originalni_niz[0], n,
       [&]() -> float { // C++-ove lambda funkcije, GCC ih podrzava od 2007, a
                        // komercijalni compileri jos od ranije. Nadajmo se da
                        // netko nece pokusati ukucati ovaj program u arhajski
                        // C++ compiler.
         return distribution(generator);
       });
-  std::copy_n(&originalni_niz[0], n, &kopija_originalnog_niza[0]);
-  gornja_granica = n;
-  donja_granica = 0;
-  vrh_stoga = -1;
+  std::copy_n(&AEC::originalni_niz[0], n, &AEC::kopija_originalnog_niza[0]);
+  AEC::gornja_granica = n;
+  AEC::donja_granica = 0;
+  AEC::vrh_stoga = -1;
   std::cout << "Pokrecem potprogram u AEC-u..." << std::endl;
   auto prvoVrijeme = std::chrono::high_resolution_clock::now();
-  hybrid_sort();
+  AEC::hybrid_sort();
   auto drugoVrijeme = std::chrono::high_resolution_clock::now();
   std::cout << "Potprogram u AEC-u je zavrsio." << std::endl;
   std::cout
-      << "Detektirao je " << broj_vec_poredanih_podniza
+      << "Detektirao je " << AEC::broj_vec_poredanih_podniza
       << " vec poredanih podnizova,\n"
-      << broj_obrnuto_poredanih_podniza << " obrnuto poredanih podniza,\n"
-      << broj_pokretanja_MergeSorta
+      << AEC::broj_obrnuto_poredanih_podniza << " obrnuto poredanih podniza,\n"
+      << AEC::broj_pokretanja_MergeSorta
       << " priblizno poredanih podnizova (pogodnih za MergeSort)\n i "
-      << broj_pokretanja_QuickSorta
+      << AEC::broj_pokretanja_QuickSorta
       << " nasumicno ispremjestanih podnizova.\nPokrecem C++-ov std::sort..."
       << std::endl;
   auto treceVrijeme = std::chrono::high_resolution_clock::now();
-  std::sort(&kopija_originalnog_niza[0], &kopija_originalnog_niza[n]);
+  std::sort(&AEC::kopija_originalnog_niza[0], &AEC::kopija_originalnog_niza[n]);
   auto cetvrtoVrijeme = std::chrono::high_resolution_clock::now();
-  if (!std::equal(&originalni_niz[0], &originalni_niz[n],
-                  &kopija_originalnog_niza[0])) {
+  if (!std::equal(&AEC::originalni_niz[0], &AEC::originalni_niz[n],
+                  &AEC::kopija_originalnog_niza[0])) {
     std::cout << "C++-ov std::sort nije dobio isti rezultat!" << std::endl;
+    std::ofstream AECovRezultat("AECresult.txt");
+    std::ofstream CPPovRezultat("CPPresult.txt");
+    if (!AECovRezultat || !CPPovRezultat) {
+      std::cout << "Ne mogu otvoriti datoteke za ispis rezultata!" << std::endl;
+      return 2;
+    }
+    AECovRezultat << n << std::endl;
+    CPPovRezultat << n << std::endl;
+    std::copy_n(&AEC::originalni_niz[0], n,
+                std::ostream_iterator<float>(AECovRezultat, "\n"));
+    std::copy_n(&AEC::kopija_originalnog_niza[0], n,
+                std::ostream_iterator<float>(CPPovRezultat, "\n"));
+    AECovRezultat.close();
+    CPPovRezultat.close();
+    std::cout
+        << "Rezultati su spremljeni u \"AECresult.txt\" i \"CPPresult.txt\""
+        << std::endl;
     return 1;
   }
   std::cout << "C++-ov std::sort dobio je isti rezultat." << std::endl;
