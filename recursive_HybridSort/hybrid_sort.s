@@ -24,18 +24,18 @@ fld dword ptr [result]
 #Pushing "(< (- gornja_granica donja_granica) 2)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel914728
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel636412
 fld1
-jmp endOfTheLessThanComparisonLabel862181
-secondOperandOfTheComparisonIsSmallerOrEqualLabel914728:
+jmp endOfTheLessThanComparisonLabel408330
+secondOperandOfTheComparisonIsSmallerOrEqualLabel636412:
 fldz
-endOfTheLessThanComparisonLabel862181:
+endOfTheLessThanComparisonLabel408330:
 #Comparing the just-calculated expression with 0...
 fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether the expression is 0...
-jz ElseLabel529946
+jz ElseLabel894032
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #AsmStart ;Kako radimo izvan sekcija, mozemo jednostavno prekinuti izvodenje potprograma asemblerskom naredbom "ret" (inace bismo, da radimo u sekcijama, morali znati vrti li se program na 32-bitnom ili 64-bitnom Linuxu).
@@ -49,11 +49,11 @@ ret
 #Initializing the FPU stack...
 finit
 #Type of the directive is: EndIf-statement.
-ElseLabel529946:
-EndIfLabel210662:
+ElseLabel894032:
+EndIfLabel783531:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#razvrstanost:=0
+#razvrstanost := 0
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -70,7 +70,7 @@ mov edx, dword ptr [result]
 mov dword ptr [razvrstanost],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#i:=donja_granica
+#i            := donja_granica
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -93,7 +93,7 @@ mov dword ptr [i],edx
 finit
 #Type of the directive: beginning of the while-loop
 #Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel766296:
+WhileLabel909198:
 #Evaluating the expression after the "While" keyword
 #Pushing "gornja_granica" to the FPU stack...
 fld dword ptr [gornja_granica]
@@ -108,21 +108,21 @@ fld dword ptr [i]
 fxch
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel765653
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel244326
 fld1
-jmp endOfTheLessThanComparisonLabel147775
-secondOperandOfTheComparisonIsSmallerOrEqualLabel765653:
+jmp endOfTheLessThanComparisonLabel624640
+secondOperandOfTheComparisonIsSmallerOrEqualLabel244326:
 fldz
-endOfTheLessThanComparisonLabel147775:
+endOfTheLessThanComparisonLabel624640:
 #Comparing the expression to 0...
 fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether it is 0...
-je EndWhileLabel280132
+je EndWhileLabel23113
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#razvrstanost:=razvrstanost+(originalni_niz[i]<originalni_niz[i+1])
+#razvrstanost := razvrstanost + (originalni_niz[i] < originalni_niz[i + 1])
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -150,12 +150,12 @@ fld dword ptr [originalni_niz+4*ebx]
 fxch
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel42606
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel462963
 fld1
-jmp endOfTheLessThanComparisonLabel143093
-secondOperandOfTheComparisonIsSmallerOrEqualLabel42606:
+jmp endOfTheLessThanComparisonLabel620661
+secondOperandOfTheComparisonIsSmallerOrEqualLabel462963:
 fldz
-endOfTheLessThanComparisonLabel143093:
+endOfTheLessThanComparisonLabel620661:
 #Pushing "razvrstanost" to the FPU stack...
 fld dword ptr [razvrstanost]
 #Pushing "(+ (< (originalni_niz (+ i 1)) (originalni_niz i)) razvrstanost)" to the FPU stack...
@@ -168,7 +168,7 @@ mov edx, dword ptr [result]
 mov dword ptr [razvrstanost],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#i:=i+1
+#i            := i + 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -195,11 +195,11 @@ mov dword ptr [i],edx
 #Initializing the FPU stack...
 finit
 #Type of the directive: end of the while-loop.
-jmp WhileLabel766296
-EndWhileLabel280132:
+jmp WhileLabel909198
+EndWhileLabel23113:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#razvrstanost:=razvrstanost/((gornja_granica-donja_granica-1)/2)-1
+#razvrstanost := razvrstanost / ( (gornja_granica - donja_granica - 1) / 2) - 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -239,7 +239,7 @@ mov edx, dword ptr [result]
 mov dword ptr [razvrstanost],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#i:=2
+#i            := 2
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -263,7 +263,7 @@ mov dword ptr [i],edx
 finit
 #Type of the directive: beginning of the while-loop
 #Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel373162:
+WhileLabel34249:
 #Evaluating the expression after the "While" keyword
 #Pushing "i" to the FPU stack...
 fld dword ptr [i]
@@ -273,12 +273,12 @@ fld dword ptr [result]
 #Pushing "(< i 7)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel163363
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel801801
 fld1
-jmp endOfTheLessThanComparisonLabel975466
-secondOperandOfTheComparisonIsSmallerOrEqualLabel163363:
+jmp endOfTheLessThanComparisonLabel1789
+secondOperandOfTheComparisonIsSmallerOrEqualLabel801801:
 fldz
-endOfTheLessThanComparisonLabel975466:
+endOfTheLessThanComparisonLabel1789:
 #Pushing "i" to the FPU stack...
 fld dword ptr [i]
 #Pushing "7" to the FPU stack...
@@ -287,12 +287,12 @@ fld dword ptr [result]
 #Pushing "(= i 7)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel509
+jne operandsOfTheEqualityOperatorAreNotEqualLabel381681
 fld1
-jmp endOfTheEqualityOperatorLabel963015
-operandsOfTheEqualityOperatorAreNotEqualLabel509:
+jmp endOfTheEqualityOperatorLabel266851
+operandsOfTheEqualityOperatorAreNotEqualLabel381681:
 fldz
-endOfTheEqualityOperatorLabel963015:
+endOfTheEqualityOperatorLabel266851:
 #Pushing "(| (< i 7) (= i 7))" to the FPU stack...
 fistp dword ptr [result]
 mov eax,dword ptr [result]
@@ -304,7 +304,7 @@ fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether it is 0...
-je EndWhileLabel314523
+je EndWhileLabel666914
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #razvrstanost_na_potenciju[i] := pow(abs(razvrstanost), i) ;"pow(x,y)" je u AEC-u samo sintaksni secer za "exp(ln(x)*y)", i to vraca NaN za x=0 ili x<0. Nema ocitog nacina da se "pow(x,y)" prevede na asemblerski.
@@ -393,12 +393,12 @@ fld dword ptr [result]
 #Pushing "(= (mod i 2) 1)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel437097
+jne operandsOfTheEqualityOperatorAreNotEqualLabel455618
 fld1
-jmp endOfTheEqualityOperatorLabel642028
-operandsOfTheEqualityOperatorAreNotEqualLabel437097:
+jmp endOfTheEqualityOperatorLabel21337
+operandsOfTheEqualityOperatorAreNotEqualLabel455618:
 fldz
-endOfTheEqualityOperatorLabel642028:
+endOfTheEqualityOperatorLabel21337:
 #Pushing "razvrstanost" to the FPU stack...
 fld dword ptr [razvrstanost]
 #Pushing "0" to the FPU stack...
@@ -407,12 +407,12 @@ fld dword ptr [result]
 #Pushing "(< razvrstanost 0)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel182457
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel838227
 fld1
-jmp endOfTheLessThanComparisonLabel685474
-secondOperandOfTheComparisonIsSmallerOrEqualLabel182457:
+jmp endOfTheLessThanComparisonLabel938615
+secondOperandOfTheComparisonIsSmallerOrEqualLabel838227:
 fldz
-endOfTheLessThanComparisonLabel685474:
+endOfTheLessThanComparisonLabel938615:
 #Pushing "(& (= (mod i 2) 1) (< razvrstanost 0))" to the FPU stack...
 fistp dword ptr [result]
 mov eax,dword ptr [result]
@@ -423,16 +423,16 @@ fild dword ptr [result]
 fistp dword ptr [result]
 xor eax,eax
 cmp dword ptr [result],eax
-jz firstOperandOfTheTernaryOperatorIsZeroLabel838153
+jz firstOperandOfTheTernaryOperatorIsZeroLabel533640
 fstp dword ptr [result]
 mov eax, dword ptr [result]
 fstp dword ptr [result]
 mov dword ptr [result],eax
 fld dword ptr [result]
-jmp endOfTheTernaryOperatorLabel564969
-firstOperandOfTheTernaryOperatorIsZeroLabel838153:
+jmp endOfTheTernaryOperatorLabel865419
+firstOperandOfTheTernaryOperatorIsZeroLabel533640:
 fstp dword ptr [result]
-endOfTheTernaryOperatorLabel564969:
+endOfTheTernaryOperatorLabel865419:
 #Pushing "0" to the FPU stack...
 mov dword ptr [result],0x0 #IEEE754 hex of 0
 fld dword ptr [result]
@@ -444,26 +444,26 @@ fld dword ptr [result]
 #Pushing "(= razvrstanost 0)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel110939
+jne operandsOfTheEqualityOperatorAreNotEqualLabel349377
 fld1
-jmp endOfTheEqualityOperatorLabel486506
-operandsOfTheEqualityOperatorAreNotEqualLabel110939:
+jmp endOfTheEqualityOperatorLabel250138
+operandsOfTheEqualityOperatorAreNotEqualLabel349377:
 fldz
-endOfTheEqualityOperatorLabel486506:
+endOfTheEqualityOperatorLabel250138:
 #Pushing "(?: (= razvrstanost 0) 0 (?: (& (= (mod i 2) 1) (< razvrstanost 0)) (- (razvrstanost_na_potenciju i) 0) (razvrstanost_na_potenciju i)))" to the FPU stack...
 fistp dword ptr [result]
 xor eax,eax
 cmp dword ptr [result],eax
-jz firstOperandOfTheTernaryOperatorIsZeroLabel718367
+jz firstOperandOfTheTernaryOperatorIsZeroLabel25916
 fstp dword ptr [result]
 mov eax, dword ptr [result]
 fstp dword ptr [result]
 mov dword ptr [result],eax
 fld dword ptr [result]
-jmp endOfTheTernaryOperatorLabel749902
-firstOperandOfTheTernaryOperatorIsZeroLabel718367:
+jmp endOfTheTernaryOperatorLabel154584
+firstOperandOfTheTernaryOperatorIsZeroLabel25916:
 fstp dword ptr [result]
-endOfTheTernaryOperatorLabel749902:
+endOfTheTernaryOperatorLabel154584:
 #Storing the top of the FPU stack into "edx".
 fstp dword ptr [result]
 mov edx, dword ptr [result]
@@ -504,8 +504,8 @@ mov dword ptr [i],edx
 #Initializing the FPU stack...
 finit
 #Type of the directive: end of the while-loop.
-jmp WhileLabel373162
-EndWhileLabel314523:
+jmp WhileLabel34249
+EndWhileLabel666914:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #;Formula koju je ispisao genetski algoritam za predvidanje koliko ce usporedbi QuickSort napraviti: https://github.com/FlatAssembler/ArithmeticExpressionCompiler/tree/master/QuickSort/Genetic_algorithm_for_deriving_the_formula
@@ -825,18 +825,18 @@ fld dword ptr [result]
 #Pushing "(= razvrstanost 1)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel679583
+jne operandsOfTheEqualityOperatorAreNotEqualLabel269029
 fld1
-jmp endOfTheEqualityOperatorLabel948175
-operandsOfTheEqualityOperatorAreNotEqualLabel679583:
+jmp endOfTheEqualityOperatorLabel121319
+operandsOfTheEqualityOperatorAreNotEqualLabel269029:
 fldz
-endOfTheEqualityOperatorLabel948175:
+endOfTheEqualityOperatorLabel121319:
 #Comparing the just-calculated expression with 0...
 fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether the expression is 0...
-jz ElseLabel693997
+jz ElseLabel276933
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #broj_vec_poredanih_podniza := broj_vec_poredanih_podniza + 1
@@ -872,9 +872,9 @@ ret
 finit
 #Type of the directive is: ElseIf-statement.
 #If the expression in the If-statement evaluates to 1...
-jmp EndIfLabel234383
+jmp EndIfLabel298595
 #If it evaluates to 0...
-ElseLabel693997:
+ElseLabel276933:
 #Evaluating the expression after the ElseIf keyword...
 #Pushing "0" to the FPU stack...
 mov dword ptr [result],0x0 #IEEE754 hex of 0
@@ -890,18 +890,18 @@ fld dword ptr [razvrstanost]
 fxch
 fcomip
 fstp dword ptr [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel588601
+jne operandsOfTheEqualityOperatorAreNotEqualLabel173786
 fld1
-jmp endOfTheEqualityOperatorLabel394986
-operandsOfTheEqualityOperatorAreNotEqualLabel588601:
+jmp endOfTheEqualityOperatorLabel941729
+operandsOfTheEqualityOperatorAreNotEqualLabel173786:
 fldz
-endOfTheEqualityOperatorLabel394986:
+endOfTheEqualityOperatorLabel941729:
 #Comparing that expression to 0...
 fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether it was 0...
-jz ElseLabel987446
+jz ElseLabel683480
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #broj_obrnuto_poredanih_podniza := broj_obrnuto_poredanih_podniza + 1
@@ -925,7 +925,7 @@ mov edx, dword ptr [result]
 mov dword ptr [broj_obrnuto_poredanih_podniza],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#i:=donja_granica
+#i                              :=                      donja_granica
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -941,7 +941,7 @@ mov edx, dword ptr [result]
 mov dword ptr [i],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#j:=gornja_granica-1
+#j                              :=                 gornja_granica - 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -969,7 +969,7 @@ mov dword ptr [j],edx
 finit
 #Type of the directive: beginning of the while-loop
 #Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel265037:
+WhileLabel834480:
 #Evaluating the expression after the "While" keyword
 #Pushing "i" to the FPU stack...
 fld dword ptr [i]
@@ -978,18 +978,18 @@ fld dword ptr [gornja_granica]
 #Pushing "(< i gornja_granica)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel736657
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel379607
 fld1
-jmp endOfTheLessThanComparisonLabel410196
-secondOperandOfTheComparisonIsSmallerOrEqualLabel736657:
+jmp endOfTheLessThanComparisonLabel960793
+secondOperandOfTheComparisonIsSmallerOrEqualLabel379607:
 fldz
-endOfTheLessThanComparisonLabel410196:
+endOfTheLessThanComparisonLabel960793:
 #Comparing the expression to 0...
 fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether it is 0...
-je EndWhileLabel151273
+je EndWhileLabel375838
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #pomocni_niz[i] := originalni_niz[j]
@@ -1018,7 +1018,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [pomocni_niz+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#j := j - 1
+#j              :=             j - 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1039,7 +1039,7 @@ mov edx, dword ptr [result]
 mov dword ptr [j],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#i := i + 1
+#i              :=             i + 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1066,8 +1066,8 @@ mov dword ptr [i],edx
 #Initializing the FPU stack...
 finit
 #Type of the directive: end of the while-loop.
-jmp WhileLabel265037
-EndWhileLabel151273:
+jmp WhileLabel834480
+EndWhileLabel375838:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #i := donja_granica
@@ -1093,7 +1093,7 @@ mov dword ptr [i],edx
 finit
 #Type of the directive: beginning of the while-loop
 #Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel513913:
+WhileLabel234538:
 #Evaluating the expression after the "While" keyword
 #Pushing "i" to the FPU stack...
 fld dword ptr [i]
@@ -1102,18 +1102,18 @@ fld dword ptr [gornja_granica]
 #Pushing "(< i gornja_granica)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel435970
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel459229
 fld1
-jmp endOfTheLessThanComparisonLabel419677
-secondOperandOfTheComparisonIsSmallerOrEqualLabel435970:
+jmp endOfTheLessThanComparisonLabel273435
+secondOperandOfTheComparisonIsSmallerOrEqualLabel459229:
 fldz
-endOfTheLessThanComparisonLabel419677:
+endOfTheLessThanComparisonLabel273435:
 #Comparing the expression to 0...
 fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether it is 0...
-je EndWhileLabel509398
+je EndWhileLabel119385
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #originalni_niz[i] := pomocni_niz[i]
@@ -1169,8 +1169,8 @@ mov dword ptr [i],edx
 #Initializing the FPU stack...
 finit
 #Type of the directive: end of the while-loop.
-jmp WhileLabel513913
-EndWhileLabel509398:
+jmp WhileLabel234538
+EndWhileLabel119385:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #AsmStart
@@ -1178,17 +1178,81 @@ EndWhileLabel509398:
 ret
 #AsmEnd
 #Inline assembly ended.
-#ElseIf koliko_usporedbi_ocekujemo_od_MergeSorta < koliko_usporedbi_ocekujemo_od_QuickSorta ;MergeSort algoritam (priblizno poredani podnizovi, za koje je MergeSort efikasniji od QuickSorta)...
+#ElseIf koliko_usporedbi_ocekujemo_od_MergeSorta < koliko_usporedbi_ocekujemo_od_QuickSorta | vrh_stoga > pow(2, 10) - pow(2, 6) ;MergeSort algoritam (priblizno poredani podnizovi, za koje je MergeSort efikasniji od QuickSorta, a moj ga program takoder koristi kada ima jos malo mjesta na sistemskom stogu, pa QuickSort nije opcija)...
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
 finit
 #Type of the directive is: ElseIf-statement.
 #If the expression in the If-statement evaluates to 1...
-jmp EndIfLabel234383
+jmp EndIfLabel298595
 #If it evaluates to 0...
-ElseLabel987446:
+ElseLabel683480:
 #Evaluating the expression after the ElseIf keyword...
+#Pushing "2" to the FPU stack...
+mov dword ptr [result],0x40000000 #IEEE754 hex of 2
+fld dword ptr [result]
+#Pushing "10" to the FPU stack...
+mov dword ptr [result],0x41200000 #IEEE754 hex of 10
+fld dword ptr [result]
+#Pushing "(pow 2 10)" to the FPU stack...
+fxch
+fld1
+fxch
+fyl2x
+fldl2e
+fdivp
+fmulp
+fldl2e
+fmulp
+fld1
+fscale
+fxch
+fld1
+fxch
+fprem
+f2xm1
+faddp
+fmulp
+#Pushing "2" to the FPU stack...
+mov dword ptr [result],0x40000000 #IEEE754 hex of 2
+fld dword ptr [result]
+#Pushing "6" to the FPU stack...
+mov dword ptr [result],0x40c00000 #IEEE754 hex of 6
+fld dword ptr [result]
+#Pushing "(pow 2 6)" to the FPU stack...
+fxch
+fld1
+fxch
+fyl2x
+fldl2e
+fdivp
+fmulp
+fldl2e
+fmulp
+fld1
+fscale
+fxch
+fld1
+fxch
+fprem
+f2xm1
+faddp
+fmulp
+#Pushing "(- (pow 2 10) (pow 2 6))" to the FPU stack...
+fsubp
+#Pushing "vrh_stoga" to the FPU stack...
+fld dword ptr [vrh_stoga]
+#Pushing "(> (- (pow 2 10) (pow 2 6)) vrh_stoga)" to the FPU stack...
+fxch
+fcomip
+fstp dword ptr [result]
+jnb secondOperandOfTheComparisonIsGreaterOrEqualLabel332341
+fld1
+jmp endOfTheGreaterThanComparisonLabel638756
+secondOperandOfTheComparisonIsGreaterOrEqualLabel332341:
+fldz
+endOfTheGreaterThanComparisonLabel638756:
 #Pushing "koliko_usporedbi_ocekujemo_od_MergeSorta" to the FPU stack...
 fld dword ptr [koliko_usporedbi_ocekujemo_od_MergeSorta]
 #Pushing "koliko_usporedbi_ocekujemo_od_QuickSorta" to the FPU stack...
@@ -1196,21 +1260,28 @@ fld dword ptr [koliko_usporedbi_ocekujemo_od_QuickSorta]
 #Pushing "(< koliko_usporedbi_ocekujemo_od_MergeSorta koliko_usporedbi_ocekujemo_od_QuickSorta)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel711177
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel365974
 fld1
-jmp endOfTheLessThanComparisonLabel803100
-secondOperandOfTheComparisonIsSmallerOrEqualLabel711177:
+jmp endOfTheLessThanComparisonLabel759025
+secondOperandOfTheComparisonIsSmallerOrEqualLabel365974:
 fldz
-endOfTheLessThanComparisonLabel803100:
+endOfTheLessThanComparisonLabel759025:
+#Pushing "(| (> (- (pow 2 10) (pow 2 6)) vrh_stoga) (< koliko_usporedbi_ocekujemo_od_MergeSorta koliko_usporedbi_ocekujemo_od_QuickSorta))" to the FPU stack...
+fxch
+fistp dword ptr [result]
+mov eax,dword ptr [result]
+fistp dword ptr [result]
+or dword ptr [result],eax
+fild dword ptr [result]
 #Comparing that expression to 0...
 fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether it was 0...
-jz ElseLabel158195
+jz ElseLabel111877
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#broj_pokretanja_MergeSorta := broj_pokretanja_MergeSorta + 1
+#broj_pokretanja_MergeSorta :=       broj_pokretanja_MergeSorta + 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1231,7 +1302,7 @@ mov edx, dword ptr [result]
 mov dword ptr [broj_pokretanja_MergeSorta],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#sredina_niza:=(gornja_granica+donja_granica)/2
+#sredina_niza               := (gornja_granica + donja_granica) / 2
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1256,7 +1327,7 @@ mov edx, dword ptr [result]
 mov dword ptr [sredina_niza],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#sredina_niza:=sredina_niza-mod(sredina_niza,1)
+#sredina_niza               :=   sredina_niza - mod(sredina_niza,1)
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1285,7 +1356,7 @@ mov edx, dword ptr [result]
 mov dword ptr [sredina_niza],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#vrh_stoga:=vrh_stoga+1 ;Zauzmi mjesta na stogu za rekurziju. Ne koristimo sistemski stog, kao sto koristi C++, nego koristimo vise globalnih polja kao stogove. Da koristimo sistemski stog, morali bismo znati pokrecemo li se na 32-bitnom Linuxu ili 64-bitnom Linuxu, jer oni nisu kompatibilni u tom pogledu.
+#vrh_stoga                  :=                        vrh_stoga + 1 ;Zauzmi mjesta na stogu za rekurziju. Ne koristimo sistemski stog, kao sto koristi C++, nego koristimo vise globalnih polja kao stogove. Da koristimo sistemski stog, morali bismo znati pokrecemo li se na 32-bitnom Linuxu ili 64-bitnom Linuxu, jer oni nisu kompatibilni u tom pogledu.
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1306,7 +1377,7 @@ mov edx, dword ptr [result]
 mov dword ptr [vrh_stoga],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#stog_s_donjim_granicama[vrh_stoga]:=donja_granica
+#stog_s_donjim_granicama[vrh_stoga]  := donja_granica
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1328,7 +1399,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [stog_s_donjim_granicama+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#stog_s_gornjim_granicama[vrh_stoga]:=gornja_granica
+#stog_s_gornjim_granicama[vrh_stoga] := gornja_granica
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1350,7 +1421,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [stog_s_gornjim_granicama+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#stog_sa_sredinama_niza[vrh_stoga]:=sredina_niza
+#stog_sa_sredinama_niza[vrh_stoga]   := sredina_niza
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1372,7 +1443,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [stog_sa_sredinama_niza+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#gornja_granica:=sredina_niza
+#gornja_granica                      := sredina_niza
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1393,7 +1464,7 @@ mov dword ptr [gornja_granica],edx
 call hybrid_sort
 #AsmEnd
 #Inline assembly ended.
-#donja_granica:=stog_s_donjim_granicama[vrh_stoga] ;Sad je rekurzija gotovo sigurno izmijenila sve globalne varijable koje nam trebaju ("donja_granica", "gornja_granica" i "sredina_niza"), ali zato imamo njihove stare vrijednosti na stogovima.
+#donja_granica  :=  stog_s_donjim_granicama[vrh_stoga] ;Sad je rekurzija gotovo sigurno izmijenila sve globalne varijable koje nam trebaju ("donja_granica", "gornja_granica" i "sredina_niza"), ali zato imamo njihove stare vrijednosti na stogovima.
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1413,7 +1484,7 @@ mov edx, dword ptr [result]
 mov dword ptr [donja_granica],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#gornja_granica:=stog_s_gornjim_granicama[vrh_stoga]
+#gornja_granica := stog_s_gornjim_granicama[vrh_stoga]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1433,7 +1504,7 @@ mov edx, dword ptr [result]
 mov dword ptr [gornja_granica],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#sredina_niza:=stog_sa_sredinama_niza[vrh_stoga]
+#sredina_niza   :=   stog_sa_sredinama_niza[vrh_stoga]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1453,7 +1524,7 @@ mov edx, dword ptr [result]
 mov dword ptr [sredina_niza],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#donja_granica:=sredina_niza
+#donja_granica  :=                        sredina_niza
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1474,7 +1545,7 @@ mov dword ptr [donja_granica],edx
 call hybrid_sort
 #AsmEnd
 #Inline assembly ended.
-#donja_granica:=stog_s_donjim_granicama[vrh_stoga]
+#donja_granica  :=  stog_s_donjim_granicama[vrh_stoga]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1494,7 +1565,7 @@ mov edx, dword ptr [result]
 mov dword ptr [donja_granica],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#gornja_granica:=stog_s_gornjim_granicama[vrh_stoga]
+#gornja_granica := stog_s_gornjim_granicama[vrh_stoga]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1514,7 +1585,7 @@ mov edx, dword ptr [result]
 mov dword ptr [gornja_granica],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#sredina_niza:=stog_sa_sredinama_niza[vrh_stoga]
+#sredina_niza   :=   stog_sa_sredinama_niza[vrh_stoga]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1536,7 +1607,7 @@ mov dword ptr [sredina_niza],edx
 .att_syntax
 #;Spajanje nizova originalni_niz[donja_granica..sredina_niza] i originalni_niz[sredina_niza..gornja_granica] u jedan niz...
 #The entire line is a comment, moving on...
-#i:=donja_granica
+#i                      := donja_granica
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1552,7 +1623,7 @@ mov edx, dword ptr [result]
 mov dword ptr [i],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#gdje_smo_u_prvom_nizu:=donja_granica
+#gdje_smo_u_prvom_nizu  := donja_granica
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1568,7 +1639,7 @@ mov edx, dword ptr [result]
 mov dword ptr [gdje_smo_u_prvom_nizu],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#gdje_smo_u_drugom_nizu:=sredina_niza
+#gdje_smo_u_drugom_nizu := sredina_niza
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1591,7 +1662,7 @@ mov dword ptr [gdje_smo_u_drugom_nizu],edx
 finit
 #Type of the directive: beginning of the while-loop
 #Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel473114:
+WhileLabel629686:
 #Evaluating the expression after the "While" keyword
 #Pushing "i" to the FPU stack...
 fld dword ptr [i]
@@ -1600,18 +1671,18 @@ fld dword ptr [gornja_granica]
 #Pushing "(< i gornja_granica)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel561654
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel829377
 fld1
-jmp endOfTheLessThanComparisonLabel512603
-secondOperandOfTheComparisonIsSmallerOrEqualLabel561654:
+jmp endOfTheLessThanComparisonLabel518318
+secondOperandOfTheComparisonIsSmallerOrEqualLabel829377:
 fldz
-endOfTheLessThanComparisonLabel512603:
+endOfTheLessThanComparisonLabel518318:
 #Comparing the expression to 0...
 fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether it is 0...
-je EndWhileLabel931174
+je EndWhileLabel108454
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #If (gdje_smo_u_prvom_nizu=sredina_niza | originalni_niz[gdje_smo_u_drugom_nizu]<originalni_niz[gdje_smo_u_prvom_nizu]) & gdje_smo_u_drugom_nizu<gornja_granica
@@ -1636,12 +1707,12 @@ fld dword ptr [originalni_niz+4*ebx]
 #Pushing "(< (originalni_niz gdje_smo_u_drugom_nizu) (originalni_niz gdje_smo_u_prvom_nizu))" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel863228
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel840329
 fld1
-jmp endOfTheLessThanComparisonLabel971626
-secondOperandOfTheComparisonIsSmallerOrEqualLabel863228:
+jmp endOfTheLessThanComparisonLabel968705
+secondOperandOfTheComparisonIsSmallerOrEqualLabel840329:
 fldz
-endOfTheLessThanComparisonLabel971626:
+endOfTheLessThanComparisonLabel968705:
 #Pushing "gdje_smo_u_prvom_nizu" to the FPU stack...
 fld dword ptr [gdje_smo_u_prvom_nizu]
 #Pushing "sredina_niza" to the FPU stack...
@@ -1649,12 +1720,12 @@ fld dword ptr [sredina_niza]
 #Pushing "(= gdje_smo_u_prvom_nizu sredina_niza)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jne operandsOfTheEqualityOperatorAreNotEqualLabel518097
+jne operandsOfTheEqualityOperatorAreNotEqualLabel793351
 fld1
-jmp endOfTheEqualityOperatorLabel710435
-operandsOfTheEqualityOperatorAreNotEqualLabel518097:
+jmp endOfTheEqualityOperatorLabel710771
+operandsOfTheEqualityOperatorAreNotEqualLabel793351:
 fldz
-endOfTheEqualityOperatorLabel710435:
+endOfTheEqualityOperatorLabel710771:
 #Pushing "(| (< (originalni_niz gdje_smo_u_drugom_nizu) (originalni_niz gdje_smo_u_prvom_nizu)) (= gdje_smo_u_prvom_nizu sredina_niza))" to the FPU stack...
 fxch
 fistp dword ptr [result]
@@ -1669,12 +1740,12 @@ fld dword ptr [gornja_granica]
 #Pushing "(< gdje_smo_u_drugom_nizu gornja_granica)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel999050
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel316986
 fld1
-jmp endOfTheLessThanComparisonLabel994778
-secondOperandOfTheComparisonIsSmallerOrEqualLabel999050:
+jmp endOfTheLessThanComparisonLabel218275
+secondOperandOfTheComparisonIsSmallerOrEqualLabel316986:
 fldz
-endOfTheLessThanComparisonLabel994778:
+endOfTheLessThanComparisonLabel218275:
 #Pushing "(& (| (< (originalni_niz gdje_smo_u_drugom_nizu) (originalni_niz gdje_smo_u_prvom_nizu)) (= gdje_smo_u_prvom_nizu sredina_niza)) (< gdje_smo_u_drugom_nizu gornja_granica))" to the FPU stack...
 fistp dword ptr [result]
 mov eax,dword ptr [result]
@@ -1686,10 +1757,10 @@ fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether the expression is 0...
-jz ElseLabel740225
+jz ElseLabel433925
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#pomocni_niz[i]:=originalni_niz[gdje_smo_u_drugom_nizu]
+#pomocni_niz[i]         := originalni_niz[gdje_smo_u_drugom_nizu]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1715,7 +1786,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [pomocni_niz+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#gdje_smo_u_drugom_nizu:=gdje_smo_u_drugom_nizu+1
+#gdje_smo_u_drugom_nizu :=             gdje_smo_u_drugom_nizu + 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1742,11 +1813,11 @@ mov dword ptr [gdje_smo_u_drugom_nizu],edx
 #Initializing the FPU stack...
 finit
 #Type of the directive: Else-statement.
-jmp EndIfLabel616433
-ElseLabel740225:
+jmp EndIfLabel304439
+ElseLabel433925:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#pomocni_niz[i]:=originalni_niz[gdje_smo_u_prvom_nizu]
+#pomocni_niz[i]        := originalni_niz[gdje_smo_u_prvom_nizu]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1772,7 +1843,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [pomocni_niz+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#gdje_smo_u_prvom_nizu:=gdje_smo_u_prvom_nizu+1
+#gdje_smo_u_prvom_nizu := gdje_smo_u_prvom_nizu + 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1799,10 +1870,10 @@ mov dword ptr [gdje_smo_u_prvom_nizu],edx
 #Initializing the FPU stack...
 finit
 #Type of the directive is: EndIf-statement.
-EndIfLabel616433:
+EndIfLabel304439:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#i:=i+1
+#i := i + 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1829,11 +1900,11 @@ mov dword ptr [i],edx
 #Initializing the FPU stack...
 finit
 #Type of the directive: end of the while-loop.
-jmp WhileLabel473114
-EndWhileLabel931174:
+jmp WhileLabel629686
+EndWhileLabel108454:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#i:=donja_granica
+#i := donja_granica
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1849,14 +1920,14 @@ mov edx, dword ptr [result]
 mov dword ptr [i],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#While i<gornja_granica
+#While i < gornja_granica
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
 finit
 #Type of the directive: beginning of the while-loop
 #Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel384782:
+WhileLabel928896:
 #Evaluating the expression after the "While" keyword
 #Pushing "i" to the FPU stack...
 fld dword ptr [i]
@@ -1865,21 +1936,21 @@ fld dword ptr [gornja_granica]
 #Pushing "(< i gornja_granica)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel244623
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel577727
 fld1
-jmp endOfTheLessThanComparisonLabel112767
-secondOperandOfTheComparisonIsSmallerOrEqualLabel244623:
+jmp endOfTheLessThanComparisonLabel344775
+secondOperandOfTheComparisonIsSmallerOrEqualLabel577727:
 fldz
-endOfTheLessThanComparisonLabel112767:
+endOfTheLessThanComparisonLabel344775:
 #Comparing the expression to 0...
 fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether it is 0...
-je EndWhileLabel529747
+je EndWhileLabel519603
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#originalni_niz[i]:=pomocni_niz[i]
+#originalni_niz[i] := pomocni_niz[i]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1905,7 +1976,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [originalni_niz+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#i:=i+1
+#i                 :=          i + 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -1932,8 +2003,8 @@ mov dword ptr [i],edx
 #Initializing the FPU stack...
 finit
 #Type of the directive: end of the while-loop.
-jmp WhileLabel384782
-EndWhileLabel529747:
+jmp WhileLabel928896
+EndWhileLabel519603:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #vrh_stoga:=vrh_stoga-1 ;Oslobodi mjesto na stogovima.
@@ -1968,8 +2039,8 @@ ret
 #Initializing the FPU stack...
 finit
 #Type of the directive: Else-statement.
-jmp EndIfLabel234383
-ElseLabel158195:
+jmp EndIfLabel298595
+ElseLabel111877:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #broj_pokretanja_QuickSorta := broj_pokretanja_QuickSorta + 1
@@ -2020,7 +2091,7 @@ mov edx, dword ptr [result]
 mov dword ptr [pivot],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#i := donja_granica - 1
+#i     :=                  donja_granica - 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2041,7 +2112,7 @@ mov edx, dword ptr [result]
 mov dword ptr [i],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#j := donja_granica
+#j     :=                      donja_granica
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2064,7 +2135,7 @@ mov dword ptr [j],edx
 finit
 #Type of the directive: beginning of the while-loop
 #Marking where the evaluation of the expression begins (because it needs to be repeated once we come to the end of the loop).
-WhileLabel990848:
+WhileLabel888674:
 #Evaluating the expression after the "While" keyword
 #Pushing "gornja_granica" to the FPU stack...
 fld dword ptr [gornja_granica]
@@ -2079,18 +2150,18 @@ fld dword ptr [j]
 fxch
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel675272
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel298158
 fld1
-jmp endOfTheLessThanComparisonLabel746036
-secondOperandOfTheComparisonIsSmallerOrEqualLabel675272:
+jmp endOfTheLessThanComparisonLabel575266
+secondOperandOfTheComparisonIsSmallerOrEqualLabel298158:
 fldz
-endOfTheLessThanComparisonLabel746036:
+endOfTheLessThanComparisonLabel575266:
 #Comparing the expression to 0...
 fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether it is 0...
-je EndWhileLabel611367
+je EndWhileLabel668495
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #If originalni_niz[j] < pivot
@@ -2111,21 +2182,21 @@ fld dword ptr [pivot]
 #Pushing "(< (originalni_niz j) pivot)" to the FPU stack...
 fcomip
 fstp dword ptr [result]
-jna secondOperandOfTheComparisonIsSmallerOrEqualLabel657472
+jna secondOperandOfTheComparisonIsSmallerOrEqualLabel2691
 fld1
-jmp endOfTheLessThanComparisonLabel130696
-secondOperandOfTheComparisonIsSmallerOrEqualLabel657472:
+jmp endOfTheLessThanComparisonLabel700057
+secondOperandOfTheComparisonIsSmallerOrEqualLabel2691:
 fldz
-endOfTheLessThanComparisonLabel130696:
+endOfTheLessThanComparisonLabel700057:
 #Comparing the just-calculated expression with 0...
 fistp dword ptr [result]
 mov eax, dword ptr [result]
 test eax,eax
 #Branching based on whether the expression is 0...
-jz ElseLabel637071
+jz ElseLabel493230
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#i := i + 1
+#i                             :=                         i + 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2146,7 +2217,7 @@ mov edx, dword ptr [result]
 mov dword ptr [i],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#pomocna_varijabla_za_zamijenu := originalni_niz[i]
+#pomocna_varijabla_za_zamijenu :=             originalni_niz[i]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2166,7 +2237,7 @@ mov edx, dword ptr [result]
 mov dword ptr [pomocna_varijabla_za_zamijenu],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#originalni_niz[i] := originalni_niz [j]
+#originalni_niz[i]             :=            originalni_niz [j]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2192,7 +2263,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [originalni_niz+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#originalni_niz[j] := pomocna_varijabla_za_zamijenu
+#originalni_niz[j]             := pomocna_varijabla_za_zamijenu
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2220,11 +2291,11 @@ mov dword ptr [originalni_niz+4*ebx],edx
 #Initializing the FPU stack...
 finit
 #Type of the directive is: EndIf-statement.
-ElseLabel637071:
-EndIfLabel14996:
+ElseLabel493230:
+EndIfLabel637737:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#j:=j+1
+#j := j + 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2251,11 +2322,11 @@ mov dword ptr [j],edx
 #Initializing the FPU stack...
 finit
 #Type of the directive: end of the while-loop.
-jmp WhileLabel990848
-EndWhileLabel611367:
+jmp WhileLabel888674
+EndWhileLabel668495:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#pomocna_varijabla_za_zamijenu := originalni_niz[i + 1]
+#pomocna_varijabla_za_zamijenu       :=              originalni_niz[i + 1]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2280,7 +2351,7 @@ mov edx, dword ptr [result]
 mov dword ptr [pomocna_varijabla_za_zamijenu],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#originalni_niz[i + 1] := originalni_niz[gornja_granica - 1]
+#originalni_niz[i + 1]               := originalni_niz[gornja_granica - 1]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2316,7 +2387,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [originalni_niz+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#originalni_niz[gornja_granica - 1] := pomocna_varijabla_za_zamijenu
+#originalni_niz[gornja_granica - 1]  :=      pomocna_varijabla_za_zamijenu
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2343,7 +2414,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [originalni_niz+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#gdje_je_pivot := i + 1
+#gdje_je_pivot                       :=                              i + 1
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2364,7 +2435,7 @@ mov edx, dword ptr [result]
 mov dword ptr [gdje_je_pivot],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#vrh_stoga := vrh_stoga + 1 ;Zauzmi mjesta na stogu za rekurziju (ne koristimo sistemski stog, kao sto koristi C++, nego koristimo vise globalnih polja kao stogove).
+#vrh_stoga                           :=                      vrh_stoga + 1 ;Zauzmi mjesta na stogu za rekurziju (ne koristimo sistemski stog, kao sto koristi C++, nego koristimo vise globalnih polja kao stogove).
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2385,7 +2456,7 @@ mov edx, dword ptr [result]
 mov dword ptr [vrh_stoga],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#stog_s_donjim_granicama[vrh_stoga] := donja_granica
+#stog_s_donjim_granicama[vrh_stoga]  :=                      donja_granica
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2407,7 +2478,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [stog_s_donjim_granicama+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#stog_s_gornjim_granicama[vrh_stoga] := gornja_granica
+#stog_s_gornjim_granicama[vrh_stoga] :=                     gornja_granica
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2429,7 +2500,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [stog_s_gornjim_granicama+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#stog_sa_sredinama_niza[vrh_stoga] := gdje_je_pivot
+#stog_sa_sredinama_niza[vrh_stoga]   :=                      gdje_je_pivot
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2451,7 +2522,7 @@ mov ebx, dword ptr [result]
 mov dword ptr [stog_sa_sredinama_niza+4*ebx],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#gornja_granica := gdje_je_pivot
+#gornja_granica                      :=                      gdje_je_pivot
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2472,7 +2543,7 @@ mov dword ptr [gornja_granica],edx
 call hybrid_sort
 #AsmEnd
 #Inline assembly ended.
-#donja_granica := stog_s_donjim_granicama[vrh_stoga]
+#donja_granica  :=  stog_s_donjim_granicama[vrh_stoga]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2512,7 +2583,7 @@ mov edx, dword ptr [result]
 mov dword ptr [gornja_granica],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#gdje_je_pivot := stog_sa_sredinama_niza[vrh_stoga]
+#gdje_je_pivot  :=   stog_sa_sredinama_niza[vrh_stoga]
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2532,7 +2603,7 @@ mov edx, dword ptr [result]
 mov dword ptr [gdje_je_pivot],edx
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
-#donja_granica := gdje_je_pivot
+#donja_granica  :=                       gdje_je_pivot
 #We don't know which mode the assembler is in right now, so let's switch it to the intel_syntax mode.
 .intel_syntax noprefix
 #Initializing the FPU stack...
@@ -2585,7 +2656,7 @@ ret
 #Initializing the FPU stack...
 finit
 #Type of the directive is: EndIf-statement.
-EndIfLabel234383:
+EndIfLabel298595:
 #We don't know what comes next, whichever program will control the assembler next will likely expect it to be in the att_syntax mode.
 .att_syntax
 #AsmStart ;Ovdje tok programa ne smije doci. Ako dode, pozovi debugger.
