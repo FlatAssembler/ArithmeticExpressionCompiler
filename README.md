@@ -15,3 +15,7 @@ I've made a YouTube video about how you can set up a modern computer to program 
 "NppSyntaxHighlightingScript.xml" is a script for Notepad++ to syntax-highlight that language.
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
+## Update
+If you find this piece of work interesting, you will probably also like my ArithmeticExpressionCompiler for WebAssembly, which is significantly more professionally made:
+https://github.com/FlatAssembler/AECforWebAssembly
