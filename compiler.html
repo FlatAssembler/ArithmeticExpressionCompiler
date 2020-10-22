@@ -144,7 +144,7 @@
       document.createElement("mark");
     </script>
   </head>
-  <body style="background: #007777;">
+  <body style="background: #007777">
     <noscript>
       <span id="noScriptBackGround">
         <span id="noScriptText">
@@ -166,17 +166,17 @@
     <h1 id="titleBar">
       Arithmetic Expression Compiler<span
         id="AJAXmessage"
-        style="display: none;"
+        style="display: none"
       >
         - connecting to the server...</span
       >
     </h1>
-    <div id="smanji" class="gornjaDesnaTipka" style="font-size: 14px;">_</div>
+    <div id="smanji" class="gornjaDesnaTipka" style="font-size: 14px">_</div>
     <div id="povecaj" class="gornjaDesnaTipka">&#x25a2;</div>
     <div
       id="zatvori"
       class="gornjaDesnaTipka"
-      style="font-family: Arial;"
+      style="font-family: Arial"
       onclick="history.back()"
     >
       x
@@ -196,16 +196,16 @@
       <mark id="exit">Exit</mark>
     </nav>
     <div id="content">
-      <button id="showMenu" style="display: none;">Show menu</button>
+      <button id="showMenu" style="display: none">Show menu</button>
       Enter an arithmetic expression here:<br />
       <input
         type="text"
         id="input"
         value="((abs(-(pow(sin(alpha),2)+pow(cos(alpha),2))-(-1))<1/1000)&amp;((2+2=5)|(3+1>3.5))&amp;(not(abs(arcsin(45)-mod(15/2,1))<1/1000)))+(2+2>5?3+3<7?1:-2:2+2-4<1?0:2+2<4?-1:-3)+('A'+2='C'?0:-1) ;This should always output '1' (However, because the 'pow' in i486 Assembly doesn't support negative bases, this works only for 0<alpha<90.)."
-        style="width: 100%;"
+        style="width: 100%"
       /><br />
-      <button onclick="compile()" style="float: left;">Compile!</button>
-      <button onclick="interpret()" style="float: right;">Interpret</button
+      <button onclick="compile()" style="float: left">Compile!</button>
+      <button onclick="interpret()" style="float: right">Interpret</button
       ><br /><br />
       Choose the Assembly syntax:
       <input type="radio" id="GAS" name="syntax" value="gas" />
@@ -228,19 +228,19 @@
       Tokenized:<br />
       <div
         id="tokenized"
-        style="font-family: monospace; font-size: 1.5em;"
+        style="font-family: monospace; font-size: 1.5em"
       ></div>
       <br />
       Parsed (AST converted to an
       <a href="https://en.wikipedia.org/wiki/S-expression">S-expression</a
       >):<br />
-      <div id="LISP" style="font-family: monospace; font-size: 1.5em;"></div>
+      <div id="LISP" style="font-family: monospace; font-size: 1.5em"></div>
       <br />
       Compiled (to x86 assembly, Intel Syntax):<br />
       <div id="assembly"></div>
       <br />
       Interpreter output:
-      <span id="interpreter" style="font-family: 'Courier New';">null</span
+      <span id="interpreter" style="font-family: 'Courier New'">null</span
       ><br /><br />
       WARNING: The tokenizer, the parser and the compiler appear to generate
       correct results, but they haven't been rigorously tested. Also, no
@@ -268,12 +268,15 @@
       project <a href="test.ASM">here</a> (comments are in Croatian). If you
       want to have a command-line app with the same functionality and some more
       (<i
-        >if-else, while-loops, arrays, the support for the assembly language
-        compilers that don't support automatic floating-point-to-<a
-          href="https://en.wikipedia.org/wiki/Single-precision_floating-point_format"
-          >IEEE754</a
-        >
-        conversion...</i
+        >if-else, while-loops, arrays,
+        <del
+          >the support for the assembly language compilers that don't support
+          automatic floating-point-to-<a
+            href="https://en.wikipedia.org/wiki/Single-precision_floating-point_format"
+            >IEEE754</a
+          >
+          conversion</del
+        >...</i
       >), you can download the source code of the version of this app runnable
       in <a href="https://duktape.org/">Duktape</a> (a lightweight and
       easy-to-use alternative to NodeJS, it's written in C99 and basically
@@ -290,7 +293,7 @@
         >(UPDATE: If you just need the automatic decimal-number-to-IEEE754
         conversion, you don't actually need to download it, you only need to run
         this web-page in a modern browser (that supports
-        <span style="font-family: Monospace; font-style: normal;"
+        <span style="font-family: Monospace; font-style: normal"
           >ArrayBuffer</span
         >). Also, now there is a version that can be run in
         <a href="https://nodejs.org/en/">NodeJS</a>, it can be downloaded
@@ -354,8 +357,8 @@
         >(I had to do that in my programming language when writing
         <a href="analogClock.html">Analog Clock for WebAssembly</a>, because
         WebAssembly doesn't provide
-        <font face="monospace" style="normal">fsin</font> and similar
-        instructions.)</i
+        <font face="monospace" style="font-style: normal">fsin</font> and
+        similar instructions.)</i
       >
       <br />
       <br />
@@ -370,6 +373,9 @@
           href="https://github.com/FlatAssembler/ArithmeticExpressionCompiler/raw/master/seminar/PojednostavljeniSeminar.pdf"
           >here</a
         >.</i
+      >) (<i
+        >UPDATE: About a year later, I've written an
+        <a href="compiler_theory.zip">English-language version</a>.</i
       >)<br /><br />
       UPDATE on 18/10/2018: If you have a modern browser, you can see the AST
       diagram by clicking
@@ -379,7 +385,7 @@
       (that can't be done by hand) ASTs are useless (the maximal depth of a
       useful graphical AST is probably around 5).<br />
       <div id="diagramSpan">
-        <svg id="diagram" style="overflow: visible;"></svg>
+        <svg id="diagram" style="overflow: visible"></svg>
       </div>
       <br />
       UPDATE on 03/08/2020: I've started to develop a version of this program
@@ -397,13 +403,16 @@
         >permutations algorithm</a
       >
       in it.<br /><br />
+      UPDATE on 30/08/2020: I've written an informal
+      <a href="AEC_specification.html">specification</a>
+      for my programming language.<br /><br />
     </div>
     <div id="ikona">
       <img
         id="avatar"
         src="https://www.theflatearthsociety.org/forum/avr/avatar_1461509_1483220545.png"
         alt="AEC"
-        style="width: 75px; height: 60px;"
+        style="width: 75px; height: 60px"
         draggable="false"
       /><br />
       <span id="opis">Arithmetic<br />Expression<br />Compiler</span>
