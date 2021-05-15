@@ -236,7 +236,10 @@
       >):<br />
       <div id="LISP" style="font-family: monospace; font-size: 1.5em"></div>
       <br />
-      Compiled (to x86 assembly, Intel Syntax):<br />
+      Compiled (to x86 assembly, apparently
+      <a href="https://www.vogons.org/viewtopic.php?f=31&t=74881"
+        >runnable only on Pentium Pro and newer processors</a
+      >, Intel Syntax):<br />
       <div id="assembly"></div>
       <br />
       Interpreter output:
@@ -245,7 +248,9 @@
       WARNING: The tokenizer, the parser and the compiler appear to generate
       correct results, but they haven't been rigorously tested. Also, no
       optimization is being performed (aside from perhaps the code being the one
-      it's easiest to compile into).
+      it's easiest to compile into). If you want a web-app that uses well-tested
+      compilation algorithms and optimizes the assembly code it outputs, try
+      <a href="https://godbolt.org/">GodBolt</a>.
       <del
         >To test the code the compiler generates, you can download the
         fully-prepared project file (for your arithmetic expression) that can be
@@ -347,10 +352,11 @@
       compile the files you download here (using FlatAssembler or GNU
       Assembler), you will be running arbitrary Assembly language code on your
       computer, and be careful with it (for maximal security, I'd recommend
-      using some virtual machine software).<br />By the way, if you ever find
-      yourself having to use a programming language without a built-in math
-      library, <a href="math.rs">here</a> is an example of how to make a simple
-      math library in less than 150 lines of code. You can also see a
+      using some virtual machine software, but notice that DosBox does not
+      emulate Pentium Pro).<br />By the way, if you ever find yourself having to
+      use a programming language without a built-in math library,
+      <a href="math.rs">here</a> is an example of how to make a simple math
+      library in less than 150 lines of code. You can also see a
       <a href="math.rs.png">diagram</a> showing how accurate the functions there
       are for various inputs.
       <i
@@ -382,8 +388,9 @@
         <a href="https://www.videolan.org/vlc/">VLC</a> or something like
         that.</i
       >)<br /><br />
-      UPDATE on 18/10/2018: If you have a modern browser, you can see the AST
-      diagram by clicking
+      UPDATE on 18/10/2018: If you have a modern browser, you can see the
+      <abbr title="Abstract Syntax Tree">AST</abbr>
+      diagram (tree diagram, also known as syntax tree) by clicking
       <a href="javascript:void(0)" onclick="showAST()">here</a> (it requires a
       relatively advanced SVG support, seen in, for example, Internet Explorer
       11). If you don't have, don't worry, graphical representations of complex
@@ -394,14 +401,23 @@
       </div>
       <br />
       UPDATE on 03/08/2020: I've started to develop a version of this program
-      which doesn't target x86 processors, but WebAssembly (the JavaScript
-      bytecode, which Mozilla has been pushing to get standardized, so that
-      people can run programming languages better than JavaScript in a browser).
-      Right now, it's in the very early stages of development, but you can see a
-      <a href="arithmeticOperatorsTest.html">program</a> I've made today in it.
-      I have been rewriting the compiler from scratch in C++, because most
-      experienced programmers consider it to be a better language than
-      JavaScript.<br /><br />
+      which doesn't target x86 processors, but
+      <a href="https://webassembly.org/">WebAssembly</a> (the JavaScript
+      bytecode, which Mozilla has been pushing to get standardized since 2015,
+      so that people can run programming languages better than JavaScript in a
+      browser). Right now, it's in the very early stages of development, but you
+      can see a <a href="arithmeticOperatorsTest.html">program</a> I've made
+      today in it. My new compiler is only compatible with very modern browsers,
+      which not only support WebAssembly, but also support
+      <code>WebAssembly.Global</code>. Those are Firefox 62, released
+      05/09/2018, and Chrome 69, released 04/09/2018. Thus, the code it produces
+      cannot be run in any browser compatible with Windows XP. I have been
+      rewriting
+      <a href="https://github.com/FlatAssembler/AECforWebAssembly"
+        >the compiler</a
+      >
+      from scratch in C++, because most experienced programmers consider it to
+      be a better language than JavaScript.<br /><br />
       UPDATE on 07/08/2020: Perhaps a lot better proof of the concept that my
       programming language can be used on the web is my implementation of the
       <a href="https://flatassembler.github.io/permutationsTest.html"
@@ -413,7 +429,11 @@
       for my programming language.<br /><br />
       UPDATE on 01/11/2020: As a part of an university project, I've began to
       write a <a href="PicoBlaze/PicoBlaze.html">PicoBlaze simulator</a> in
-      JavaScript (which can be run in a browser).<br /><br />
+      JavaScript (which can be run in a browser). So, if you want to try non-x86
+      assembly language programming to better understand how computers work,
+      there might be no better way to do that than to try that app. It runs in
+      Firefox 52 (the last version of Firefox to run on Windows XP) and newer
+      browsers.<br /><br />
     </div>
     <div id="ikona">
       <img
@@ -630,15 +650,16 @@
         ret.operands = [];
         ret.text = tmp;
         ret.depth = 0;
-        ret.DFS = function () // Pokusat cu izbjeci stack overflow tako da se prvo kompajliraju "dublji" izrazi.
-        {
-          if (this.depth) return this.depth;
-          if (!this.operands.length) this.depth = 1;
-          else
-            for (var i = 0; i < this.operands.length; i++)
-              this.depth = Math.max(this.depth, this.operands[i].DFS() + 1);
-          return this.depth;
-        };
+        ret.DFS =
+          function () // Pokusat cu izbjeci stack overflow tako da se prvo kompajliraju "dublji" izrazi.
+          {
+            if (this.depth) return this.depth;
+            if (!this.operands.length) this.depth = 1;
+            else
+              for (var i = 0; i < this.operands.length; i++)
+                this.depth = Math.max(this.depth, this.operands[i].DFS() + 1);
+            return this.depth;
+          };
         ret.toLisp = function () {
           this.name = this.text;
           if (
@@ -1875,16 +1896,16 @@
         if (x > maxX) maxX = x;
         if (x < minX) minX = x;
         if (y > maxY) maxY = y;
-        var svgNS = "http://www.w3.org/2000/svg";
+        var svgNS = document.getElementById("diagram").namespaceURI;
         var pravokutnik = document.createElementNS(svgNS, "rect");
         pravokutnik.setAttribute("x", x);
         pravokutnik.setAttribute("y", y);
         pravokutnik.setAttribute("width", 150);
         pravokutnik.setAttribute("height", 50);
-        pravokutnik.style.fill = "#FFAAAA";
+        pravokutnik.style.fill = "#FFCCCC";
         pravokutnik.setAttribute("id", "node" + id);
-        if (objekt.DFS() == 1) pravokutnik.style.fill = "#AAFFAA";
-        if (objekt.operands.length == 1) pravokutnik.style.fill = "#AAAAFF";
+        if (objekt.DFS() == 1) pravokutnik.style.fill = "#CCFFCC";
+        if (objekt.operands.length == 1) pravokutnik.style.fill = "#CCCCFF";
         document.getElementById("diagram").appendChild(pravokutnik);
         var tekst = document.createElementNS(svgNS, "text");
         tekst.appendChild(document.createTextNode(objekt.text));
@@ -2137,174 +2158,177 @@
         }
       }
       if (typeof window != "undefined")
-        window.onresize = function () //Ako se JavaScript pokrene u pregledniku, a ne, recimo, u Nashornu ili Rhinu.
-        {
-          var ie6 = false; //Internet Explorer 6 i drugi slicni preglednici (s CSS Box-Model-Bugom).
-          if (
-            (document.getElementById("zatvori").offsetWidth < 18 ||
-              document.getElementById("zatvori").style.width == "21px") &&
-            document.getElementById("zatvori").style.display != "none"
-          )
-            ie6 = true;
-          try {
-            document.getElementById("content").style.width =
-              document.body.clientWidth - 30 + "px"; //Ovo je zapravo tocno po standardu jer nije specificiran "doctype", pa je "document.body" ovdje isto sto i "viewport" (kako je bilo i u Internet Exploreru 6).
-            document.getElementById("content").style.height =
-              document.body.clientHeight - 49 + "px";
-            document.getElementById("titleBar").style.width =
-              document.body.clientWidth - 30 - 3 * 20 + "px";
-            document.getElementById("smanji").style.left =
-              document.body.clientWidth -
-              30 -
-              3 * 20 +
-              1 * 21 -
-              ie6 * 15 +
-              "px";
-            document.getElementById("povecaj").style.left =
-              document.body.clientWidth -
-              30 -
-              3 * 20 +
-              2 * 21 -
-              ie6 * 15 +
-              "px";
-            document.getElementById("zatvori").style.left =
-              document.body.clientWidth -
-              30 -
-              3 * 20 +
-              3 * 21 -
-              ie6 * 15 +
-              "px";
-          } catch (
-            e //Internet Explorer 7 i 8... imate bolju ideju sto da se radi u njima?
-          ) {
-            window.onresize = function () {};
-            alert(
-              "Driver warning: You appear to be using a browser in which the JavaScript directive 'document.body.clientWidth' isn't correctly implemented." +
-                "The layout will probably break if you resize the window.\n" +
-                "If possible, please use a browser that correctly implements that directive, such as Internet Explorer 6, Internet Explorer 9 or Internet Explorer 11 (but not Internet Explorer 7, Internet Explorer 8 or Internet Explorer 10).\n" +
-                "Or, better yet, don't use Internet Explorer. " +
-                "Microsoft doesn't include Internet Explorer in Windows because it wants you to use it as a regular browser. It's there because:\n" +
-                "1. When you have just installed a new operating system, you need to use it to download a proper browser from the Internet.\n" +
-                "2. If some incompetent programmer tries to enable his C or C++ program to display web-pages by linking it against the DLL of Trident (the legacy web-engine used in Internet Explorer), that his program doesn't crash immediately.\n" +
-                "3. If you are forced to use a computer with 512MB of RAM and 1Ghz Celeron processor running Windows 7 to do something on-line.\n" +
-                "4. If some program uses the Active-X controls (a legacy technology used in Internet Explorer to simulate some features of modern JavaScript) to install itself.\n" +
-                "5. Some ethernet programs that haven't been updated for decades, used in some government agencies, might work slightly better in Internet Explorer than in proper browsers if run on modern computers.\n" +
-                "So, Internet Explorer has its uses, but exploring the Internet isn't one of them."
-            );
-            document.getElementById("content").style.width = "100%";
-            document.getElementById("content").style.height = "100%";
-            document.getElementById("titleBar").style.width = "100%";
-            document.getElementById("smanji").style.right = 8 + 2 * 21 + "px";
-            document.getElementById("povecaj").style.right = 8 + 1 * 21 + "px";
-            document.getElementById("zatvori").style.right = 8 + 0 * 21 + "px";
-          }
-          if (ie6) {
-            //CSS Box-Model-Bug u Internet Exploreru 6 (da suzava elemente s prikazanim rubovima).
-            document.getElementById("smanji").style.width = "21px";
-            document.getElementById("povecaj").style.width = "21px";
-            document.getElementById("zatvori").style.width = "21px";
-          }
-          var niz = document.getElementsByTagName("mark");
-          document.getElementsByTagName("nav")[0].style.height =
-            niz.length * 30 + "px";
-          document.getElementsByTagName("nav")[0].style.top = "27px";
-          document.getElementsByTagName("nav")[0].style.left = "13px";
-          for (var i = 0; i < niz.length; i++) {
-            niz[i].style.display = "block";
-            niz[i].style.position = "absolute";
-            niz[i].style.top = 30 * i + "px";
-            niz[i].style.left = "0px";
-            niz[i].style.zIndex = 101;
-            niz[i].style.width = "250px";
-            niz[i].style.background = "#EEEEEE";
-            niz[i].style.borderStyle = "none none solid none";
-            niz[i].style.borderWidth = "1px";
-            niz[i].style.padding = "5px";
-            niz[i].style.fontFamily = "Arial";
-            niz[i].onmouseout = function () {
-              this.style.background = "#EEEEEE";
-              this.style.color = "black";
+        window.onresize =
+          function () //Ako se JavaScript pokrene u pregledniku, a ne, recimo, u Nashornu ili Rhinu.
+          {
+            var ie6 = false; //Internet Explorer 6 i drugi slicni preglednici (s CSS Box-Model-Bugom).
+            if (
+              (document.getElementById("zatvori").offsetWidth < 18 ||
+                document.getElementById("zatvori").style.width == "21px") &&
+              document.getElementById("zatvori").style.display != "none"
+            )
+              ie6 = true;
+            try {
+              document.getElementById("content").style.width =
+                document.body.clientWidth - 30 + "px"; //Ovo je zapravo tocno po standardu jer nije specificiran "doctype", pa je "document.body" ovdje isto sto i "viewport" (kako je bilo i u Internet Exploreru 6).
+              document.getElementById("content").style.height =
+                document.body.clientHeight - 49 + "px";
+              document.getElementById("titleBar").style.width =
+                document.body.clientWidth - 30 - 3 * 20 + "px";
+              document.getElementById("smanji").style.left =
+                document.body.clientWidth -
+                30 -
+                3 * 20 +
+                1 * 21 -
+                ie6 * 15 +
+                "px";
+              document.getElementById("povecaj").style.left =
+                document.body.clientWidth -
+                30 -
+                3 * 20 +
+                2 * 21 -
+                ie6 * 15 +
+                "px";
+              document.getElementById("zatvori").style.left =
+                document.body.clientWidth -
+                30 -
+                3 * 20 +
+                3 * 21 -
+                ie6 * 15 +
+                "px";
+            } catch (
+              e //Internet Explorer 7 i 8... imate bolju ideju sto da se radi u njima?
+            ) {
+              window.onresize = function () {};
+              alert(
+                "Driver warning: You appear to be using a browser in which the JavaScript directive 'document.body.clientWidth' isn't correctly implemented." +
+                  "The layout will probably break if you resize the window.\n" +
+                  "If possible, please use a browser that correctly implements that directive, such as Internet Explorer 6, Internet Explorer 9 or Internet Explorer 11 (but not Internet Explorer 7, Internet Explorer 8 or Internet Explorer 10).\n" +
+                  "Or, better yet, don't use Internet Explorer. " +
+                  "Microsoft doesn't include Internet Explorer in Windows because it wants you to use it as a regular browser. It's there because:\n" +
+                  "1. When you have just installed a new operating system, you need to use it to download a proper browser from the Internet.\n" +
+                  "2. If some incompetent programmer tries to enable his C or C++ program to display web-pages by linking it against the DLL of Trident (the legacy web-engine used in Internet Explorer), that his program doesn't crash immediately.\n" +
+                  "3. If you are forced to use a computer with 512MB of RAM and 1Ghz Celeron processor running Windows 7 to do something on-line.\n" +
+                  "4. If some program uses the Active-X controls (a legacy technology used in Internet Explorer to simulate some features of modern JavaScript) to install itself.\n" +
+                  "5. Some ethernet programs that haven't been updated for decades, used in some government agencies, might work slightly better in Internet Explorer than in proper browsers if run on modern computers.\n" +
+                  "So, Internet Explorer has its uses, but exploring the Internet isn't one of them."
+              );
+              document.getElementById("content").style.width = "100%";
+              document.getElementById("content").style.height = "100%";
+              document.getElementById("titleBar").style.width = "100%";
+              document.getElementById("smanji").style.right = 8 + 2 * 21 + "px";
+              document.getElementById("povecaj").style.right =
+                8 + 1 * 21 + "px";
+              document.getElementById("zatvori").style.right =
+                8 + 0 * 21 + "px";
+            }
+            if (ie6) {
+              //CSS Box-Model-Bug u Internet Exploreru 6 (da suzava elemente s prikazanim rubovima).
+              document.getElementById("smanji").style.width = "21px";
+              document.getElementById("povecaj").style.width = "21px";
+              document.getElementById("zatvori").style.width = "21px";
+            }
+            var niz = document.getElementsByTagName("mark");
+            document.getElementsByTagName("nav")[0].style.height =
+              niz.length * 30 + "px";
+            document.getElementsByTagName("nav")[0].style.top = "27px";
+            document.getElementsByTagName("nav")[0].style.left = "13px";
+            for (var i = 0; i < niz.length; i++) {
+              niz[i].style.display = "block";
+              niz[i].style.position = "absolute";
+              niz[i].style.top = 30 * i + "px";
+              niz[i].style.left = "0px";
+              niz[i].style.zIndex = 101;
+              niz[i].style.width = "250px";
+              niz[i].style.background = "#EEEEEE";
+              niz[i].style.borderStyle = "none none solid none";
+              niz[i].style.borderWidth = "1px";
+              niz[i].style.padding = "5px";
+              niz[i].style.fontFamily = "Arial";
+              niz[i].onmouseout = function () {
+                this.style.background = "#EEEEEE";
+                this.style.color = "black";
+              };
+              niz[i].onmouseenter = function () {
+                this.style.background = "#0000AA";
+                this.style.color = "white";
+              };
+              if (!window.XMLHttpRequest) niz[i].style.height = "30px";
+            }
+            document.getElementById("about").onclick = function () {
+              alert(
+                "This web-app was made by Teo Samarzija. It is not connected to Tomasz Grysztar, the creator of FlatAssembler, in any way.\nIt is open-source. You can see most of its source just by clicking 'View Source' in your browser. Its back-end is so simple that probably anyone who knows basic PHP could make it, so you don't need source for that (of course, the same is not true for the PHP interpreter, the Apache web server and the 000webhost hosting service that power this website).\nIts purpose is to popularize Assembly language programming, and also to impress his computer science professor, and perhaps his future employer."
+              );
             };
-            niz[i].onmouseenter = function () {
-              this.style.background = "#0000AA";
-              this.style.color = "white";
+            document.getElementById("download").onclick = function () {
+              window.open("https://www.flatassembler.net/download.php");
             };
-            if (!window.XMLHttpRequest) niz[i].style.height = "30px";
-          }
-          document.getElementById("about").onclick = function () {
-            alert(
-              "This web-app was made by Teo Samarzija. It is not connected to Tomasz Grysztar, the creator of FlatAssembler, in any way.\nIt is open-source. You can see most of its source just by clicking 'View Source' in your browser. Its back-end is so simple that probably anyone who knows basic PHP could make it, so you don't need source for that (of course, the same is not true for the PHP interpreter, the Apache web server and the 000webhost hosting service that power this website).\nIts purpose is to popularize Assembly language programming, and also to impress his computer science professor, and perhaps his future employer."
-            );
-          };
-          document.getElementById("download").onclick = function () {
-            window.open("https://www.flatassembler.net/download.php");
-          };
-          document.getElementById("exit").onclick = function () {
-            history.back();
-          };
-          document.getElementById("mailMe").onclick = function () {
-            sendMail("Teo");
-          };
-          document.getElementById("mailTomasz").onclick = function () {
-            sendMail("Tomasz");
-          };
-          document.getElementById("backEndReset").onclick = function () {
-            resetBackEnd();
-          };
-          if (
-            document
-              .getElementById("zatvori")
-              .style.left.substring(
-                0,
-                document.getElementById("zatvori").style.left.length - 2
-              ) -
-              document
-                .getElementById("content")
-                .style.width.substring(
-                  0,
-                  document.getElementById("content").style.width.length - 2
-                ) >
-            10
-          )
-            //Firefox, stvarno brzo izvodis JavaScript, ali to ovdje pravi probleme.
-            document.getElementById("content").style.width =
+            document.getElementById("exit").onclick = function () {
+              history.back();
+            };
+            document.getElementById("mailMe").onclick = function () {
+              sendMail("Teo");
+            };
+            document.getElementById("mailTomasz").onclick = function () {
+              sendMail("Tomasz");
+            };
+            document.getElementById("backEndReset").onclick = function () {
+              resetBackEnd();
+            };
+            if (
               document
                 .getElementById("zatvori")
                 .style.left.substring(
                   0,
                   document.getElementById("zatvori").style.left.length - 2
                 ) -
-              3 +
-              "px";
-          var shareIt = document.getElementById("shareIt");
-          shareIt.style.position = "absolute";
-          shareIt.style.fontFamily = "Arial";
-          shareIt.style.color = "white";
-          shareIt.style.paddingLeft = shareIt.style.paddingRight = "8px";
-          shareIt.style.left =
-            document.body.clientWidth / 2 - shareIt.offsetWidth / 2; //Mislio sam da ni ovo nece raditi u Internet Exploreru 8, no izgleda da ipak radi.
-          shareIt.style.top =
-            document.body.clientHeight / 2 - shareIt.offsetHeight / 2;
-          shareIt.style.textAlign = "center";
-          document.getElementById("smanji").onclick = function () {
-            document.getElementById("content").style.display = "none";
-            document.getElementById("titleBar").style.display = "none";
-            document.getElementById("smanji").style.display = "none";
-            document.getElementById("povecaj").style.display = "none";
-            document.getElementById("zatvori").style.display = "none";
-            document.getElementById("favicon").style.display = "none";
-            document.getElementById("ikona").style.display = "block";
-            document.getElementById("opis").style.backgroundColor =
-              "transparent";
-            document.getElementsByTagName("nav")[0].style.display = "none";
-            document.getElementById("ikona").style.left =
-              document.body.clientWidth / 2 -
-              document.getElementById("ikona").offsetWidth / 2;
-            document.getElementById("ikona").style.top = "auto";
-            document.getElementById("ikona").style.bottom = "8px";
-          };
-          if (/(M|m)obile/.test(navigator.userAgent)) {
-            /*Android Stock Browser, ne znam sto da kazem o tebi.
+                document
+                  .getElementById("content")
+                  .style.width.substring(
+                    0,
+                    document.getElementById("content").style.width.length - 2
+                  ) >
+              10
+            )
+              //Firefox, stvarno brzo izvodis JavaScript, ali to ovdje pravi probleme.
+              document.getElementById("content").style.width =
+                document
+                  .getElementById("zatvori")
+                  .style.left.substring(
+                    0,
+                    document.getElementById("zatvori").style.left.length - 2
+                  ) -
+                3 +
+                "px";
+            var shareIt = document.getElementById("shareIt");
+            shareIt.style.position = "absolute";
+            shareIt.style.fontFamily = "Arial";
+            shareIt.style.color = "white";
+            shareIt.style.paddingLeft = shareIt.style.paddingRight = "8px";
+            shareIt.style.left =
+              document.body.clientWidth / 2 - shareIt.offsetWidth / 2; //Mislio sam da ni ovo nece raditi u Internet Exploreru 8, no izgleda da ipak radi.
+            shareIt.style.top =
+              document.body.clientHeight / 2 - shareIt.offsetHeight / 2;
+            shareIt.style.textAlign = "center";
+            document.getElementById("smanji").onclick = function () {
+              document.getElementById("content").style.display = "none";
+              document.getElementById("titleBar").style.display = "none";
+              document.getElementById("smanji").style.display = "none";
+              document.getElementById("povecaj").style.display = "none";
+              document.getElementById("zatvori").style.display = "none";
+              document.getElementById("favicon").style.display = "none";
+              document.getElementById("ikona").style.display = "block";
+              document.getElementById("opis").style.backgroundColor =
+                "transparent";
+              document.getElementsByTagName("nav")[0].style.display = "none";
+              document.getElementById("ikona").style.left =
+                document.body.clientWidth / 2 -
+                document.getElementById("ikona").offsetWidth / 2;
+              document.getElementById("ikona").style.top = "auto";
+              document.getElementById("ikona").style.bottom = "8px";
+            };
+            if (/(M|m)obile/.test(navigator.userAgent)) {
+              /*Android Stock Browser, ne znam sto da kazem o tebi.
                                                              Dobro podrzavas SVG, onaj PacMan za smartphone sto sam ga napravio
                                                              kao jedan od svojih prvih programa u JavaScriptu u tebi
                                                              je odmah radio, i dugo si bio moj najdrazi
@@ -2328,100 +2352,104 @@
                                                              svaka druga stranica u tebi slama i bude necitka (i time sto te mnogi
                                                              serveri danas naprosto odbijaju posluziti jer ne podrzavas dobro HTTPS)
                                                              zadajes ljudima jos vise glavobolja.*/
-            document.getElementById(
-              "ikona"
-            ).onclick = function () //Mislim, imate bolju ideju sto da se radi u Android Stock Browseru?
-            {
-              document.getElementById("content").style.display = "block";
-              document.getElementById("titleBar").style.display = "block";
-              document.getElementById("smanji").style.display = "block";
-              document.getElementById("povecaj").style.display = "block";
-              document.getElementById("zatvori").style.display = "block";
-              document.getElementById("favicon").style.display = "block";
-              document.getElementById("ikona").style.display = "none";
-            };
-          } else {
-            document.getElementById("ikona").ondblclick = function () {
-              document.getElementById("content").style.display = "block";
-              document.getElementById("titleBar").style.display = "block";
-              document.getElementById("smanji").style.display = "block";
-              document.getElementById("povecaj").style.display = "block";
-              document.getElementById("zatvori").style.display = "block";
-              document.getElementById("favicon").style.display = "block";
-              document.getElementById("ikona").style.display = "none";
-              document.getElementsByTagName("nav")[0].style.display = "none";
-              document.getElementsByTagName("nav")[0].style.top = "27px";
-              document.getElementsByTagName("nav")[0].style.left = "13px";
-            };
-            document.getElementById("ikona").onclick = function () {
-              document.getElementById("opis").style.backgroundColor = "blue";
-            };
-            document.getElementById("ikona").onmousedown = function (event) {
-              if (
-                (event && event.button == 2) ||
-                (window.event && window.event.button == 2)
-              )
-                /*Internet Explorer 6 evente tretira kao globalne varijable, a ne kao lokalne.
-                                                                                         "2" znaci desna tipka misa.*/
-                return;
-              dragInit(this);
-            };
-            document.getElementById("ikona").oncontextmenu = function (event) {
-              document.getElementsByTagName("nav")[0].style.display = "block";
-              if (
-                this.offsetTop +
-                  document.getElementsByTagName("nav")[0].clientHeight * 1 <
-                document.body.clientHeight
-              ) {
-                document.getElementsByTagName("nav")[0].style.top =
-                  this.offsetTop + 5 + "px";
-                document.getElementsByTagName("nav")[0].style.left =
-                  this.offsetLeft + 5 + "px";
-              } else {
-                document.getElementsByTagName("nav")[0].style.top =
-                  this.offsetTop +
-                  50 -
-                  document.getElementsByTagName("nav")[0].clientHeight * 1 +
-                  "px";
-                document.getElementsByTagName("nav")[0].style.left =
-                  this.offsetLeft + 5 + "px";
-              }
-              if (event && event.stopPropagation)
-                //Ponovno, prokleti Internet Explorer 6.
-                event.stopPropagation();
-              return false;
-            };
-          }
-          document.getElementById("povecaj").onclick = function () {
-            window.onresize = function () {};
-            document.getElementById("titleBar").style.display = "none";
-            document.getElementById("smanji").style.display = "none";
-            document.getElementById("povecaj").style.display = "none";
-            document.getElementById("zatvori").style.display = "none";
-            document.getElementById("favicon").style.display = "none";
-            document.getElementById("content").style.background = "#FFFFFF";
-            document.getElementById("content").style.left = "0px";
-            document.getElementById("content").style.top = "0px";
-            document.getElementById("content").style.width = "100%";
-            document.getElementById("content").style.height = "100%";
-            document.getElementById("content").style.borderStyle = "none";
-            document.getElementById("content").style.padding = "0px";
-            document.getElementById("content").style.position = "static";
-            document.getElementById("showMenu").style.display = "block";
-            document.getElementById("showMenu").onclick = function () {
-              if (
-                document.getElementsByTagName("nav")[0].style.display == "none"
-              )
-                //Da se menu moze zatvoriti u Android Stock Browseru.
-                document.getElementsByTagName("nav")[0].style.display = "block";
-              else
+              document.getElementById("ikona").onclick =
+                function () //Mislim, imate bolju ideju sto da se radi u Android Stock Browseru?
+                {
+                  document.getElementById("content").style.display = "block";
+                  document.getElementById("titleBar").style.display = "block";
+                  document.getElementById("smanji").style.display = "block";
+                  document.getElementById("povecaj").style.display = "block";
+                  document.getElementById("zatvori").style.display = "block";
+                  document.getElementById("favicon").style.display = "block";
+                  document.getElementById("ikona").style.display = "none";
+                };
+            } else {
+              document.getElementById("ikona").ondblclick = function () {
+                document.getElementById("content").style.display = "block";
+                document.getElementById("titleBar").style.display = "block";
+                document.getElementById("smanji").style.display = "block";
+                document.getElementById("povecaj").style.display = "block";
+                document.getElementById("zatvori").style.display = "block";
+                document.getElementById("favicon").style.display = "block";
+                document.getElementById("ikona").style.display = "none";
                 document.getElementsByTagName("nav")[0].style.display = "none";
+                document.getElementsByTagName("nav")[0].style.top = "27px";
+                document.getElementsByTagName("nav")[0].style.left = "13px";
+              };
+              document.getElementById("ikona").onclick = function () {
+                document.getElementById("opis").style.backgroundColor = "blue";
+              };
+              document.getElementById("ikona").onmousedown = function (event) {
+                if (
+                  (event && event.button == 2) ||
+                  (window.event && window.event.button == 2)
+                )
+                  /*Internet Explorer 6 evente tretira kao globalne varijable, a ne kao lokalne.
+                                                                                         "2" znaci desna tipka misa.*/
+                  return;
+                dragInit(this);
+              };
+              document.getElementById("ikona").oncontextmenu = function (
+                event
+              ) {
+                document.getElementsByTagName("nav")[0].style.display = "block";
+                if (
+                  this.offsetTop +
+                    document.getElementsByTagName("nav")[0].clientHeight * 1 <
+                  document.body.clientHeight
+                ) {
+                  document.getElementsByTagName("nav")[0].style.top =
+                    this.offsetTop + 5 + "px";
+                  document.getElementsByTagName("nav")[0].style.left =
+                    this.offsetLeft + 5 + "px";
+                } else {
+                  document.getElementsByTagName("nav")[0].style.top =
+                    this.offsetTop +
+                    50 -
+                    document.getElementsByTagName("nav")[0].clientHeight * 1 +
+                    "px";
+                  document.getElementsByTagName("nav")[0].style.left =
+                    this.offsetLeft + 5 + "px";
+                }
+                if (event && event.stopPropagation)
+                  //Ponovno, prokleti Internet Explorer 6.
+                  event.stopPropagation();
+                return false;
+              };
+            }
+            document.getElementById("povecaj").onclick = function () {
+              window.onresize = function () {};
+              document.getElementById("titleBar").style.display = "none";
+              document.getElementById("smanji").style.display = "none";
+              document.getElementById("povecaj").style.display = "none";
+              document.getElementById("zatvori").style.display = "none";
+              document.getElementById("favicon").style.display = "none";
+              document.getElementById("content").style.background = "#FFFFFF";
+              document.getElementById("content").style.left = "0px";
+              document.getElementById("content").style.top = "0px";
+              document.getElementById("content").style.width = "100%";
+              document.getElementById("content").style.height = "100%";
+              document.getElementById("content").style.borderStyle = "none";
+              document.getElementById("content").style.padding = "0px";
+              document.getElementById("content").style.position = "static";
+              document.getElementById("showMenu").style.display = "block";
+              document.getElementById("showMenu").onclick = function () {
+                if (
+                  document.getElementsByTagName("nav")[0].style.display ==
+                  "none"
+                )
+                  //Da se menu moze zatvoriti u Android Stock Browseru.
+                  document.getElementsByTagName("nav")[0].style.display =
+                    "block";
+                else
+                  document.getElementsByTagName("nav")[0].style.display =
+                    "none";
+              };
+              document.getElementById("shareIt").style.display = "none"; //Ne znam sto se zapravo dogada u Android Stock Browseru s tim natpisom (kao da na elemente koji su apsulotno pozicionirani u JavaScriptu ne utjece CSS-ov "z-index"), ali izgleda da ovo rjesava problem.
+              document.body.style.background = "transparent";
+              document.getElementById("content").onclick = function () {}; //Jer Android Stock Browser inace ne reagira na "Show Menu".
             };
-            document.getElementById("shareIt").style.display = "none"; //Ne znam sto se zapravo dogada u Android Stock Browseru s tim natpisom (kao da na elemente koji su apsulotno pozicionirani u JavaScriptu ne utjece CSS-ov "z-index"), ali izgleda da ovo rjesava problem.
-            document.body.style.background = "transparent";
-            document.getElementById("content").onclick = function () {}; //Jer Android Stock Browser inace ne reagira na "Show Menu".
           };
-        };
       if (typeof window != "undefined") onresize();
       if (
         typeof navigator != "undefined" &&
@@ -2435,59 +2463,13 @@
         var sifrirano;
         if (whom == "Tomasz")
           sifrirano = [
-            6,
-            2,
-            36,
-            28,
-            1,
-            42,
-            17,
-            21,
-            23,
-            50,
-            54,
-            9,
-            21,
-            17,
-            19,
-            35,
-            17,
-            22,
-            8,
-            16,
-            60,
-            0,
-            6,
-            75,
-            28,
-            53,
-            17
+            6, 2, 36, 28, 1, 42, 17, 21, 23, 50, 54, 9, 21, 17, 19, 35, 17, 22,
+            8, 16, 60, 0, 6, 75, 28, 53, 17
           ];
         else if (whom == "Teo")
           sifrirano = [
-            27,
-            0,
-            36,
-            75,
-            1,
-            49,
-            8,
-            21,
-            23,
-            8,
-            57,
-            15,
-            21,
-            37,
-            21,
-            61,
-            29,
-            4,
-            9,
-            92,
-            51,
-            10,
-            25
+            27, 0, 36, 75, 1, 49, 8, 21, 23, 8, 57, 15, 21, 37, 21, 61, 29, 4,
+            9, 92, 51, 10, 25
           ];
         var tmp = sifrirano[0];
         sifrirano[0] = sifrirano[2];
