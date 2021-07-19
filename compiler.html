@@ -201,7 +201,7 @@
       <input
         type="text"
         id="input"
-        value="((abs(-(pow(sin(alpha),2)+pow(cos(alpha),2))-(-1))<1/1000)&amp;((2+2=5)|(3+1>3.5))&amp;(not(abs(arcsin(45)-mod(15/2,1))<1/1000)))+(2+2>5?3+3<7?1:-2:2+2-4<1?0:2+2<4?-1:-3)+('A'+2='C'?0:-1) ;This should always output '1' (However, because the 'pow' in i486 Assembly doesn't support negative bases, this works only for 0<alpha<90.)."
+        value="((abs(-(pow(sin(alpha),2)+pow(cos(alpha),2))-(-1))&lt;1/1000)&amp;((2+2=5)|(3+1&gt;3.5))&amp;(not(abs(arcsin(45)-mod(15/2,1))&lt;1/1000)))+(2+2&gt;5?3+3&lt;7?1:-2:2+2-4&lt;1?0:2+2&lt;4?-1:-3)+('A'+2='C'?0:-1) ;This should always output '1' (However, because the 'pow' in i486 Assembly doesn't support negative bases, this works only for 0&lt;alpha&lt;90.)."
         style="width: 100%"
       /><br />
       <button onclick="compile()" style="float: left">Compile!</button>
@@ -434,6 +434,18 @@
       there might be no better way to do that than to try that app. It runs in
       Firefox 52 (the last version of Firefox to run on Windows XP) and newer
       browsers.<br /><br />
+      UPDATE on 19/07/2021: Please note that this compiler has a
+      <a href="AEC_specification#ternary_operator_bug"
+        >bug related to the way the ternary conditional operator
+        <code>?:</code> is compiled</a
+      >. In short, do not use it as to protect yourself against the division by
+      zero and similar errors, it will not work then, because the second and the
+      third operand are computed before the first operand that is the condition.
+      I am sorry about that, but, given the way this compiler is structured
+      (because I made the core of it back when I was only 18), there does not
+      appear to be a simple solution. The compiler for my programming language
+      that is targetting WebAssembly is significantly more professionally
+      made.<br /><br />
     </div>
     <div id="ikona">
       <img
