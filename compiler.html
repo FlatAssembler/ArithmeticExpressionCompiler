@@ -236,9 +236,11 @@
       >):<br />
       <div id="LISP" style="font-family: monospace; font-size: 1.5em"></div>
       <br />
-      Compiled (to x86 assembly, apparently
-      <a href="https://www.vogons.org/viewtopic.php?f=31&t=74881"
-        >runnable only on Pentium Pro and newer processors</a
+      Compiled (to x86 assembly<del
+        >, apparently
+        <a href="https://www.vogons.org/viewtopic.php?f=31&t=74881"
+          >runnable only on Pentium Pro and newer processors</a
+        ></del
       >, Intel Syntax):<br />
       <div id="assembly"></div>
       <br />
@@ -352,13 +354,13 @@
       compile the files you download here (using FlatAssembler or GNU
       Assembler), you will be running arbitrary Assembly language code on your
       computer, and be careful with it (for maximal security, I'd recommend
-      using some virtual machine software, but notice that DosBox does not
-      emulate Pentium Pro).<br />By the way, if you ever find yourself having to
-      use a programming language without a built-in math library,
-      <a href="math.rs">here</a> is an example of how to make a simple math
-      library in less than 150 lines of code. You can also see a
-      <a href="math.rs.png">diagram</a> showing how accurate the functions there
-      are for various inputs.
+      using some virtual machine software<del
+        >, but notice that DosBox does not emulate Pentium Pro</del
+      >).<br />By the way, if you ever find yourself having to use a programming
+      language without a built-in math library, <a href="math.rs">here</a> is an
+      example of how to make a simple math library in less than 150 lines of
+      code. You can also see a <a href="math.rs.png">diagram</a> showing how
+      accurate the functions there are for various inputs.
       <i
         >(I had to do that in my programming language when writing
         <a href="analogClock.html">Analog Clock for WebAssembly</a>, because
@@ -589,9 +591,59 @@
       }
       function fcomip() {
         //Usporedi dva broja na vrhu stoga i postavi CPU-ove zastavice da oznacuju rezultat usporedbe.
-        if (syntax == "fasm") asm("fcomip st1");
-        else if (syntax == "gas") asm("fcomip");
-        else throw "Invalid syntax name!";
+        //"fcomip" postoji samo na i686 i novijim x86 procesorima, a mi ciljamo na i486.
+        //https://www.vogons.org/viewtopic.php?p=1130626#p1130626
+        asm("fcomp");
+        asm(
+          "push " +
+            (highlight ? '<span style="color:#007777">' : "") +
+            "ax" +
+            (highlight ? "</span>" : "")
+        );
+        asm(
+          "fstsw " +
+            (highlight ? '<span style="color:#007777">' : "") +
+            "ax" +
+            (highlight ? "</span>" : "")
+        );
+        asm(
+          "mov " +
+            (highlight ? '<span style="color:#007777">' : "") +
+            "al" +
+            (highlight ? "</span>" : "") +
+            "," +
+            (highlight ? '<span style="color:#007777">' : "") +
+            "ah" +
+            (highlight ? "</span>" : "")
+        );
+        asm("lahf");
+        asm(
+          "and " +
+            (highlight ? '<span style="color:#007777">' : "") +
+            "ax" +
+            (highlight ? "</span>" : "") +
+            "," +
+            (highlight ? '<span style="color:#007700">' : "") +
+            "0xba45" +
+            (highlight ? "</span>" : "")
+        );
+        asm(
+          "or " +
+            (highlight ? '<span style="color:#007777">' : "") +
+            "ah" +
+            (highlight ? "</span>" : "") +
+            "," +
+            (highlight ? '<span style="color:#007777">' : "") +
+            "al" +
+            (highlight ? "</span>" : "")
+        );
+        asm("sahf");
+        asm(
+          "pop " +
+            (highlight ? '<span style="color:#007777">' : "") +
+            "ax" +
+            (highlight ? "</span>" : "")
+        );
       }
       function fstp() {
         //Obrisi broj na vrhu stoga i stavi ga u "result".
@@ -1645,7 +1697,13 @@
         "or",
         "xor",
         "jz",
-        "cmp"
+        "cmp",
+        "fcomp",
+        "pop",
+        "push",
+        "fstsw",
+        "lahf",
+        "sahf"
       ];
       var registri = ["eax", "st0", "st1"];
       var assembler = "";
