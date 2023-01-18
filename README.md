@@ -1,6 +1,40 @@
 # ArithmeticExpressionCompiler
 A compiler for my own simple low-level programming language, built in JavaScript using the Duktape framework.
 
+You can try it using this shell script:
+```bash
+mkdir ArithmeticExpressionCompiler
+cd ArithmeticExpressionCompiler
+if [ $(command -v wget > /dev/null 2>&1 ; echo $?) -eq 0 ] # Check if "wget" exists, see those StackOverflow answers for more details:
+                                                                                         # https://stackoverflow.com/a/75103891/8902065
+                                                                                         # https://stackoverflow.com/a/75103209/8902065
+then
+  wget https://flatassembler.github.io/Duktape.zip
+else
+  curl -o Duktape.zip https://flatassembler.github.io/Duktape.zip
+fi
+unzip Duktape.zip
+if [ $(command -v clang > /dev/null 2>&1 ; echo $?) -eq 0 ] # We prefer "clang" to "gcc" because... what if somebody tries to run this in CygWin terminal? GCC will not work then, CLANG might.
+then
+  c_compiler="clang"
+else
+  c_compiler="gcc"
+fi
+$c_compiler -o aec aec.c duktape.c -lm # The linker that comes with recent versions of Debian Linux insists that "-lm" is put AFTER the source files, or else it outputs some confusing error message.
+if [ "$OS" = "Windows_NT" ]
+then
+  ./aec analogClockForWindows.aec
+  $c_compiler -o analogClockForWindows analogClockForWindows.s -m32
+  ./analogClockForWindows
+else
+  ./aec analogClock.aec
+  $c_compiler -o analogClock analogClock.s -m32
+  ./analogClock
+fi
+
+```
+If everything is fine, the Analog Clock program should now print the current time in the terminal. I think this would work on the vast majority of Linux machines, as well as on many non-Linux (FreeBSD, Solaris...) machines, and on some Windows machines with a Unix shell (such as Git Bash). 
+
 See this link for more information: https://flatassembler.github.io/compiler.html (The back-end of the website doesn't work now when the website is hosted on GitHub, but the core of the compiler is written in JavaScript and is still usable)
 
 "ArithmeticExpressionCompiler.zip" contains the 32-bit Windows, 32-bit DOS (runnable under FreeDOS, and I guess under MS-DOS with a DPMI) and 32-bit Linux executables of the compiler and some example programs written in AEC for Windows, Linux and DOS, together with their executables. The source code of the compiler, together with the source code of the Duktape framework, is available at: https://flatassembler.github.io/Duktape.zip <br/>
