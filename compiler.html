@@ -481,7 +481,7 @@
       made.<br /><br />
       UPDATE on 18/01/2023: I've written a shell script so that you can more
       easily try out this compiler in a Unix shell:
-      <pre style="background-color: #eeeeee; overflow: scroll; width:100%;">
+      <pre style="background-color: #eeeeee; overflow: scroll; width: 100%">
 mkdir ArithmeticExpressionCompiler
 cd ArithmeticExpressionCompiler
 <span class="Keyword">if</span> <span class="Parenthesis">[</span> <span class="Operator">$</span><span class="Parenthesis">(</span>command -v wget <span class="Operator">&gt;</span> /dev/null <span class="Constant">2</span><span class="Operator">&gt;&amp;</span><span class="Constant">1</span> <span class="Operator">;</span> echo <span class="Operator">$</span>?<span class="Parenthesis">)</span> <span class="Keyword">-eq</span> <span class="Constant">0</span> <span class="Parenthesis">]</span> <span class="Comment"># Check if "wget" exists, see those StackOverflow answers for more details:
@@ -694,7 +694,15 @@ $c_compiler -o aec aec.c duktape.c -lm <span class="Comment"># The linker that c
             "," +
             (highlight ? '<span style="color:#007700">' : "") +
             "0xba45" +
-            (highlight ? "</span>" : "")
+            (highlight ? "</span>" : "") +
+            " " +
+            (highlight ? '<span style="color:#777777">' : "") +
+            (syntax == "fasm" ? ";" : "#") +
+            (highlight
+              ? '<a href="https://www.vogons.org/viewtopic.php?p=1130827#p1130827">'
+              : "") +
+            "https://www.vogons.org/viewtopic.php?p=1130827#p1130827" +
+            (highlight ? "</a></span>" : "")
         );
         asm(
           "or " +
