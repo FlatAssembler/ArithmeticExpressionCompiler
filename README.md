@@ -6,8 +6,8 @@ You can try it using this shell script:
 mkdir ArithmeticExpressionCompiler
 cd ArithmeticExpressionCompiler
 if [ $(command -v wget > /dev/null 2>&1 ; echo $?) -eq 0 ] # Check if "wget" exists, see those StackOverflow answers for more details:
-                                                                                         # https://stackoverflow.com/a/75103891/8902065
-                                                                                         # https://stackoverflow.com/a/75103209/8902065
+                                                                                        # https://stackoverflow.com/a/75103891/8902065
+                                                                                        # https://stackoverflow.com/a/75103209/8902065
 then
   wget https://flatassembler.github.io/Duktape.zip
 else
