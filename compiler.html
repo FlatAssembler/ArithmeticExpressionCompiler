@@ -276,7 +276,8 @@
       <div id="assembly"></div>
       <br />
       Interpreter output:
-      <span id="interpreter" style="font-family: 'Courier New'">null</span
+      <span id="interpreter" style="font-family: &quot;Courier New&quot;"
+        >null</span
       ><br /><br />
       WARNING: The tokenizer, the parser and the compiler appear to generate
       correct results, but they haven't been rigorously tested. Also, no
@@ -2208,6 +2209,12 @@ $c_compiler -o aec aec.c duktape.c -lm <span class="Comment"># The linker that c
       }
       var sessionID;
       function downloadAJAX() {
+        if (document.getElementById("GAS").checked) {
+          alert(
+            "To download a FlatAssembler project, you need to change the syntax from the GNU Assembler syntax to the FlatAssembler syntax!"
+          );
+          return;
+        }
         try {
           sessionID = Math.floor(Math.random() * 100);
           compile();
