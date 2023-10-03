@@ -2215,6 +2215,12 @@ $c_compiler -o aec aec.c duktape.c -lm <span class="Comment"># The linker that c
           );
           return;
         }
+        if (document.getElementById("verbose").checked) {
+          alert(
+            "Sorry about that, but downloading a FlatAssembler project with verbose output (S-expressions) is not currently supported, due to the fact that S-expressions often contain special characters such as '&' (which will confuse the server running PHP)."
+          );
+          return;
+        }
         try {
           sessionID = Math.floor(Math.random() * 100);
           compile();
