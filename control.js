@@ -1,4 +1,6 @@
 var stack = [];
+var stackWithTheBeginningsOfTheLoops = []; // To implement "continue"s...
+var stackWithTheEndsOfTheLoops = []; // To implement "break"s...
 var hasElse = [];
 isAssembly = false;
 function compileString(str) {
@@ -195,6 +197,7 @@ function compileString(str) {
     var arth = str.substr("While ".length);
     var label1 = "WhileLabel" + Math.floor(Math.random() * 1000000);
     stack.push(label1);
+    stackWithTheBeginningsOfTheLoops.push(label1);
     if (verboseMode)
       asm(
         commentSign +
@@ -206,6 +209,7 @@ function compileString(str) {
     parseArth(tokenizeArth(arth)).compile();
     if (verboseMode) asm(commentSign + "Comparing the expression to 0...");
     var label2 = "EndWhileLabel" + Math.floor(Math.random() * 1000000);
+    stackWithTheEndsOfTheLoops.push(label2);
     if (syntax == "fasm") asm("fistp dword [result]");
     else asm("fistp dword ptr [result]");
     if (syntax == "fasm") asm("mov eax, dword [result]");
@@ -221,7 +225,15 @@ function compileString(str) {
     var whileLabel = stack.pop();
     asm("jmp " + whileLabel);
     asm(endWhileLabel + ":");
-  } else {
+    stackWithTheBeginningsOfTheLoops.pop();
+    stackWithTheEndsOfTheLoops.pop();
+  } else if (/^Break/.test(str)) {
+    asm("jmp " + stackWithTheEndsOfTheLoops[stackWithTheEndsOfTheLoops.length - 1]);
+  }
+  else if (/^Continue/.test(str)) {
+    asm("jmp " + stackWithTheBeginningsOfTheLoops[stackWithTheBeginningsOfTheLoops.length - 1]);
+  }
+  else {
     if (verboseMode)
       asm(
         commentSign +
