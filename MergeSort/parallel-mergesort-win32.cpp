@@ -106,6 +106,7 @@ int main(void) {
   for (int i = 0; i < n; i++)
     cin >> originalni_niz[i];
   GetSystemInfo(&informacijeOSustavu);
+  ghMutex = CreateMutexA(NULL, 0, NULL);
   Granice cijeli_niz = {0, n, 0};
   HANDLE korijenskiThread;
   DWORD id_korijenskog_threada;
