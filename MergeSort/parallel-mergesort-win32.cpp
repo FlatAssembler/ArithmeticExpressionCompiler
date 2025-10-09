@@ -5,7 +5,7 @@
 
 int *originalni_niz, *pomocni_niz;
 HANDLE ghMutex;
-int brojacKolikoJeUsporedbiMergeSortNapravio = 0, brojacThreadova = 0;
+int brojacKolikoJeUsporedbiMergeSortNapravio = 0, brojacThreadova = 1;
 SYSTEM_INFO informacijeOSustavu; // Za broj procesora.
 
 template <typename T> class MojKomparator {
@@ -71,6 +71,8 @@ DWORD WINAPI paralelni_mergesort(LPVOID lpGranice) {
     WaitForSingleObject(ghMutex, INFINITE);
     brojacThreadova += 2;
     ReleaseMutex(ghMutex);
+    CloseHandle(noviThreadovi[0]);
+    CloseHandle(noviThreadovi[1]);
   } else {
     paralelni_mergesort(&lijeviDio);
     paralelni_mergesort(&desniDio);
@@ -106,7 +108,7 @@ int main(void) {
   for (int i = 0; i < n; i++)
     cin >> originalni_niz[i];
   GetSystemInfo(&informacijeOSustavu);
-  ghMutex = CreateMutexA(NULL, 0, NULL);
+  ghMutex = CreateMutex(NULL, FALSE, NULL);
   Granice cijeli_niz = {0, n, 0};
   HANDLE korijenskiThread;
   DWORD id_korijenskog_threada;
@@ -121,12 +123,14 @@ int main(void) {
     return 1;
   }
   WaitForSingleObject(korijenskiThread, INFINITE);
+  CloseHandle(korijenskiThread);
   cout << "Nakon MergeSorta, niz je: " << endl;
   for (int i = 0; i < n; i++)
     cout << originalni_niz[i] << endl;
   cout << "MergeSort je napravio usporedbi: "
        << brojacKolikoJeUsporedbiMergeSortNapravio << endl;
   cout << "Koristio je threadova: " << brojacThreadova << endl;
+  CloseHandle(ghMutex);
   delete[] originalni_niz;
   delete[] pomocni_niz;
   system("PAUSE");
